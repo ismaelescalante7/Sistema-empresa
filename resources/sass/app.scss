@@ -1,0 +1,22 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Import styles
+@import "@coreui/coreui/scss/coreui";
+
+// Import Chart.js Tooltips
+@import "@coreui/chartjs/scss/tooltips";
+
+@import "layout";
+
+//Estilos personalizados para login
+@import "styles-login";
+
+//import fontawesome
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+// Custom
+@import "custom";

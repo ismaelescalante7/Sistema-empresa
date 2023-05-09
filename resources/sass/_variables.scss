@@ -1,0 +1,80 @@
+// Body
+$body-bg: #f8fafc;
+
+// Typography
+$font-family-sans-serif: 'Nunito', sans-serif;
+/* $font-family-sans-serif: Cabin; */
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+// Colors
+$blue: #014E77;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66d9b;
+$red: #EC3239;
+$orange: #f6993f;
+$yellow: #FDBA2D;
+$green: #38c172;
+$teal: #4dc0b5;
+$cyan: #257DBC;
+$gray-100:  #ebedef !default;
+$gray-600:#707478;
+$gray-500: #adb5bd;
+$white-custom: #FFFFFF;
+$black-custom: #000000;
+$primary:       $blue !default;
+$secondary:     $gray-600 !default;
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $green,
+  "info": $cyan,
+  "warning" : $yellow,
+  "danger" : $red,
+  "light": $gray-100,
+  "dark": $black-custom,
+) !default;
+
+// Pagination
+$pagination-color:                  $white-custom;
+$pagination-bg:                     $blue;
+$pagination-active-color:           $white-custom;
+$pagination-active-bg:              $cyan;
+$pagination-active-border-color:    $gray-500;
+$pagination-hover-color:            $white-custom;
+$pagination-hover-bg:               $cyan;
+$pagination-hover-border-color:     $gray-500;
+
+// Breadcrumb
+$breadcrumb-font-size:              null;
+$breadcrumb-padding-y:              1em 2em;
+$breadcrumb-padding-x:              2em;
+$breadcrumb-item-padding-x:         .5em;
+$breadcrumb-margin-bottom:          .5em;
+$breadcrumb-bg:                     white;
+$breadcrumb-divider-color:          $gray-600;
+$breadcrumb-active-color:           $gray-600;
+$breadcrumb-divider:                quote("/");
+$breadcrumb-divider-flipped:        $breadcrumb-divider;
+$breadcrumb-border-radius:          null;
+
+// Sidebar
+$sidebar-color:$white-custom;
+$sidebar-bg:$blue;
+$sidebar-border-color: $black-custom;
+$sidebar-header-bg:$blue;
+$sidebar-nav-link-color: $white-custom;
+$sidebar-nav-link-bg: $blue;
+$sidebar-nav-link-border-color:$white-custom;
+$sidebar-nav-link-icon-color:$white-custom;
+$sidebar-nav-link-hover-color: $white-custom;
+$sidebar-nav-link-hover-bg: $cyan;
+$sidebar-nav-link-hover-icon-color:$white-custom;
+$sidebar-nav-link-active-color: $white-custom;
+$sidebar-nav-link-active-bg: $cyan;
+$sidebar-nav-link-active-icon-color:$white-custom;
+$sidebar-nav-group-bg:$black-custom;
+$sidebar-nav-group-toggle-show-color:$white-custom;
+$sidebar-nav-group-indicator-color:$white-custom;
+
