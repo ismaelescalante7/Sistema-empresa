@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('roles', function (Blueprint $table) {
-            $table->string('title')
-                ->after('name');
+        Schema::create('localidades', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre');
+            $table->string('codigo_postal')->nullable();
+            $table->foreignId('departamento_id')->constrained('departamentos');
+            $table->timestamps();
         });
     }
 
@@ -26,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('roles', function (Blueprint $table) {
-            $table->dropColumn('title');
-        });
+        Schema::dropIfExists('localidades');
     }
 };

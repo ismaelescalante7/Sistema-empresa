@@ -11,39 +11,75 @@ use Spatie\Permission\Models\Role;
 class PermissionsSeeder extends Seeder
 {
     protected $permissions = [
-
-        'administracion' => [
-            // Productos
+        // Productos
+        'productos' => [
             [
                 'name' => 'consulta_productos',
-                'title' => 'Consulta de Productos',
+                'description' => 'Consulta de Productos',
                 'roles' => ['ADM'],
             ],
             [
                 'name' => 'crear_producto',
-                'title' => 'Consulta de Productos',
+                'description' => 'Consulta de Productos',
                 'roles' => ['ADM'],
             ],
-
-            // Usuarios
+        ],
+        // Usuarios
+        'usuarios' =>  [
             [
                 'name' => 'consulta_usuarios',
-                'title' => 'Usuarios',
+                'description' => 'Usuarios',
                 'roles' => ['ADM'],
             ],
             [
                 'name' => 'crear_usuario',
-                'title' => 'Crear Usuarios',
+                'description' => 'Crear Usuarios',
                 'roles' => ['ADM'],
             ],
             [
                 'name' => 'modificar_usuario',
-                'title' => 'Modificar Usuarios',
+                'description' => 'Modificar Usuarios',
                 'roles' => ['ADM'],
             ],
             [
                 'name' => 'ver_usuario',
-                'title' => 'Ver Usuarios',
+                'description' => 'Ver Usuarios',
+                'roles' => ['ADM'],
+            ],
+        ],
+        // Roles
+        'roles' => [
+            [
+                'name' => 'roles.index',
+                'description' => 'Consulta de roles',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'roles.create',
+                'description' => 'Crear rol',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'roles.edit',
+                'description' => 'Modificar rol',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'roles.destroy',
+                'description' => 'Eliminar rol',
+                'roles' => ['ADM'],
+            ],
+        ],
+        // Permisos
+        'permissions' => [
+            [
+                'name' => 'roles.permissions.index',
+                'description' => 'Consulta de permisos',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'roles.permissions.edit',
+                'description' => 'Modificar permiso',
                 'roles' => ['ADM'],
             ],
         ],

@@ -11,7 +11,7 @@ class RolesSeeder extends Seeder
     protected $roles = [
         [
             'name' => 'ADM',
-            'title' => 'ADMINISTRADOR',
+            'description' => 'ADMINISTRADOR',
         ]
     ];
 

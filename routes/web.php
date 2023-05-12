@@ -33,6 +33,8 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::group(['middleware' => ['auth']], __DIR__ . '/web/productos.php');
-    Route::group(['middleware' => ['auth']], __DIR__ . '/web/users.php');
+    Route::group([], __DIR__ . '/web/productos.php');
+    Route::group([], __DIR__ . '/web/users.php');
+    Route::group([], __DIR__ . '/web/roles.php');
+
 });

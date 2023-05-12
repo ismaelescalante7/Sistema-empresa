@@ -118,6 +118,17 @@ const onActive = (list) => {
             Productos
           </Link>
         </CNavItem>
+        <CNavItem>
+          <Link
+            href="#"
+            @click="onNavigate('/clientes')"
+            class="nav-link"
+            :class="{ 'active': onActive(['Clientes']) }"
+          >
+            <i class="fa-solid fa-building-columns nav-icon"></i>
+            Clientes
+          </Link>
+        </CNavItem>
       </CNavGroup>
     </CSidebarNav>
   </CSidebar>

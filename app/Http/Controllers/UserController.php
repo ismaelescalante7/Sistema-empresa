@@ -11,8 +11,7 @@ class UserController extends Controller
 {
     public function index(UserSearchRequest $request): Response
     {
-        dd($request);
-        $filters = $request->only(['name', 'numeroDocumento', 'delegacion']);
+        $filters = $request->only(['name']);
         $users = User::mainSearch(collect($filters))
             ->orderBy('name')
             ->paginate(config('custom.pagination.per_page'));
