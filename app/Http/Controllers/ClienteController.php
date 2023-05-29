@@ -2,8 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClienteSearchRequest;
 use App\Models\Cliente;
+use App\Models\Departamento;
+use App\Models\Localidad;
+use App\Models\Provincia;
+use App\Models\TipoDocumento;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ClienteController extends Controller
 {
@@ -12,9 +21,17 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ClienteSearchRequest $request): Response
     {
-        //
+        $filters = $request->only(['apellido_nombre', 'numero_documento']);
+        $clientes = Cliente::mainSearch(collect($filters))
+            ->orderBy('apellido_nombre')
+            ->with(['provincia','departamento','localidad'])
+            ->paginate(config('custom.pagination.per_page'));
+        return Inertia::render('Clientes/List', [
+            'clientes' => $clientes,
+            'filters' => $filters
+        ]);
     }
 
     /**
@@ -22,9 +39,16 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create() : Response
     {
-        //
+        $tiposDocumentos = TipoDocumento::all();
+        $provincias = Provincia::all();
+        $departamentos = Departamento::all();
+        $localidades = Localidad::all();
+        $provinciaDefault = config('custom.provincia_salta.id');
+        return Inertia::render('Clientes/Create', compact([
+            'tiposDocumentos', 'provincias', 'departamentos', 'localidades', 'provinciaDefault'
+        ]));
     }
 
     /**
@@ -44,9 +68,10 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function show(Cliente $cliente)
+    public function show(Cliente $cliente) : Response
     {
-        //
+        $cliente = $cliente->load(['tipoDocumento', 'provincia', 'departamento', 'localidad']);
+        return Inertia::render('Clientes/Show', compact('cliente'));
     }
 
     /**
@@ -78,8 +103,9 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cliente $cliente)
+    public function destroy(Cliente $cliente): RedirectResponse
     {
-        //
+        $cliente->delete();
+        return Redirect::route('clientes.index');
     }
 }

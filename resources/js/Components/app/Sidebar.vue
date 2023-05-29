@@ -70,19 +70,41 @@ const onActive = (list) => {
           </CNavItem>
         </CNavGroup>
       </CNavGroup>
-      <CNavGroup>
+      <CNavGroup
+        :visible = "onActive(['TiposComprobante', 'CondicionesIvas'])"
+      >
         <template #togglerContent>
-          TRAMITACIÓN
+          CONFIGURACIÓN
         </template>
+        <CNavItem>
+          <Link
+            href="#"
+            @click="onNavigate('/tipos-comprobantes')"
+            class="nav-link"
+            :class="{ 'active': onActive(['TiposComprobante']) }"
+          >
+            <i class="fa-solid fa-building-columns nav-icon"></i>
+            Tipos Comprobantes
+          </Link>
+          <Link
+            href="#"
+            @click="onNavigate('/condiciones-ivas')"
+            class="nav-link"
+            :class="{ 'active': onActive(['CondicionesIvas']) }"
+          >
+            <i class="fa-solid fa-building-columns nav-icon"></i>
+            Condiciones Ivas
+          </Link>
+        </CNavItem>
       </CNavGroup>
       <CNavGroup
-        :visible = "onActive(['Users', 'Roles', 'Accesos', 'Permissions', 'Productos'])"
+        :visible = "onActive(['Users', 'Roles', 'Permissions', 'Productos'])"
       >
         <template #togglerContent>
           ADMINISTRACIÓN
         </template>
         <CNavGroup
-          :visible="onActive(['Users', 'Roles', 'Accesos', 'Permissions'])"
+          :visible="onActive(['Users', 'Roles', 'Permissions'])"
         >
           <template
             #togglerContent
@@ -125,7 +147,7 @@ const onActive = (list) => {
             class="nav-link"
             :class="{ 'active': onActive(['Clientes']) }"
           >
-            <i class="fa-solid fa-building-columns nav-icon"></i>
+            <i class="fa-solid fa-users nav-icon"></i>
             Clientes
           </Link>
         </CNavItem>

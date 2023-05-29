@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductoRequest;
+use App\Models\Categoria;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,7 +21,10 @@ class ProductoController extends Controller
     }
 
     public function create() {
-        return Inertia::render('Productos/Create');
+        $categorias = Categoria::all();
+        return Inertia::render('Productos/Create', [
+            'categorias' => $categorias
+        ]);
     }
 
     public function store(StoreProductoRequest $request) 

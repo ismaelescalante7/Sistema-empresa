@@ -37,6 +37,8 @@ class RoleController extends Controller
             'description' => $request->description
         ]);
 
+        flashAlert(__('messages.success', ['Action' => 'Alta', 'element' => 'ROle'])); 
+
         return Redirect::route('roles.index');
     }
 

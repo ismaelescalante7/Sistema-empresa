@@ -30,7 +30,7 @@ class PermissionController extends Controller
 
     public function edit(Role $role): Response
     {
-        $permissions = Permission::where('is_special', false)->get();
+        $permissions = Permission::all();
         foreach ($permissions as $permission) {
             if ($role->hasDirectPermission($permission->name)) {
                 $permission->status = "SI";

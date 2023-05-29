@@ -11,40 +11,80 @@ use Spatie\Permission\Models\Role;
 class PermissionsSeeder extends Seeder
 {
     protected $permissions = [
+        // Configuracion
+        'Tipos Comprobantes' => [
+            [
+                'name' => 'tipos.comprobantes.index',
+                'description' => 'Consulta de Tipos Comprobantes',
+                'roles' => ['ADM'],
+            ]
+        ],
+
+        'Condiciones Ivas' => [
+            [
+                'name' => 'condiciones.ivas.index',
+                'description' => 'Consulta de Condiciones Ivas',
+                'roles' => ['ADM'],
+            ]
+        ],
+
         // Productos
         'productos' => [
             [
-                'name' => 'consulta_productos',
+                'name' => 'productos.index',
                 'description' => 'Consulta de Productos',
                 'roles' => ['ADM'],
             ],
             [
-                'name' => 'crear_producto',
+                'name' => 'productos.create',
                 'description' => 'Consulta de Productos',
                 'roles' => ['ADM'],
             ],
         ],
+        // Clientes
+        'clientes' => [
+            [
+                'name' => 'clientes.index',
+                'description' => 'Consulta de Clientes',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'clientes.create',
+                'description' => 'Consulta de Clientes',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'clientes.show',
+                'description' => 'Ver Cliente',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'clientes.edit',
+                'description' => 'Modificar Cliente',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'clientes.destroy',
+                'description' => 'Eliminar Cliente',
+                'roles' => ['ADM'],
+            ]
+        ],
         // Usuarios
-        'usuarios' =>  [
+        'users' => [
             [
-                'name' => 'consulta_usuarios',
-                'description' => 'Usuarios',
-                'roles' => ['ADM'],
+                'name' => 'users.index',
+                'description' => 'Consulta de usuarios',
+                'roles' => ['ADM']
             ],
             [
-                'name' => 'crear_usuario',
-                'description' => 'Crear Usuarios',
-                'roles' => ['ADM'],
+                'name' => 'users.create',
+                'description' => 'Crear usuario',
+                'roles' => ['ADM']
             ],
             [
-                'name' => 'modificar_usuario',
-                'description' => 'Modificar Usuarios',
-                'roles' => ['ADM'],
-            ],
-            [
-                'name' => 'ver_usuario',
-                'description' => 'Ver Usuarios',
-                'roles' => ['ADM'],
+                'name' => 'users.edit',
+                'description' => 'Modificar usuario',
+                'roles' => ['ADM']
             ],
         ],
         // Roles

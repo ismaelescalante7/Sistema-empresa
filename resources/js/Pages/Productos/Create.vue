@@ -9,11 +9,12 @@ const form = useForm({
   nombre: null,
   descripcion: null,
   precio: null,
+  categoria_id: null,
   cantidad: null
 })
 
 const props = defineProps({
-  delegaciones: Array
+  categorias: Array
 })
 
 const submit = () => {
@@ -76,6 +77,18 @@ const back = () => {
             placeholder="Precio"
             :feedback="form.errors.precio"
             :invalid="form.errors.precio"
+          />
+        </CCol>
+      </CRow>
+      <CRow class="mb-3">
+        <CCol xs="5">
+          <FormLabel required>Categoria</FormLabel>
+          <CFormInput
+            v-model="form.categoria_id"
+            type="number"
+            placeholder="Categoria"
+            :feedback="form.errors.categoria_id"
+            :invalid="form.errors.categoria_id"
           />
         </CCol>
       </CRow>

@@ -20,7 +20,11 @@ class Producto extends Model
         'nombre',
         'descripcion',
         'precio',
-        'cantidad'
+        'cantidad',
+        'categoria_id',
+        'compra',
+        'vende',
+        'tasa_iva'
     ];
 
     public function scopeMainSearch(Builder $query, Collection $data): Builder

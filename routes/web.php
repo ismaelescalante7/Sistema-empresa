@@ -33,8 +33,12 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+    # Configuración
+    Route::group([], __DIR__ . '/web/tipos_comprobantes.php');
+    Route::group([], __DIR__ . '/web/condiciones_ivas.php');
+
     Route::group([], __DIR__ . '/web/productos.php');
     Route::group([], __DIR__ . '/web/users.php');
     Route::group([], __DIR__ . '/web/roles.php');
-
+    Route::group([], __DIR__ . '/web/clientes.php');
 });

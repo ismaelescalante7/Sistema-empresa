@@ -7,9 +7,7 @@ import FormLabel from '@/Components/Form/FormLabel.vue'
 
 const form = useForm({
   name: null,
-  numeroDocumento: null,
-  email: null,
-  delegacion: null
+  email: null
 })
 
 const props = defineProps({
@@ -45,18 +43,6 @@ const back = () => {
       </CRow>
       <CRow class="mb-3">
         <CCol xs="5">
-          <FormLabel required>Nro. Documento</FormLabel>
-          <CFormInput
-            v-model="form.numeroDocumento"
-            type="text"
-            placeholder="Nro. Documento"
-            :feedback="form.errors.numeroDocumento"
-            :invalid="form.errors.numeroDocumento"
-          />
-        </CCol>
-      </CRow>
-      <CRow class="mb-3">
-        <CCol xs="5">
           <FormLabel required>Email</FormLabel>
           <CFormInput
             v-model="form.email"
@@ -65,25 +51,6 @@ const back = () => {
             :feedback="form.errors.email"
             :invalid="form.errors.email"
           />
-        </CCol>
-      </CRow>
-      <CRow class="mb-3">
-        <CCol xs="5">
-          <FormLabel required>Delegación</FormLabel>
-          <CFormSelect
-            v-model="form.delegacion"
-            :feedback="form.errors.delegacion"
-            :invalid="form.errors.delegacion"
-          >
-            <option :value="''">Seleccione una opción</option>
-            <option
-              v-for="delegacion in props.delegaciones"
-              :key="delegacion.id"
-              :value="delegacion.id"
-            >
-              {{ delegacion.nombre }}
-            </option>
-          </CFormSelect>
         </CCol>
       </CRow>
       <CRow>

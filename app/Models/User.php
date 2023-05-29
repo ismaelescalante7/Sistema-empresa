@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -12,6 +13,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -54,15 +56,26 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array<int, string>
-     */
     protected $appends = [
-        'profile_photo_url',
+        'has_profile_photo',
+        'profile_photo',
     ];
 
+    public function hasProfilePhoto(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->profile_photo_path !== config('custom.profile_default.nombre')
+        );
+    }
+
+    public function profilePhoto(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => !$this->has_profile_photo
+                ? asset("/images/users/{$this->profile_photo_path}")
+                : Storage::disk('profiles')->url($this->profile_photo_path),
+        );
+    }
     public function scopeMainSearch(Builder $query, Collection $data): Builder
     {
         if ($data->get('name')) {
