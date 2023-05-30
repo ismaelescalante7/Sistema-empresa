@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class PlanCuenta extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'descripcion',
+        'imputable'
+    ];
 }

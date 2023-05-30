@@ -71,7 +71,7 @@ const onActive = (list) => {
         </CNavGroup>
       </CNavGroup>
       <CNavGroup
-        :visible = "onActive(['TiposComprobante', 'CondicionesIvas','RetencionesGanancias'])"
+        :visible = "onActive(['TiposComprobante', 'CondicionesIvas','RetencionesGanancias','PlanesCuentas'])"
       >
         <template #togglerContent>
           CONFIGURACIÓN
@@ -94,6 +94,15 @@ const onActive = (list) => {
           >
             <i class="fa-solid fa-building-columns nav-icon"></i>
             Tipos Comprobantes
+          </Link>
+          <Link
+            href="#"
+            @click="onNavigate('/planes-cuentas')"
+            class="nav-link"
+            :class="{ 'active': onActive(['PlanesCuentas']) }"
+          >
+            <i class="fa-solid fa-building-columns nav-icon"></i>
+            Planes Cuentas
           </Link>
           <Link
             href="#"
