@@ -20,6 +20,14 @@ class PermissionsSeeder extends Seeder
             ]
         ],
 
+        'Retenciones Ganancias' => [
+            [
+                'name' => 'retenciones.ganancias.index',
+                'description' => 'Consulta de Retenciones Ganancias',
+                'roles' => ['ADM'],
+            ]
+        ],
+
         'Condiciones Ivas' => [
             [
                 'name' => 'condiciones.ivas.index',

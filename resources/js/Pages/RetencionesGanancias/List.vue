@@ -6,7 +6,7 @@ import Actions from './Partials/Actions.vue'
 import breadcrumbs from '@/Data/Breadcrumbs'
 
 const props = defineProps({
-  condicionesIvas: Object,
+  retencionesGanancias: Object,
   filters: []
 })
 
@@ -14,15 +14,15 @@ const props = defineProps({
 
 <template>
   <AppLayout
-    :breadcrumb="breadcrumbs.condicionesIvasList"
-    title="Condiciones Ivas"
+    :breadcrumb="breadcrumbs.retencionesGananciasList"
+    title="Retenciones Ganancias"
   >
 
-    <Grid :condicionesIvas="props.condicionesIvas.data" />
+    <Grid :retencionesGanancias="props.retencionesGanancias.data" />
 
     <Pagination
-      v-if="props.condicionesIvas.total !== 0"
-      :links="props.condicionesIvas.links"
+      v-if="props.retencionesGanancias.total !== 0"
+      :links="props.retencionesGanancias.links"
       :extra="filters"
     /> 
 

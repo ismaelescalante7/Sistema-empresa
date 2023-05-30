@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             ClienteSeeder::class,
             CategoriaSeeder::class,
             TipoComprobanteSeeder::class,
-            CondicionIvaSeeder::class
+            CondicionIvaSeeder::class,
+            RetencionGananciaSeeder::class
         ]);
     }
 }

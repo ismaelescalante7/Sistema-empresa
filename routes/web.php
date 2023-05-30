@@ -35,6 +35,7 @@ Route::middleware([
 
     # Configuración
     Route::group([], __DIR__ . '/web/tipos_comprobantes.php');
+    Route::group([], __DIR__ . '/web/retenciones_ganancias.php');
     Route::group([], __DIR__ . '/web/condiciones_ivas.php');
 
     Route::group([], __DIR__ . '/web/productos.php');
