@@ -20,6 +20,14 @@ class PermissionsSeeder extends Seeder
             ]
         ],
 
+        'Planes Cuentas' => [
+            [
+                'name' => 'planes.cuentas.index',
+                'description' => 'Consulta de Planes Cuentas',
+                'roles' => ['ADM'],
+            ]
+        ],
+
         'Retenciones Ganancias' => [
             [
                 'name' => 'retenciones.ganancias.index',

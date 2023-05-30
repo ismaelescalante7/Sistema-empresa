@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\PlanCuenta;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,7 +26,8 @@ class DatabaseSeeder extends Seeder
             CategoriaSeeder::class,
             TipoComprobanteSeeder::class,
             CondicionIvaSeeder::class,
-            RetencionGananciaSeeder::class
+            RetencionGananciaSeeder::class,
+            PlanCuentaSeeder::class
         ]);
     }
 }
