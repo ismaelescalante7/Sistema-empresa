@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PlanCuentaStoreRequest;
 use App\Models\PlanCuenta;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,5 +21,22 @@ class PlanCuentaController extends Controller
             'planesCuentas' => $planesCuentas,
             'filters' => $filters
         ]);
+    }
+
+    public function create(): Response
+    {
+        return Inertia::render('PlanesCuentas/Create');
+    }
+
+    public function store(PlanCuentaStoreRequest $request) 
+    {
+        $data = $request->validated();
+        PlanCuenta::create($data);
+        return redirect()->route('planes.cuentas.index');
+    }
+
+    public function edit(PlanCuenta $planCuenta) 
+    {
+        return Inertia::render('PlanesCuentas/Update', compact('planCuenta'));
     }
 }

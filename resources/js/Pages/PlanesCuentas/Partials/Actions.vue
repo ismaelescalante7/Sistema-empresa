@@ -26,7 +26,7 @@ const clean = () => {
 }
 
 const create = () => {
-  Inertia.get('/users/create')
+  Inertia.get('/planes-cuentas/create')
 }
 </script>
 

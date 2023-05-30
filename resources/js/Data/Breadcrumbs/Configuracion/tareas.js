@@ -1,4 +1,4 @@
-import comunicacion from './comunicacion'
+import comunicacion from './tipos_comprobantes'
 
 // Tareas
 const tareas = [

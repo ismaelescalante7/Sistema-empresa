@@ -5,7 +5,7 @@ import CircleButton from '../../../Components/CircleButton.vue'
 import { hasPermission } from '../../../Helpers/permissions'
 
 const props = defineProps({
-  tiposComprobantes: Object,
+  filters: Object,
 })
 
 const form = useForm({

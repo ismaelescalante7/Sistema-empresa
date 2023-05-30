@@ -7,13 +7,10 @@ const props = defineProps({
   planesCuentas: Array
 })
 
-const update = (userId) => {
-  Inertia.get(`/users/${userId}/edit`)
+const update = (planCuentaId) => {
+  Inertia.get(`/planes-cuentas/${planCuentaId}/edit`)
 }
 
-const accesos = (userId) => {
-  Inertia.get(`/users/${userId}/accesos`)
-}
 </script>
 
 <template>
@@ -40,6 +37,7 @@ const accesos = (userId) => {
           <CircleButton
             class="ms-1"
             title="Modificar"
+            @click="update(planeCuenta.id)"
           >
             <span class="fa-solid fa-pen-to-square"></span>
           </CircleButton>

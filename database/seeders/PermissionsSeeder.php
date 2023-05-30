@@ -25,6 +25,16 @@ class PermissionsSeeder extends Seeder
                 'name' => 'planes.cuentas.index',
                 'description' => 'Consulta de Planes Cuentas',
                 'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'planes.cuentas.create',
+                'description' => 'Nuevo Plan Cuenta',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'planes.cuentas.edit',
+                'description' => 'Modificar Plan Cuenta',
+                'roles' => ['ADM'],
             ]
         ],
 
