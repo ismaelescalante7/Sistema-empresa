@@ -22,3 +22,8 @@ Route::get('/planes-cuentas/{planCuenta}/edit', [PlanCuentaController::class, 'e
 Route::patch('/planes-cuentas/{planCuenta}', [PlanCuentaController::class, 'update'])
     ->name('planes.cuentas.update')
     ->middleware('permission:planes.cuentas.edit');
+
+Route::delete('planes-cuentas/{planCuenta}', [PlanCuentaController::class, 'destroy'])
+    ->name('planes.cuentas.destroy')
+    ->middleware('permission:planes.cuentas.destroy');
+    

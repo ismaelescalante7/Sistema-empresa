@@ -14,7 +14,7 @@ const form = useForm({
 })
 
 const submit = () => {
-  form.post(route('planes.cuentas.store'))
+  form.patch(route('planes.cuentas.update', props.planCuenta.id))
 }
 
 const back = () => {
@@ -24,7 +24,7 @@ const back = () => {
 
 <template>
   <AppLayout
-    :breadcrumb="breadcrumbs.planesCuentasCreate"
+    :breadcrumb="breadcrumbs.planesCuentasUpdate"
     title="Modificar plan de cuenta"
   >
     <CForm @submit.prevent="submit">

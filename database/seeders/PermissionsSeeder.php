@@ -35,6 +35,11 @@ class PermissionsSeeder extends Seeder
                 'name' => 'planes.cuentas.edit',
                 'description' => 'Modificar Plan Cuenta',
                 'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'planes.cuentas.destroy',
+                'description' => 'Eliminar Plan Cuenta',
+                'roles' => ['ADM'],
             ]
         ],
 
