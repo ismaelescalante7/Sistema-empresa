@@ -16,12 +16,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect('/login');
 });
 
 Route::middleware([
@@ -39,6 +34,10 @@ Route::middleware([
     Route::group([], __DIR__ . '/web/condiciones_ivas.php');
     Route::group([], __DIR__ . '/web/planes_cuentas.php');
     Route::group([], __DIR__ . '/web/medidas.php');
+
+    ## Profile
+    Route::group([], __DIR__ . '/web/profile.php');
+
 
     Route::group([], __DIR__ . '/web/productos.php');
     Route::group([], __DIR__ . '/web/users.php');

@@ -30,6 +30,9 @@ const onActive = (list) => {
         })
     "
   >
+    <CSidebarBrand class="logo-sidebar">
+      <CImage :src="ente" width="100"/>
+    </CSidebarBrand>
     <CSidebarNav>
       <CNavGroup
         :visible = "onActive(['TiposComprobante', 'CondicionesIvas','RetencionesGanancias','PlanesCuentas','FormasPagos','Medidas'])"
