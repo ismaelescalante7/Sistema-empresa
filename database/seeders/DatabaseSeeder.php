@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
             TipoComprobanteSeeder::class,
             CondicionIvaSeeder::class,
             RetencionGananciaSeeder::class,
-            PlanCuentaSeeder::class
+            PlanCuentaSeeder::class,
+            FormasPagosSeeder::class,
         ]);
     }
 }

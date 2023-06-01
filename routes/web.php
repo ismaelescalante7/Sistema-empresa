@@ -43,4 +43,5 @@ Route::middleware([
     Route::group([], __DIR__ . '/web/users.php');
     Route::group([], __DIR__ . '/web/roles.php');
     Route::group([], __DIR__ . '/web/clientes.php');
+    Route::group([], __DIR__ . '/web/formas_pagos.php');
 });
