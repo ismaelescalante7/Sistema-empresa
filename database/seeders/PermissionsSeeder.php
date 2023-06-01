@@ -43,6 +43,29 @@ class PermissionsSeeder extends Seeder
             ]
         ],
 
+        'Formas Pagos' => [
+            [
+                'name' => 'formas.pagos.index',
+                'description' => 'Consulta de Formas Pagos',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'formas.pagos.create',
+                'description' => 'Nuevo Formas Pagos',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'formas.pagos.edit',
+                'description' => 'Modificar Formas Pagos',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'formas.pagos.destroy',
+                'description' => 'Eliminar Formas Pagos',
+                'roles' => ['ADM'],
+            ]
+        ],
+        
         'Retenciones Ganancias' => [
             [
                 'name' => 'retenciones.ganancias.index',
