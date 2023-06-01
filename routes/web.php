@@ -44,4 +44,5 @@ Route::middleware([
     Route::group([], __DIR__ . '/web/roles.php');
     Route::group([], __DIR__ . '/web/clientes.php');
     Route::group([], __DIR__ . '/web/formas_pagos.php');
+    Route::group([], __DIR__ . '/web/retencion_ingresos_bruto.php');
 });

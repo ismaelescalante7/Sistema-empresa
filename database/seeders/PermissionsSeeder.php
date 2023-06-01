@@ -65,6 +65,29 @@ class PermissionsSeeder extends Seeder
                 'roles' => ['ADM'],
             ]
         ],
+
+        'Retencion Ingresos Bruto' => [
+            [
+                'name' => 'retencion.ingresos.bruto.index',
+                'description' => 'Consulta de Retencion Ingresos Bruto',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'retencion.ingresos.bruto.create',
+                'description' => 'Nuevo Retencion Ingresos Bruto',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'retencion.ingresos.bruto.edit',
+                'description' => 'Modificar Retencion Ingresos Bruto',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'retencion.ingresos.bruto.destroy',
+                'description' => 'Eliminar Retencion Ingresos Bruto',
+                'roles' => ['ADM'],
+            ]
+        ],
         
         'Retenciones Ganancias' => [
             [

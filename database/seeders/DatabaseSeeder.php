@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             RetencionGananciaSeeder::class,
             PlanCuentaSeeder::class,
             FormasPagosSeeder::class,
+            RetencionGananciaSeeder::class,
         ]);
     }
 }
