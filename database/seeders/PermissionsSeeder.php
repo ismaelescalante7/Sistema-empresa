@@ -12,6 +12,13 @@ class PermissionsSeeder extends Seeder
 {
     protected $permissions = [
         // Configuracion
+        'Medidas' => [
+            [
+                'name' => 'medidas.index',
+                'description' => 'Consulta de Medidas',
+                'roles' => ['ADM'],
+            ]
+        ],
         'Tipos Comprobantes' => [
             [
                 'name' => 'tipos.comprobantes.index',

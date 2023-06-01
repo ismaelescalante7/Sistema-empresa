@@ -38,6 +38,7 @@ Route::middleware([
     Route::group([], __DIR__ . '/web/retenciones_ganancias.php');
     Route::group([], __DIR__ . '/web/condiciones_ivas.php');
     Route::group([], __DIR__ . '/web/planes_cuentas.php');
+    Route::group([], __DIR__ . '/web/medidas.php');
 
     Route::group([], __DIR__ . '/web/productos.php');
     Route::group([], __DIR__ . '/web/users.php');

@@ -30,48 +30,9 @@ const onActive = (list) => {
         })
     "
   >
-    <CSidebarBrand class="logo-sidebar">
-      <CImage :src="ente" width="100"/>
-    </CSidebarBrand>
     <CSidebarNav>
-      <CNavItem href="#">
-        <i class="fa-solid fa-list-check nav-icon"></i>
-        Tareas por Módulo
-      </CNavItem>
       <CNavGroup
-        :visible="onActive(['Tareas'])"
-      >
-        <template #togglerContent>
-          COMUNICACIÓN
-        </template>
-        <CNavItem>
-          <Link
-            :href="route('tareas.mis-tareas')"
-            :class="['nav-link', {'active': onActive(['Tareas'])}]"
-          >
-            <i class="fa-solid fa-file-pen nav-icon"></i>
-            Tareas
-          </Link>
-        </CNavItem>
-        <CNavItem href="#">
-          <i class="fa-solid fa-magnifying-glass nav-icon"></i>
-          Buscador CO
-        </CNavItem>
-        <CNavGroup>
-          <template #togglerContent>
-            <i class="fa-solid fa-inbox nav-icon"></i>
-            Bandeja
-          </template>
-          <CNavItem href="#">
-            Entrada
-          </CNavItem>
-          <CNavItem href="#">
-            Salida
-          </CNavItem>
-        </CNavGroup>
-      </CNavGroup>
-      <CNavGroup
-        :visible = "onActive(['TiposComprobante', 'CondicionesIvas','RetencionesGanancias','PlanesCuentas','FormasPagos'])"
+        :visible = "onActive(['TiposComprobante', 'CondicionesIvas','RetencionesGanancias','PlanesCuentas','FormasPagos','Medidas'])"
       >
         <template #togglerContent>
           CONFIGURACIÓN
@@ -121,6 +82,15 @@ const onActive = (list) => {
           >
             <i class="fa-solid fa-building-columns nav-icon"></i>
             Condiciones Ivas
+          </Link>
+          <Link
+            href="#"
+            @click="onNavigate('/medidas')"
+            class="nav-link"
+            :class="{ 'active': onActive(['Medidas']) }"
+          >
+            <i class="fa-solid fa-building-columns nav-icon"></i>
+            Medidas
           </Link>
         </CNavItem>
       </CNavGroup>
