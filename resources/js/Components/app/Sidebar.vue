@@ -132,23 +132,41 @@ const onActive = (list) => {
         <CNavItem>
           <Link
             href="#"
-            @click="onNavigate('/productos')"
-            class="nav-link"
-            :class="{ 'active': onActive(['Productos']) }"
-          >
-            <i class="fa-solid fa-building-columns nav-icon"></i>
-            Productos
-          </Link>
-        </CNavItem>
-        <CNavItem>
-          <Link
-            href="#"
             @click="onNavigate('/clientes')"
             class="nav-link"
             :class="{ 'active': onActive(['Clientes']) }"
           >
             <i class="fa-solid fa-users nav-icon"></i>
             Clientes
+          </Link>
+        </CNavItem>
+      </CNavGroup>
+      <CNavGroup
+        :visible = "onActive(['Productos', 'Marcas'])"
+      >
+        <template #togglerContent>
+          INVENTARIO
+        </template>
+        <CNavItem>
+          <Link
+            href="#"
+            @click="onNavigate('/marcas')"
+            class="nav-link"
+            :class="{ 'active': onActive(['Marcas']) }"
+          >
+            <i class="fa-solid fa-building-columns nav-icon"></i>
+            Marcas
+          </Link>
+        </CNavItem>
+        <CNavItem>
+          <Link
+            href="#"
+            @click="onNavigate('/productos')"
+            class="nav-link"
+            :class="{ 'active': onActive(['Productos']) }"
+          >
+            <i class="fa-solid fa-building-columns nav-icon"></i>
+            Productos
           </Link>
         </CNavItem>
       </CNavGroup>
