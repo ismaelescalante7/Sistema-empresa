@@ -19,9 +19,26 @@ class PermissionsSeeder extends Seeder
                 'name' => 'marcas.index',
                 'description' => 'Consulta de Marcas',
                 'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'marcas.create',
+                'description' => 'Nuevo Marca',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'marcas.edit',
+                'description' => 'Modificar Marca',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'marcas.destroy',
+                'description' => 'Eliminar Marca',
+                'roles' => ['ADM'],
             ]
         ],
+
         // Configuracion
+
         'Medidas' => [
             [
                 'name' => 'medidas.index',
@@ -123,6 +140,7 @@ class PermissionsSeeder extends Seeder
         ],
 
         // Productos
+        
         'productos' => [
             [
                 'name' => 'productos.index',
