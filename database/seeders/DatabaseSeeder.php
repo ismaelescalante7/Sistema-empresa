@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\PlanCuenta;
+use App\Models\RetencionIngresosBruto;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -29,7 +30,8 @@ class DatabaseSeeder extends Seeder
             RetencionGananciaSeeder::class,
             PlanCuentaSeeder::class,
             FormasPagosSeeder::class,
-            RetencionGananciaSeeder::class,
+            RetencionIngresosBrutoSeeder::class,
+            CondicionesPagoSeeder::class,
         ]);
     }
 }

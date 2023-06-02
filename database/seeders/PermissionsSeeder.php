@@ -66,6 +66,29 @@ class PermissionsSeeder extends Seeder
             ]
         ],
 
+        'Condiciones Pago' => [
+            [
+                'name' => 'condiciones.pagos.index',
+                'description' => 'Consulta de Condiciones Pago',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'condiciones.pagos.create',
+                'description' => 'Nuevo Condiciones Pago',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'condiciones.pagos.edit',
+                'description' => 'Modificar Condiciones Pago',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'condiciones.pagos.destroy',
+                'description' => 'Eliminar Condiciones Pago',
+                'roles' => ['ADM'],
+            ]
+        ],
+
         'Retencion Ingresos Bruto' => [
             [
                 'name' => 'retencion.ingresos.bruto.index',
