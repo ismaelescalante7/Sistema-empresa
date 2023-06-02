@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Marca;
 use App\Models\PlanCuenta;
+use App\Models\RetencionIngresosBruto;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -30,6 +31,8 @@ class DatabaseSeeder extends Seeder
             RetencionIngresosBrutoSeeder::class,
             PlanCuentaSeeder::class,
             FormasPagosSeeder::class,
+            RetencionIngresosBrutoSeeder::class,
+            CondicionesPagoSeeder::class,
             RetencionGananciaSeeder::class,
             MedidaSeeder::class,
             MarcaSeeder::class
