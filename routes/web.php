@@ -38,10 +38,12 @@ Route::middleware([
     ## Profile
     Route::group([], __DIR__ . '/web/profile.php');
 
-
-    Route::group([], __DIR__ . '/web/productos.php');
     Route::group([], __DIR__ . '/web/users.php');
     Route::group([], __DIR__ . '/web/roles.php');
     Route::group([], __DIR__ . '/web/clientes.php');
     Route::group([], __DIR__ . '/web/formas_pagos.php');
+
+    # Inventario
+    Route::group([], __DIR__ . '/web/marcas.php');
+    Route::group([], __DIR__ . '/web/productos.php');
 });
