@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             CategoriaSeeder::class,
             TipoComprobanteSeeder::class,
             CondicionIvaSeeder::class,
-            RetencionGananciaSeeder::class,
+            RetencionIngresosBrutoSeeder::class,
             PlanCuentaSeeder::class,
             FormasPagosSeeder::class,
             RetencionGananciaSeeder::class,

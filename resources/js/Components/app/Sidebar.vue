@@ -35,12 +35,21 @@ const onActive = (list) => {
     </CSidebarBrand>
     <CSidebarNav>
       <CNavGroup
-        :visible = "onActive(['TiposComprobante', 'CondicionesIvas','RetencionesGanancias','PlanesCuentas','FormasPagos','Medidas'])"
+        :visible = "onActive(['TiposComprobante', 'CondicionesIvas','RetencionesGanancias','PlanesCuentas','FormasPagos','Medidas','RetencionIngresosBruto'])"
       >
         <template #togglerContent>
           CONFIGURACIÓN
         </template>
         <CNavItem>
+          <Link
+            href="#"
+            @click="onNavigate('/retencion-ingresos-bruto')"
+            class="nav-link"
+            :class="{ 'active': onActive(['RetencionIngresosBruto']) }"
+          >
+            <i class="fa-solid fa-building-columns nav-icon"></i>
+            Retenciones Ingresos Bruto
+          </Link>
           <Link
             href="#"
             @click="onNavigate('/retenciones-ganancias')"
