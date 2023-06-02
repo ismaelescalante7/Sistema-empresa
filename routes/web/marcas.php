@@ -8,7 +8,7 @@ Route::get('/marcas', [MarcaController::class, 'index'])
     ->middleware('permission:marcas.index');
 
 Route::get('/marcas/create', [MarcaController::class, 'create'])
-    ->name('planes.cuentas.create')
+    ->name('marcas.create')
     ->middleware('permission:marcas.create');
 
 Route::post('/marcas/store', [MarcaController::class, 'store'])

@@ -6,49 +6,36 @@ import { useForm } from '@inertiajs/inertia-vue3'
 import FormLabel from '@/Components/Form/FormLabel.vue'
 
 const props = defineProps({
-    planCuenta: Object
+    marca: Object
 })
 const form = useForm({
-  descripcion: props.planCuenta.descripcion,
-  imputable: props.planCuenta.imputable,
+  nombre: props.marca.nombre
 })
 
 const submit = () => {
-  form.patch(route('planes.cuentas.update', props.planCuenta.id))
+  form.patch(route('marcas.update', props.marca.id))
 }
 
 const back = () => {
-  Inertia.get(route('planes.cuentas.index'))
+  Inertia.get(route('marcas.index'))
 }
 </script>
 
 <template>
   <AppLayout
-    :breadcrumb="breadcrumbs.planesCuentasUpdate"
-    title="Modificar plan de cuenta"
+    :breadcrumb="breadcrumbs.marcasUpdate"
+    title="Modificar marca"
   >
     <CForm @submit.prevent="submit">
       <CRow class="my-3">
         <CCol xs="5">
-          <FormLabel required>Descripción</FormLabel>
+          <FormLabel required>Nombre</FormLabel>
           <CFormInput
-            v-model="form.descripcion"
+            v-model="form.nombre"
             type="text"
-            placeholder="Descripción"
-            :feedback="form.errors.descripcion"
-            :invalid="form.errors.descripcion"
-          />
-        </CCol>
-      </CRow>
-      <CRow class="mb-3">
-        <CCol xs="5">
-          <FormLabel >Imputable</FormLabel>
-          <CFormInput
-            v-model="form.imputable"
-            type="text"
-            placeholder="Imputable"
-            :feedback="form.errors.imputable"
-            :invalid="form.errors.imputable"
+            placeholder="Nombre"
+            :feedback="form.errors.nombre"
+            :invalid="form.errors.nombre"
           />
         </CCol>
       </CRow>
