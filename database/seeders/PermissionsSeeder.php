@@ -11,7 +11,24 @@ use Spatie\Permission\Models\Role;
 class PermissionsSeeder extends Seeder
 {
     protected $permissions = [
+
+        // Inventario
+
+        'Marcas' => [
+            [
+                'name' => 'marcas.index',
+                'description' => 'Consulta de Marcas',
+                'roles' => ['ADM'],
+            ]
+        ],
         // Configuracion
+        'Medidas' => [
+            [
+                'name' => 'medidas.index',
+                'description' => 'Consulta de Medidas',
+                'roles' => ['ADM'],
+            ]
+        ],
         'Tipos Comprobantes' => [
             [
                 'name' => 'tipos.comprobantes.index',
