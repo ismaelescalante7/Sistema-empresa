@@ -34,49 +34,22 @@ const onActive = (list) => {
       <CImage :src="ente" width="100"/>
     </CSidebarBrand>
     <CSidebarNav>
-      <CNavItem href="#">
-        <i class="fa-solid fa-list-check nav-icon"></i>
-        Tareas por Módulo
-      </CNavItem>
       <CNavGroup
-        :visible="onActive(['Tareas'])"
-      >
-        <template #togglerContent>
-          COMUNICACIÓN
-        </template>
-        <CNavItem>
-          <Link
-            :href="route('tareas.mis-tareas')"
-            :class="['nav-link', {'active': onActive(['Tareas'])}]"
-          >
-            <i class="fa-solid fa-file-pen nav-icon"></i>
-            Tareas
-          </Link>
-        </CNavItem>
-        <CNavItem href="#">
-          <i class="fa-solid fa-magnifying-glass nav-icon"></i>
-          Buscador CO
-        </CNavItem>
-        <CNavGroup>
-          <template #togglerContent>
-            <i class="fa-solid fa-inbox nav-icon"></i>
-            Bandeja
-          </template>
-          <CNavItem href="#">
-            Entrada
-          </CNavItem>
-          <CNavItem href="#">
-            Salida
-          </CNavItem>
-        </CNavGroup>
-      </CNavGroup>
-      <CNavGroup
-        :visible = "onActive(['TiposComprobante', 'CondicionesIvas','RetencionesGanancias','PlanesCuentas','FormasPagos'])"
+        :visible = "onActive(['TiposComprobante', 'CondicionesIvas','RetencionesGanancias','PlanesCuentas','FormasPagos','Medidas','RetencionIngresosBruto'])"
       >
         <template #togglerContent>
           CONFIGURACIÓN
         </template>
         <CNavItem>
+          <Link
+            href="#"
+            @click="onNavigate('/retencion-ingresos-bruto')"
+            class="nav-link"
+            :class="{ 'active': onActive(['RetencionIngresosBruto']) }"
+          >
+            <i class="fa-solid fa-building-columns nav-icon"></i>
+            Retenciones Ingresos Bruto
+          </Link>
           <Link
             href="#"
             @click="onNavigate('/retenciones-ganancias')"
@@ -122,16 +95,25 @@ const onActive = (list) => {
             <i class="fa-solid fa-building-columns nav-icon"></i>
             Condiciones Ivas
           </Link>
+          <Link
+            href="#"
+            @click="onNavigate('/medidas')"
+            class="nav-link"
+            :class="{ 'active': onActive(['Medidas']) }"
+          >
+            <i class="fa-solid fa-building-columns nav-icon"></i>
+            Medidas
+          </Link>
         </CNavItem>
       </CNavGroup>
       <CNavGroup
-        :visible = "onActive(['Users', 'Roles', 'Permissions', 'Productos'])"
+        :visible = "onActive(['Users', 'Roles', 'Permissions', 'Clientes'])"
       >
         <template #togglerContent>
           ADMINISTRACIÓN
         </template>
         <CNavGroup
-          :visible="onActive(['Users', 'Roles', 'Permissions'])"
+          :visible="onActive(['Users', 'Roles', 'Permissions','Clientes'])"
         >
           <template
             #togglerContent
@@ -159,23 +141,41 @@ const onActive = (list) => {
         <CNavItem>
           <Link
             href="#"
-            @click="onNavigate('/productos')"
-            class="nav-link"
-            :class="{ 'active': onActive(['Productos']) }"
-          >
-            <i class="fa-solid fa-building-columns nav-icon"></i>
-            Productos
-          </Link>
-        </CNavItem>
-        <CNavItem>
-          <Link
-            href="#"
             @click="onNavigate('/clientes')"
             class="nav-link"
             :class="{ 'active': onActive(['Clientes']) }"
           >
             <i class="fa-solid fa-users nav-icon"></i>
             Clientes
+          </Link>
+        </CNavItem>
+      </CNavGroup>
+      <CNavGroup
+        :visible = "onActive(['Productos', 'Marcas'])"
+      >
+        <template #togglerContent>
+          INVENTARIO
+        </template>
+        <CNavItem>
+          <Link
+            href="#"
+            @click="onNavigate('/marcas')"
+            class="nav-link"
+            :class="{ 'active': onActive(['Marcas']) }"
+          >
+            <i class="fa-solid fa-building-columns nav-icon"></i>
+            Marcas
+          </Link>
+        </CNavItem>
+        <CNavItem>
+          <Link
+            href="#"
+            @click="onNavigate('/productos')"
+            class="nav-link"
+            :class="{ 'active': onActive(['Productos']) }"
+          >
+            <i class="fa-solid fa-building-columns nav-icon"></i>
+            Productos
           </Link>
         </CNavItem>
       </CNavGroup>

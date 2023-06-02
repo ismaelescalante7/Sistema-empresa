@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateImageRequest;
 use App\Http\Requests\UserSearchRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
@@ -31,7 +32,8 @@ class UserController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('Users/Create');
+        $roles = Role::all();
+        return Inertia::render('Users/Create', compact('roles'));
     }
 
     public function store(
@@ -44,6 +46,8 @@ class UserController extends Controller
             'email' => $data['email'],
             'password' => $temporaryPassword()
         ]);
+
+        $user->assignRole($request->get('role_id'));
 
         //Notification::send($user, $userCreatedNotification);
 

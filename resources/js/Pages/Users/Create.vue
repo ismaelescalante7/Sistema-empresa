@@ -7,11 +7,12 @@ import FormLabel from '@/Components/Form/FormLabel.vue'
 
 const form = useForm({
   name: null,
-  email: null
+  email: null,
+  role_id:null
 })
 
 const props = defineProps({
-  delegaciones: Array
+  roles: Array
 })
 
 const submit = () => {
@@ -53,6 +54,25 @@ const back = () => {
           />
         </CCol>
       </CRow>
+      <CRow class="mb-3">
+        <CCol xs="5">
+          <FormLabel required>Rol</FormLabel>
+          <CFormSelect
+            v-model="form.role_id"
+            :feedback="form.errors.role_id"
+            :invalid="form.errors.role_id"
+          >
+            <option :value="''">Seleccione una opción</option>
+            <option
+              v-for="rol in props.roles"
+              :key="rol.id"
+              :value="rol.id"
+            >
+              {{ rol.name }}
+            </option>
+          </CFormSelect>
+        </CCol>
+          </CRow>
       <CRow>
         <CCol xs="4">
           <CButton

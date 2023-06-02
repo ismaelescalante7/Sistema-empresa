@@ -16,12 +16,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect('/login');
 });
 
 Route::middleware([
@@ -38,12 +33,20 @@ Route::middleware([
     Route::group([], __DIR__ . '/web/retenciones_ganancias.php');
     Route::group([], __DIR__ . '/web/condiciones_ivas.php');
     Route::group([], __DIR__ . '/web/planes_cuentas.php');
-
-    Route::group([], __DIR__ . '/web/productos.php');
-    Route::group([], __DIR__ . '/web/users.php');
-    Route::group([], __DIR__ . '/web/roles.php');
-    Route::group([], __DIR__ . '/web/clientes.php');
+    Route::group([], __DIR__ . '/web/medidas.php');
+    Route::group([], __DIR__ . '/web/retencion_ingresos_bruto.php');
     Route::group([], __DIR__ . '/web/formas_pagos.php');
     Route::group([], __DIR__ . '/web/retencion_ingresos_bruto.php');
     Route::group([], __DIR__ . '/web/condiciones_pago.php');
+  
+    ## Profile
+    Route::group([], __DIR__ . '/web/profile.php');
+
+    Route::group([], __DIR__ . '/web/users.php');
+    Route::group([], __DIR__ . '/web/roles.php');
+    Route::group([], __DIR__ . '/web/clientes.php');
+  
+    # Inventario
+    Route::group([], __DIR__ . '/web/marcas.php');
+    Route::group([], __DIR__ . '/web/productos.php');
 });
