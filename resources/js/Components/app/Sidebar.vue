@@ -107,13 +107,13 @@ const onActive = (list) => {
         </CNavItem>
       </CNavGroup>
       <CNavGroup
-        :visible = "onActive(['Users', 'Roles', 'Permissions', 'Productos'])"
+        :visible = "onActive(['Users', 'Roles', 'Permissions', 'Clientes'])"
       >
         <template #togglerContent>
           ADMINISTRACIÓN
         </template>
         <CNavGroup
-          :visible="onActive(['Users', 'Roles', 'Permissions'])"
+          :visible="onActive(['Users', 'Roles', 'Permissions','Clientes'])"
         >
           <template
             #togglerContent
