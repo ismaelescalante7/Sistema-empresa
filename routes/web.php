@@ -34,6 +34,7 @@ Route::middleware([
     Route::group([], __DIR__ . '/web/condiciones_ivas.php');
     Route::group([], __DIR__ . '/web/planes_cuentas.php');
     Route::group([], __DIR__ . '/web/medidas.php');
+    Route::group([], __DIR__ . '/web/retencion_ingresos_bruto.php');
 
     ## Profile
     Route::group([], __DIR__ . '/web/profile.php');
