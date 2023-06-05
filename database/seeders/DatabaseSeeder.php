@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Deposito;
 use App\Models\Marca;
 use App\Models\PlanCuenta;
 use Illuminate\Database\Seeder;
@@ -32,7 +33,8 @@ class DatabaseSeeder extends Seeder
             FormasPagosSeeder::class,
             RetencionGananciaSeeder::class,
             MedidaSeeder::class,
-            MarcaSeeder::class
+            MarcaSeeder::class,
+            DepositoSeeder::class
         ]);
     }
 }
