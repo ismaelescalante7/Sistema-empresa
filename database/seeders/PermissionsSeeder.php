@@ -60,6 +60,29 @@ class PermissionsSeeder extends Seeder
             ]
         ],
 
+        'Rubros' => [
+            [
+                'name' => 'rubros.index',
+                'description' => 'Consulta de Rubros',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'rubros.create',
+                'description' => 'Nuevo Rubro',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'rubros.edit',
+                'description' => 'Modificar Rubro',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'rubros.destroy',
+                'description' => 'Eliminar Rubro',
+                'roles' => ['ADM'],
+            ]
+        ],
+
         // Configuracion
 
         'Medidas' => [

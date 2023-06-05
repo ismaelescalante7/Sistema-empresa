@@ -37,7 +37,8 @@ class DatabaseSeeder extends Seeder
             RetencionGananciaSeeder::class,
             MedidaSeeder::class,
             MarcaSeeder::class,
-            DepositoSeeder::class
+            DepositoSeeder::class,
+            RubroSeeder::class
         ]);
     }
 }
