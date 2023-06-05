@@ -49,4 +49,5 @@ Route::middleware([
     # Inventario
     Route::group([], __DIR__ . '/web/marcas.php');
     Route::group([], __DIR__ . '/web/productos.php');
+    Route::group([], __DIR__ . '/web/depositos.php');
 });

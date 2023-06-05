@@ -14,6 +14,29 @@ class PermissionsSeeder extends Seeder
 
         // Inventario
 
+        'Depositos' => [
+            [
+                'name' => 'depositos.index',
+                'description' => 'Consulta de Depositos',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'depositos.create',
+                'description' => 'Nuevo Deposito',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'depositos.edit',
+                'description' => 'Modificar Deposito',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'depositos.destroy',
+                'description' => 'Eliminar Deposito',
+                'roles' => ['ADM'],
+            ]
+        ],
+
         'Marcas' => [
             [
                 'name' => 'marcas.index',

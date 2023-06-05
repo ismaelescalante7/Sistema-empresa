@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Deposito;
 use App\Models\Marca;
 use App\Models\PlanCuenta;
 use App\Models\RetencionIngresosBruto;
@@ -35,7 +36,8 @@ class DatabaseSeeder extends Seeder
             CondicionesPagoSeeder::class,
             RetencionGananciaSeeder::class,
             MedidaSeeder::class,
-            MarcaSeeder::class
+            MarcaSeeder::class,
+            DepositoSeeder::class
         ]);
     }
 }
