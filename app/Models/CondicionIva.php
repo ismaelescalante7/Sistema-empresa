@@ -13,4 +13,6 @@ class CondicionIva extends Model
         'codigo',
         'descripcion'
     ];
+
+    protected $table = 'condicion_ivas';
 }

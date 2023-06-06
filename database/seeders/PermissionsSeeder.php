@@ -146,6 +146,34 @@ class PermissionsSeeder extends Seeder
             ]
         ],
 
+        'Proveedores' => [
+            [
+                'name' => 'proveedores.index',
+                'description' => 'Consulta de Proveedores',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'proveedores.create',
+                'description' => 'Nuevo Proveedor',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'proveedores.show',
+                'description' => 'Ver Proveedor',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'proveedores.edit',
+                'description' => 'Modificar Proveedores',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'proveedores.destroy',
+                'description' => 'Eliminar Proveedores',
+                'roles' => ['ADM'],
+            ]
+        ],
+
         'Condiciones Pago' => [
             [
                 'name' => 'condiciones.pagos.index',
