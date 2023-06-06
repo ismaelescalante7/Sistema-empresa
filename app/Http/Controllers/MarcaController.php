@@ -30,8 +30,18 @@ class MarcaController extends Controller
 
     public function store(MarcaStoreRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-        Marca::create($data);
+        try {
+            $data = $request->validated();
+            Marca::create($data);
+            flashAlert(__('messages.success', ['Action' => 'Creación', 'element' => 'Marca']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Creación', 'element' => 'Marca']),
+                'danger'
+            );
+        }
+        
         return redirect()->route('marcas.index');
     }
 
@@ -42,14 +52,34 @@ class MarcaController extends Controller
 
     public function update(Marca $marca, MarcaStoreRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-        $marca->update($data);
+        try {
+            $data = $request->validated();
+            $marca->update($data);
+            flashAlert(__('messages.success', ['Action' => 'Modificación', 'element' => 'Marca']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Modificación', 'element' => 'Marca']),
+                'danger'
+            );
+        }
+       
         return redirect()->route('marcas.index');   
     }
 
     public function destroy(Marca $marca): RedirectResponse
     {
-        $marca->delete();
+        try {
+            $marca->delete();
+            flashAlert(__('messages.success', ['Action' => 'Eliminación', 'element' => 'Marca']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Eliminación', 'element' => 'Marca']),
+                'danger'
+            );
+        }
+        
         return redirect()->route('marcas.index');
     }
 }

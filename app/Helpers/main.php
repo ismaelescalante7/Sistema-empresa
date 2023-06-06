@@ -62,7 +62,7 @@ if (!function_exists('flashAlert')) {
         $message,
         $type = 'success'
     ) {
-        return (new App\Services\Helpers\Alert\Alert())->set($message, $type);
+        return (new App\Helpers\Alert\Alert())->set($message, $type);
     }
 }
 
@@ -73,7 +73,7 @@ if (!function_exists('getAlert')) {
      */
     function getAlert()
     {
-        return (new App\Services\Helpers\Alert\Alert())->get();
+        return (new App\Helpers\Alert\Alert())->get();
     }
 }
 

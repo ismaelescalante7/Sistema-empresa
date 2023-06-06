@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Helpers\Alert;
+namespace App\Helpers\Alert;
 
 /**
  * Class Alert

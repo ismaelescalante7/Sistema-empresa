@@ -18,11 +18,11 @@ const props = defineProps({
     <div class="flex-grow-1">
       <CContainer fluid>
         <CAlert
-          v-if="$page.props.flash.message"
-          color="danger"
+          v-if="$page.props.alert.message"
+          :color="$page.props.alert.type"
           variant="solid"
         >
-          {{ $page.props.flash.message }}
+          {{ $page.props.alert.message }}
         </CAlert>
         <CCard>
           <CCardBody>

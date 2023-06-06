@@ -79,7 +79,7 @@ const destroy = () => {
         </span>
       </CAlert>
       <CRow class="d-flex flex-column text-center">
-        <CCol>Marca: {{ modal.item.marca }}</CCol>
+        <CCol>Nombre: {{ modal.item.nombre }}</CCol>
       </CRow>
       <template #footer>
         <CButton
