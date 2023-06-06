@@ -14,7 +14,7 @@ const props = defineProps({
 
 <template>
   <AppLayout
-    :breadcrumb="breadcrumbs.marcasList"
+    :breadcrumb="breadcrumbs.rubrosList"
     title="Rubros"
   >
 

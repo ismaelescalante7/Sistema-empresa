@@ -75,11 +75,11 @@ const destroy = () => {
       </template>
       <CAlert color="warning">
         <span>
-          <i class="fa-solid fa-trash-can m-2"></i>¿Estás seguro de deseas eliminar la marca?
+          <i class="fa-solid fa-trash-can m-2"></i>¿Estás seguro de deseas eliminar el rubro?
         </span>
       </CAlert>
       <CRow class="d-flex flex-column text-center">
-        <CCol>Marca: {{ modal.item.nombre }}</CCol>
+        <CCol>Nombre: {{ modal.item.nombre }}</CCol>
       </CRow>
       <template #footer>
         <CButton

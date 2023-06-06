@@ -15,14 +15,14 @@ Route::post('/rubros/store', [RubroController::class, 'store'])
     ->name('rubros.store')
     ->middleware('permission:rubros.create');
 
-Route::get('/rubros/{marca}/edit', [RubroController::class, 'edit'])
+Route::get('/rubros/{rubro}/edit', [RubroController::class, 'edit'])
     ->name('rubros.edit')
     ->middleware('permission:rubros.edit');
 
-Route::patch('/rubros/{marca}', [RubroController::class, 'update'])
+Route::patch('/rubros/{rubro}', [RubroController::class, 'update'])
     ->name('rubros.update')
     ->middleware('permission:rubros.edit');
 
-Route::delete('rubros/{marca}', [RubroController::class, 'destroy'])
+Route::delete('rubros/{rubro}', [RubroController::class, 'destroy'])
     ->name('rubros.destroy')
     ->middleware('permission:rubros.destroy');

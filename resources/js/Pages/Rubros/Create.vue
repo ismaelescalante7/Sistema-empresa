@@ -20,7 +20,7 @@ const back = () => {
 
 <template>
   <AppLayout
-    :breadcrumb="breadcrumbs.marcasCreate"
+    :breadcrumb="breadcrumbs.rubrosCreate"
     title="Nuevo rubro"
   >
     <CForm @submit.prevent="submit">

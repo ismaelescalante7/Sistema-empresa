@@ -23,7 +23,7 @@ const back = () => {
 
 <template>
   <AppLayout
-    :breadcrumb="breadcrumbs.marcasUpdate"
+    :breadcrumb="breadcrumbs.rubrosUpdate"
     title="Modificar rubro"
   >
     <CForm @submit.prevent="submit">
