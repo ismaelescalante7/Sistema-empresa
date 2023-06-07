@@ -14,8 +14,8 @@ const props = defineProps({
 
 <template>
   <AppLayout
-    :breadcrumb="breadcrumbs.retensionIngresosBrutoList"
-    title="Formas de Pagos"
+    :breadcrumb="breadcrumbs.retencionIngresosBrutoList"
+    title="Retencion Ingresos Brutos"
   >
     <Actions
       :filters="props.filters"
