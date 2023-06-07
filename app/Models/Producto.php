@@ -17,15 +17,39 @@ class Producto extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'codigo',
         'nombre',
-        'descripcion',
-        'precio',
-        'cantidad',
         'categoria_id',
+        'precio_compra',
+        'precio_venta',
+        'stock_minimo',
+        'alicuota',
+        'estado',
+        'marca_id',
+        'rubro_id',
         'compra',
         'vende',
-        'tasa_iva'
+        'stockeable',
+        'retencion_ganancia_id',
+        'retencion_ingreso_bruto_id',
+        'fecha_ultima_venta'
     ];
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function scopeMainSearch(Builder $query, Collection $data): Builder
     {
