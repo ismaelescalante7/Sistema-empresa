@@ -246,7 +246,22 @@ class PermissionsSeeder extends Seeder
             ],
             [
                 'name' => 'productos.create',
-                'description' => 'Consulta de Productos',
+                'description' => 'Crear Producto',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'productos.show', 
+                'description' => 'Ver Producto',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'productos.edit',
+                'description' => 'Modificar Producto',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'productos.destroy',
+                'description' => 'ELiminar Producto',
                 'roles' => ['ADM'],
             ],
         ],

@@ -19,6 +19,7 @@ class ProductoController extends Controller
     {
         $filters = $request->only('nombre');
         $productos = Producto::mainSearch(collect($filters))
+            ->with(['rubro','marca'])
             ->orderBy('nombre')
             ->paginate(config('custom.pagination.per_page'));
         return Inertia::render('Productos/List', compact('productos', 'filters'));
@@ -41,8 +42,23 @@ class ProductoController extends Controller
 
     public function store(StoreProductoRequest $request) 
     {
-        $data = $request->validated();
-        Producto::create($data);
+        try {
+            $data = $request->validated();
+            Producto::create($data);
+            flashAlert(__('messages.success', ['Action' => 'Creación', 'element' => 'Producto']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Creación', 'element' => 'Producto']),
+                'danger'
+            );
+        }
         return redirect()->route('productos.index');
+    }
+
+    public function show(Producto $producto) : Response
+    {
+        $producto->load(['rubro', 'marca', 'retencionGanancia', 'retencionIngresosBruto']);
+        return Inertia::render('Productos/Show', compact('producto'));
     }
 }           

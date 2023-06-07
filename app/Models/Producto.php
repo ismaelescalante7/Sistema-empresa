@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 
 class Producto extends Model
@@ -35,21 +36,25 @@ class Producto extends Model
         'fecha_ultima_venta'
     ];
 
-    
+    public function rubro(): BelongsTo
+    {
+        return $this->belongsTo(Rubro::class);
+    }
 
+    public function marca(): BelongsTo
+    {
+        return $this->belongsTo(Marca::class);
+    }
 
+    public function retencionGanancia(): BelongsTo
+    {
+        return $this->belongsTo(RetencionGanancia::class);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
+    public function retencionIngresosBruto(): BelongsTo
+    {
+        return $this->belongsTo(RetencionIngresosBruto::class);
+    }
 
     public function scopeMainSearch(Builder $query, Collection $data): Builder
     {

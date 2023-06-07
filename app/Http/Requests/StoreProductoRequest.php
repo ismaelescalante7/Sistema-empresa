@@ -24,21 +24,64 @@ class StoreProductoRequest extends FormRequest
     public function rules()
     {
         return [
+            'codigo' => [
+                'required',
+                'string'
+            ],
             'nombre' => [
                 'required',
                 'string'
             ],
-            'descripcion' => [
-                'required',
-                'string'
+            'categoria_id' => [
+                'nullable'
             ],
-            'cantidad' => [
+            'precio_venta' => [
                 'required',
                 'numeric'
             ],
-            'precio' => [
+            'precio_compra' => [
                 'required',
                 'numeric'
+            ],
+            'stock_minimo' => [
+                'required',
+                'numeric'
+            ],
+            'alicuota' => [
+                'required',
+                'numeric'
+            ],
+            'marca_id' => [
+                'required',
+                'integer',
+                'exists:App\Models\Marca,id'
+            ],
+            'rubro_id' => [
+                'required',
+                'integer',
+                'exists:App\Models\Rubro,id'
+            ],
+            'compra' => [
+                'required',
+                'in:0,1'
+            ],
+            'vende' => [
+                'required',
+                'in:0,1'
+            ],
+            'stockeable' => [
+                'required',
+                'in:0,1'
+            ],
+            'retencion_ganancia_id' => [
+                'required',
+                'integer',
+                'exists:App\Models\RetencionGanancia,id'
+            ],
+            'retencion_ingreso_bruto_id' => [
+                'required',
+                'integer',
+                'exists:App\Models\RetencionIngresosBruto,id'
             ],
         ];
     }

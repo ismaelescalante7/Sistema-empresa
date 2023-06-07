@@ -11,6 +11,10 @@ const update = (userId) => {
   Inertia.get(`/users/${userId}/edit`)
 }
 
+const show = (id) => {
+  Inertia.get(route('productos.show', { producto: id }))
+}
+
 const accesos = (userId) => {
   Inertia.get(`/users/${userId}/accesos`)
 }
@@ -21,10 +25,11 @@ const accesos = (userId) => {
     <CTableHead>
       <CTableRow color="secondary">
         <CTableHeaderCell scope="col" class="col-sm-1"></CTableHeaderCell>
-        <CTableHeaderCell scope="col" class="col-sm-4">Nombre</CTableHeaderCell>
-        <CTableHeaderCell scope="col" class="col-sm-2">Descripción</CTableHeaderCell>
-        <CTableHeaderCell scope="col" class="col-sm-3">Cantidad</CTableHeaderCell>
-        <CTableHeaderCell scope="col" class="col-sm-2">Precio</CTableHeaderCell>
+         <CTableHeaderCell scope="col" class="col-sm-2">Codigo</CTableHeaderCell>
+        <CTableHeaderCell scope="col" class="col-sm-2">Nombre</CTableHeaderCell>
+        <CTableHeaderCell scope="col" class="col-sm-2">Marca</CTableHeaderCell>
+        <CTableHeaderCell scope="col" class="col-sm-2">Rubro</CTableHeaderCell>
+        <CTableHeaderCell scope="col" class="col-sm-2">Estado</CTableHeaderCell>
       </CTableRow>
     </CTableHead>
     <CTableBody>
@@ -35,6 +40,14 @@ const accesos = (userId) => {
       >
         <CTableDataCell>
           <CircleButton
+            v-if="hasPermission($page, 'productos.show')"
+            class="ms-1"
+            title="Ver"
+            @click="show(producto.id)"
+          >
+            <span class="fa-solid fa-eye"></span>
+          </CircleButton>
+          <CircleButton
             class="ms-1"
             title="Modificar"
             @click="update(producto.id)"
@@ -42,10 +55,11 @@ const accesos = (userId) => {
             <span class="fa-solid fa-pen-to-square"></span>
           </CircleButton>
         </CTableDataCell>
+        <CTableDataCell>{{ producto.codigo }}</CTableDataCell>
         <CTableDataCell>{{ producto.nombre }}</CTableDataCell>
-        <CTableDataCell>{{ producto.descripcion }}</CTableDataCell>
-        <CTableDataCell>{{ producto.cantidad }}</CTableDataCell>
-        <CTableDataCell>{{ producto.precio }}</CTableDataCell>
+        <CTableDataCell>{{ producto.marca.nombre }}</CTableDataCell>
+        <CTableDataCell>{{ producto.rubro.nombre }}</CTableDataCell>
+        <CTableDataCell>{{ producto.estado }}</CTableDataCell>
       </CTableRow>
     </CTableBody>
   </CTable>

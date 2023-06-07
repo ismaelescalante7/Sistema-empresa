@@ -83,7 +83,6 @@ const back = () => {
           <FormLabel required>Alicuota</FormLabel>
           <CFormInput
             v-model="form.alicuota"
-            type="number"
             placeholder="Alicuota"
             :feedback="form.errors.alicuota"
             :invalid="form.errors.alicuota"
@@ -198,13 +197,13 @@ const back = () => {
         <CCol xs="5">
           <FormLabel required>Estado</FormLabel>
           <CFormSelect
-            v-model="form.vende"
-            :feedback="form.errors.vende"
-            :invalid="form.errors.vende"
+            v-model="form.estado"
+            :feedback="form.errors.estado"
+            :invalid="form.errors.estado"
           >
             <option :value="0">Seleccione una opción</option>
-            <option :value="1">Si</option>
-            <option :value="0">No</option>
+            <option :value="activo">Activo</option>
+            <option :value="pasivo">Pasivo</option>
           </CFormSelect>
         </CCol>
       </CRow>

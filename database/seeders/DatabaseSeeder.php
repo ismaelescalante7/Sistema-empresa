@@ -83,6 +83,7 @@ class DatabaseSeeder extends Seeder
             DepositoSeeder::class,
             RubroSeeder::class,
             ProveedorSeeder::class,
+            ProductoSeeder::class
         ]);
     }
 }
