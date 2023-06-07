@@ -31,8 +31,18 @@ class RetencionIngresosBrutoController extends Controller
 
     public function store(RetencionIngresosBrutoStoreRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-        RetencionIngresosBruto::create($data);
+        
+        try {
+            $data = $request->validated();
+            RetencionIngresosBruto::create($data);
+            flashAlert(__('messages.success', ['Action' => 'Creación', 'element' => 'Retención de Ingreso Bruto']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Creación', 'element' => 'Retención de Ingreso Bruto']),
+                'danger'
+            );
+        }
         return redirect()->route('retencion.ingresos.bruto.index');
     }
 
@@ -43,14 +53,32 @@ class RetencionIngresosBrutoController extends Controller
 
     public function update(RetencionIngresosBruto $retencionIngresosBruto, RetencionIngresosBrutoStoreRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-        $retencionIngresosBruto->update($data);
+        try {
+            $data = $request->validated();
+            $retencionIngresosBruto->update($data);
+            flashAlert(__('messages.success', ['Action' => 'Modificación', 'element' => 'Retención de Ingreso Bruto']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Modificación', 'element' => 'Retención de Ingreso Bruto']),
+                'danger'
+            );
+        }
         return redirect()->route('retencion.ingresos.bruto.index');
     }
 
     public function destroy(RetencionIngresosBruto $retencionIngresosBruto): RedirectResponse
     {
-        $retencionIngresosBruto->delete();
+        try {
+            $retencionIngresosBruto->delete();
+            flashAlert(__('messages.success', ['Action' => 'Eliminación', 'element' => 'Retención de Ingreso Bruto']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Eliminación', 'element' => 'Retención de Ingreso Bruto']),
+                'danger'
+            );
+        }
         return redirect()->route('retencion.ingresos.bruto.index');
     }
 }
