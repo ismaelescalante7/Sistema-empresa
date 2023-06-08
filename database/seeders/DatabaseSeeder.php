@@ -12,6 +12,7 @@ use App\Models\FormasPagos;
 use App\Models\Localidad;
 use App\Models\Marca;
 use App\Models\Medida;
+use App\Models\OrdenCompra;
 use App\Models\Permission;
 use App\Models\PlanCuenta;
 use App\Models\Proveedor;
@@ -58,6 +59,7 @@ class DatabaseSeeder extends Seeder
         Deposito::truncate();
         Rubro::truncate();
         Proveedor::truncate();
+        OrdenCompra::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $this->call([
@@ -83,7 +85,8 @@ class DatabaseSeeder extends Seeder
             DepositoSeeder::class,
             RubroSeeder::class,
             ProveedorSeeder::class,
-            ProductoSeeder::class
+            ProductoSeeder::class,
+            OrdenCompraSeeder::class
         ]);
     }
 }

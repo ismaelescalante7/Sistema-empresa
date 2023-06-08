@@ -52,4 +52,5 @@ Route::middleware([
     Route::group([], __DIR__ . '/web/depositos.php');
     Route::group([], __DIR__ . '/web/rubros.php');
     Route::group([], __DIR__ . '/web/proveedores.php');
+    Route::group([], __DIR__ . '/web/ordenes_compras.php');
 });
