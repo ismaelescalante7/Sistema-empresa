@@ -174,6 +174,34 @@ class PermissionsSeeder extends Seeder
             ]
         ],
 
+        'Orden Compra' => [
+            [
+                'name' => 'orden.compras.index',
+                'description' => 'Consulta de Orden de Compras',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'orden.compras.create',
+                'description' => 'Nuevo Orden de Compra',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'orden.compras.show',
+                'description' => 'Ver Orden de Compra',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'orden.compras.edit',
+                'description' => 'Modificar Orden de Compras',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'orden.compras.destroy',
+                'description' => 'Eliminar Orden de Compras',
+                'roles' => ['ADM'],
+            ]
+        ],
+
         'Condiciones Pago' => [
             [
                 'name' => 'condiciones.pagos.index',

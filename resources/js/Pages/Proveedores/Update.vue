@@ -110,8 +110,8 @@ const back = () => {
               <FormLabel required>Estado</FormLabel>
               <CFormSelect v-model="form.estado" :feedback="form.errors.estado" :invalid="form.errors.estado">
                 <option :value="''">Seleccione una opción</option>
-                <option value="1">Activo</option>
-                <option value="0">Inactivo</option>
+                <option value="1" :selected="form.estado === 1">Activo</option>
+                <option value="0" :selected="form.estado === 0">Inactivo</option>
               </CFormSelect>
             </CCol>
           </CRow>
