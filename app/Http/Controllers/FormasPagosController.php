@@ -31,8 +31,17 @@ class FormasPagosController extends Controller
 
     public function store(FormasPagosStoreRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-        FormasPagos::create($data);
+        try {
+            $data = $request->validated();
+            FormasPagos::create($data);
+            flashAlert(__('messages.success', ['Action' => 'Creación', 'element' => 'Forma de Pago']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Creación', 'element' => 'Forma de Pago']),
+                'danger'
+            );
+        }
         return redirect()->route('formas.pagos.index');
     }
 
@@ -43,14 +52,32 @@ class FormasPagosController extends Controller
 
     public function update(FormasPagos $formasPago, FormasPagosStoreRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-        $formasPago->update($data);
+        try {
+            $data = $request->validated();
+            $formasPago->update($data);
+            flashAlert(__('messages.success', ['Action' => 'Modificación', 'element' => 'Forma de Pago']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Modificación', 'element' => 'Forma de Pago']),
+                'danger'
+            );
+        }
         return redirect()->route('formas.pagos.index');   
     }
 
     public function destroy(FormasPagos $formasPago): RedirectResponse
     {
-        $formasPago->delete();
+        try {
+            $formasPago->delete();
+            flashAlert(__('messages.success', ['Action' => 'Eliminación', 'element' => 'Forma de Pago']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Eliminación', 'element' => 'Forma de Pago']),
+                'danger'
+            );
+        }
         return redirect()->route('formas.pagos.index');
     }
 }

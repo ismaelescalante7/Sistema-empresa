@@ -41,7 +41,6 @@ class MarcaController extends Controller
                 'danger'
             );
         }
-        
         return redirect()->route('marcas.index');
     }
 
