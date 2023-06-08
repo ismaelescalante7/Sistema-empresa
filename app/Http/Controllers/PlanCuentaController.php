@@ -31,8 +31,17 @@ class PlanCuentaController extends Controller
 
     public function store(PlanCuentaStoreRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-        PlanCuenta::create($data);
+        try {
+            $data = $request->validated();
+            PlanCuenta::create($data);
+            flashAlert(__('messages.success', ['Action' => 'Creación', 'element' => 'Plan de Cuenta']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Creación', 'element' => 'Plan de Cuenta']),
+                'danger'
+            );
+        }
         return redirect()->route('planes.cuentas.index');
     }
 
@@ -43,14 +52,32 @@ class PlanCuentaController extends Controller
 
     public function update(PlanCuenta $planCuenta, PlanCuentaStoreRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-        $planCuenta->update($data);
+        try {
+            $data = $request->validated();
+            $planCuenta->update($data);
+            flashAlert(__('messages.success', ['Action' => 'Modificación', 'element' => 'Plan de Cuenta']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Modificación', 'element' => 'Plan de Cuenta']),
+                'danger'
+            );
+        }
         return redirect()->route('planes.cuentas.index');   
     }
 
     public function destroy(PlanCuenta $planCuenta): RedirectResponse
     {
-        $planCuenta->delete();
+        try {
+            $planCuenta->delete();
+            flashAlert(__('messages.success', ['Action' => 'Eliminación', 'element' => 'Plan de Cuenta']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Eliminación', 'element' => 'Plan de Cuenta']),
+                'danger'
+            );
+        }
         return redirect()->route('planes.cuentas.index');
     }
 }
