@@ -7,7 +7,7 @@ import FormLabel from '@/Components/Form/FormLabel.vue'
 import Tab from '../../Components/Tab.vue'
 import tabs from '../../Data/OrdenCompra/Tabs.js'
 import FormInputAutocomplete from  '../../Components/Form/FormInputAutocomplete.vue'
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import CircleButton from '../../Components/CircleButton.vue'
 
 const props = defineProps({
@@ -37,12 +37,18 @@ const back = () => {
   Inertia.get(route('orden.compras.index'))
 }
 
-const selection = (producto) => {
-  form.producto_id = producto.id
+const productoSelected = ref(null)
+const listProductos = reactive([])
+const producto = ref(null)
+const selection = (productoSelected) => {
+  form.producto_id = productoSelected.id
+  producto.value = props.productos.find(item => item.id === productoSelected.id)
 }
 
-const producto = ref(false)
-const listProductos = reactive([])
+const addProducto = () => {
+  listProductos.push(producto.value)
+}
+
 console.log(listProductos)
 
 </script>
@@ -59,7 +65,7 @@ console.log(listProductos)
                     label="nombre"
                     value="id"
                     :items="props.productos.map(({nombre, id}) => ({nombre, id}))"
-                    :key="producto"
+                    :key="productoSelected"
                     @onSelect="selection"
                 />
             </CCol>
@@ -76,7 +82,7 @@ console.log(listProductos)
                 />
             </CCol>
             <CCol  class="d-flex align-items-end justify-content-end btn-margin">
-                <CButton type="submit" color="primary" class="px-4 me-4" shape="rounded-pill" title="Guardar">
+                <CButton type="button" @click="addProducto()" color="primary" class="px-4 me-4" shape="rounded-pill" title="Guardar">
                     Agregar
                 </CButton>
             </CCol>
@@ -87,11 +93,11 @@ console.log(listProductos)
                 <CTableHead>
                 <CTableRow color="secondary">
                     <CTableHeaderCell scope="col" class="col-sm-1"></CTableHeaderCell>
-                    <CTableHeaderCell scope="col" class="col-sm-3">Codigo</CTableHeaderCell>
-                    <CTableHeaderCell scope="col" class="col-sm-3">Nombre</CTableHeaderCell>
-                    <CTableHeaderCell scope="col" class="col-sm-3">Precio</CTableHeaderCell>
-                    <CTableHeaderCell scope="col" class="col-sm-3">Iva</CTableHeaderCell>
-                    <CTableHeaderCell scope="col" class="col-sm-3">Estado</CTableHeaderCell>
+                    <CTableHeaderCell scope="col" class="col-sm-2">Codigo</CTableHeaderCell>
+                    <CTableHeaderCell scope="col" class="col-sm-2">Nombre</CTableHeaderCell>
+                    <CTableHeaderCell scope="col" class="col-sm-2">Cantidad</CTableHeaderCell>
+                    <CTableHeaderCell scope="col" class="col-sm-1">Costo</CTableHeaderCell>
+                    <CTableHeaderCell scope="col" class="col-sm-2">Subtotal</CTableHeaderCell>
                 </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -104,13 +110,11 @@ console.log(listProductos)
                     <CircleButton
                         class="ms-1"
                         title="Modificar"
-                        v-if="hasPermission($page, 'orden.compras.edit')"
                         @click="update(producto.id)"
                     >
                         <span class="fa-solid fa-pen-to-square"></span>
                     </CircleButton>
                     <CircleButton
-                        v-if="hasPermission($page, 'orden.compras.destroy')"
                         class="ms-1"
                         title="Eliminar"
                         @click="showModal(true, producto)"
@@ -118,11 +122,11 @@ console.log(listProductos)
                         <span class="fa-solid fa-trash-can"></span>
                     </CircleButton>
                     </CTableDataCell>
-                    <CTableDataCell>{{ producto }}</CTableDataCell>
-                    <CTableDataCell>{{ producto }}</CTableDataCell>
-                    <CTableDataCell>{{ producto }}</CTableDataCell>
-                    <CTableDataCell>{{ producto }}</CTableDataCell>
-                    <CTableDataCell>{{ producto }}</CTableDataCell>
+                    <CTableDataCell>{{ producto.codigo }}</CTableDataCell>
+                    <CTableDataCell>{{ producto.nombre }}</CTableDataCell>
+                    <CTableDataCell>{{ producto.precio_compra }}</CTableDataCell>
+                    <CTableDataCell>{{ 2 }}</CTableDataCell>
+                    <CTableDataCell>{{ producto.precio_compra + 2 }}</CTableDataCell>
                 </CTableRow>
                 </CTableBody>
             </CTable>
