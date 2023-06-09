@@ -7,7 +7,7 @@ import breadcrumbs from '@/Data/Breadcrumbs'
 
 const props = defineProps({
   medidas: Object,
-  filters: []
+  filters: Object
 })
 
 </script>
@@ -17,6 +17,10 @@ const props = defineProps({
     :breadcrumb="breadcrumbs.tiposComprobantesList"
     title="Medidas"
   >
+
+    <Actions
+        :filters="props.filters"
+    />
 
     <Grid :medidas="props.medidas.data" />
 

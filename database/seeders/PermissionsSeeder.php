@@ -90,6 +90,21 @@ class PermissionsSeeder extends Seeder
                 'name' => 'medidas.index',
                 'description' => 'Consulta de Medidas',
                 'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'medidas.create',
+                'description' => 'Nuevo Medida',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'medidas.edit',
+                'description' => 'Modificar Medida',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'medidas.destroy',
+                'description' => 'Eliminar Medida',
+                'roles' => ['ADM'],
             ]
         ],
         'Tipos Comprobantes' => [

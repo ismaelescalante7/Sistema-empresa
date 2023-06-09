@@ -9,24 +9,24 @@ const props = defineProps({
 })
 
 const form = useForm({
-  name: props.filters.name,
+  descripcion: props.filters.descripcion,
   isFilled () {
-    return !!(this.name )
+    return !!(this.descripcion )
   }
 })
 
 const search = () => {
-  form.get('/users', {
+  form.get('/medidas', {
     preserveState: true
   })
 }
 
 const clean = () => {
-  Inertia.get('/users')
+  Inertia.get('/medidas')
 }
 
 const create = () => {
-  Inertia.get('/users/create')
+  Inertia.get('/medidas/create')
 }
 </script>
 
@@ -35,9 +35,9 @@ const create = () => {
     <CRow>
       <CCol>
         <CFormInput
-          v-model="form.name"
+          v-model="form.descripcion"
           type="text"
-          label="Apellido y Nombre"
+          label="Descripcion"
         />
       </CCol>
       <CCol class="d-flex align-items-start btn-margin">
