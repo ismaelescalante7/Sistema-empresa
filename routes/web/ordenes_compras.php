@@ -11,6 +11,10 @@ Route::get('/orden-compras/create', [OrdenCompraController::class, 'create'])
     ->name('orden.compras.create')
     ->middleware('permission:orden.compras.create');
 
+Route::get('/orden-compras/create/detalles', [OrdenCompraController::class, 'createDetalles'])
+    ->name('orden.compras.create.detalles')
+    ->middleware('permission:orden.compras.create');
+
 Route::post('/orden-compras/store', [OrdenCompraController::class, 'store'])
     ->name('orden.compras.store')
     ->middleware('permission:orden.compras.create');

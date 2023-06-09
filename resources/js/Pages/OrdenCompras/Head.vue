@@ -4,6 +4,8 @@ import { Inertia } from '@inertiajs/inertia'
 import breadcrumbs from '@/Data/Breadcrumbs'
 import { useForm } from '@inertiajs/inertia-vue3'
 import FormLabel from '@/Components/Form/FormLabel.vue'
+import Tab from '../../Components/Tab.vue'
+import tabs from '../../Data/OrdenCompra/Tabs.js'
 
 const props = defineProps({
   proveedores: Array,
@@ -21,7 +23,8 @@ const form = useForm({
 })
 
 const submit = () => {
-  form.post(route('orden.compras.store'))
+  /* form.post(route('orden.compras.store')) */
+  window.location = route('orden.compras.create.detalles')
 }
 
 const back = () => {
@@ -31,6 +34,7 @@ const back = () => {
 
 <template>
   <AppLayout :breadcrumb="breadcrumbs.ordenComprasCreate" title="Nuevo orden de compra">
+    <Tab :tabs="tabs" />
     <CForm @submit.prevent="submit">
       <CRow>
         <CCol xs="5">
@@ -101,14 +105,17 @@ const back = () => {
         </CCol>
       </CRow>
       <CRow>
-        <CCol xs="4">
-          <CButton type="submit" color="primary" class="px-4 me-4" shape="rounded-pill" title="Guardar">
-            Guardar
-          </CButton>
-          <CButton type="button" color="secondary" class="px-4" shape="rounded-pill" title="Cancelar" @click="back">
-            Cancelar
-          </CButton>
-        </CCol>
+        <div class="d-flex justify-content-end">
+          <CCol xs="4">
+            <CButton type="submit" color="primary" class="px-4 me-4" shape="rounded-pill" title="Guardar">
+              Siguiente
+            </CButton>
+            <CButton type="button" color="secondary" class="px-4" shape="rounded-pill" title="Cancelar" @click="back">
+              Cancelar
+            </CButton>
+          </CCol>
+        </div>
+        
       </CRow>
     </CForm>
   </AppLayout>
