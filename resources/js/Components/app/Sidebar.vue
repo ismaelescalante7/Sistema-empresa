@@ -162,7 +162,7 @@ const onActive = (list) => {
         </CNavItem>
       </CNavGroup>
       <CNavGroup
-        :visible = "onActive(['Productos', 'Marcas','Depositos','Rubros','OrdenCompra'])"
+        :visible = "onActive(['Productos', 'Marcas','Depositos','Rubros'])"
       >
         <template #togglerContent>
           INVENTARIO
@@ -207,6 +207,13 @@ const onActive = (list) => {
             Productos
           </Link>
         </CNavItem>
+      </CNavGroup>
+      <CNavGroup
+        :visible = "onActive(['OrdenCompra'])"
+      >
+        <template #togglerContent>
+          COMPRAS
+        </template>
         <CNavItem>
           <Link
             href="#"

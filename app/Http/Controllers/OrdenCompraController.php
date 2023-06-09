@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrdenCompraStoreRequest;
 use App\Models\CondicionesPago;
 use App\Models\OrdenCompra;
+use App\Models\Producto;
 use App\Models\Proveedor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,7 +38,8 @@ class OrdenCompraController extends Controller
     {
         $proveedores = Proveedor::all();
         $condicionesPagos = CondicionesPago::all();
-        return Inertia::render('OrdenCompras/Detalle', compact('proveedores', 'condicionesPagos'));
+        $productos = Producto::all();
+        return Inertia::render('OrdenCompras/Detalle', compact('proveedores', 'condicionesPagos', 'productos'));
 
     }
 
