@@ -1,6 +1,6 @@
 import configuracion from "./configuracion"
 
-// Personas Humanas
+// Condiciones Ivas
 const condicionesIvasList = [
   ...configuracion,
   {
@@ -12,7 +12,7 @@ const condicionesIvasList = [
 const condicionesIvasCreate = [
   ...condicionesIvasList,
   {
-    title: 'Nueva Condicion Iva',
+    title: 'Nueva Condición Iva',
     link: '/condiciones-ivas/create'
   }
 ]
@@ -20,7 +20,7 @@ const condicionesIvasCreate = [
 const condicionesIvasShow = [
   ...condicionesIvasList,
   {
-    title: 'Ver Condicion Iva',
+    title: 'Ver Condición Iva',
     link: '/condiciones-ivas/show'
   }
 ]
@@ -28,7 +28,7 @@ const condicionesIvasShow = [
 const condicionesIvasUpdate = [
   ...condicionesIvasList,
   {
-    title: 'Modificar Condicion Iva',
+    title: 'Modificar Condición Iva',
     link: '/condiciones-ivas/edit'
   }
 ]

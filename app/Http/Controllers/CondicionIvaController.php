@@ -2,86 +2,82 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CondicionIvaStoreRequest;
+use App\Http\Requests\CondicionIvaUpdateRequest;
 use App\Models\CondicionIva;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class CondicionIvaController extends Controller
 {
-    public function index() : Response
+    public function index(Request $request): Response
     {
-        $condicionesIvas = CondicionIva::orderBy('codigo')
-            ->paginate(config('custom.pagination.per_page'));;
+        $filters = $request->only(['descripcion']);
+        $condicionesIvas = CondicionIva::where('descripcion', 'like', "%{$request->get('descripcion')}%")
+            ->orderBy('descripcion')
+            ->paginate(config('custom.pagination.per_page'));
             
-        return Inertia::render('CondicionesIvas/List', [
-            'condicionesIvas' => $condicionesIvas
-        ]);
+        return Inertia::render('CondicionesIvas/List', compact('condicionesIvas', 'filters'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): Response
     {
-        //
+        return Inertia::render('CondicionesIvas/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(CondicionIvaStoreRequest $request): RedirectResponse
     {
-        //
+        try {
+            $data = $request->validated();
+            CondicionIva::create($data);
+            flashAlert(__('messages.success', ['Action' => 'Creación', 'element' => 'Condición Iva']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Creación', 'element' => 'Condición Iva']),
+                'danger'
+            );
+        }
+        return redirect()->route('condiciones.ivas.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CondicionIva  $condicionIva
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CondicionIva $condicionIva)
+    public function edit(CondicionIva $condicionIva): Response
     {
-        //
+        return Inertia::render('CondicionesIvas/Update', compact('condicionIva'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CondicionIva  $condicionIva
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CondicionIva $condicionIva)
+    public function update(CondicionIva $condicionIva, CondicionIvaUpdateRequest $request): RedirectResponse
     {
-        //
+        try {
+            $data = $request->validated();
+            $condicionIva->update($data);
+            flashAlert(__('messages.success', ['Action' => 'Modificación', 'element' => 'Condición Iva']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Modificación', 'element' => 'Condición Iva']),
+                'danger'
+            );
+        }
+       
+        return redirect()->route('condiciones.ivas.index');   
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CondicionIva  $condicionIva
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, CondicionIva $condicionIva)
+    public function destroy(CondicionIva $condicionIva): RedirectResponse
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\CondicionIva  $condicionIva
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(CondicionIva $condicionIva)
-    {
-        //
+        try {
+            $condicionIva->delete();
+            flashAlert(__('messages.success', ['Action' => 'Eliminación', 'element' => 'Condición Iva']));
+        } catch (\Exception $exception) {
+            logger($exception->getMessage());
+            flashAlert(
+                __('messages.failure', ['action' => 'Eliminación', 'element' => 'Condición Iva']),
+                'danger'
+            );
+        }
+        
+        return redirect()->route('condiciones.ivas.index');
     }
 }
