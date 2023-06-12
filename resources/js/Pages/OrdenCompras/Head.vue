@@ -42,7 +42,8 @@ const back = () => {
             <CCol>
               <FormLabel required>Descripción</FormLabel>
               <CFormInput v-model="form.descripcion" type="text" placeholder="Descripción"
-                :feedback="form.errors.descripcion" :invalid="form.errors.descripcion" />
+                :feedback="form.errors.descripcion" :invalid="form.errors.descripcion" 
+                />
             </CCol>
           </CRow>
           <CRow class="my-3">

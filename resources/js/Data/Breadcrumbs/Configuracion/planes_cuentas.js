@@ -1,6 +1,6 @@
 import configuracion from "./configuracion"
 
-// Personas Humanas
+// Planes de Cuentas
 const planesCuentasList = [
   ...configuracion,
   {

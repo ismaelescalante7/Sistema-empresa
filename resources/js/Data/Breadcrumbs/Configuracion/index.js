@@ -5,6 +5,7 @@ import tipos_comprobantes from './tipos_comprobantes'
 import formas_pagos from './formas_pagos'
 import retencion_ingresos_bruto from './retencion_ingresos_bruto'
 import condiciones_pagos from './condiciones_pagos'
+import medidas from './medidas'
 
 export default {
   ...tipos_comprobantes,
@@ -13,5 +14,6 @@ export default {
   ...planes_cuentas,
   ...formas_pagos,
   ...retencion_ingresos_bruto,
-  ...condiciones_pagos
+  ...condiciones_pagos,
+  ...medidas
 }
