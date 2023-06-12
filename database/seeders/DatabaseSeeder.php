@@ -17,6 +17,7 @@ use App\Models\Permission;
 use App\Models\PlanCuenta;
 use App\Models\Proveedor;
 use App\Models\Provincia;
+use App\Models\Remito;
 use App\Models\RetencionGanancia;
 use App\Models\RetencionIngresosBruto;
 use App\Models\Role;
@@ -60,6 +61,7 @@ class DatabaseSeeder extends Seeder
         Rubro::truncate();
         Proveedor::truncate();
         OrdenCompra::truncate();
+        Remito::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $this->call([
@@ -86,7 +88,8 @@ class DatabaseSeeder extends Seeder
             RubroSeeder::class,
             ProveedorSeeder::class,
             ProductoSeeder::class,
-            OrdenCompraSeeder::class
+            OrdenCompraSeeder::class,
+            RemitoSeeder::class,
         ]);
     }
 }
