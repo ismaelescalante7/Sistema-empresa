@@ -7,7 +7,7 @@ import breadcrumbs from '@/Data/Breadcrumbs'
 
 const props = defineProps({
   condicionesIvas: Object,
-  filters: []
+  filters: Object
 })
 
 </script>
@@ -17,6 +17,9 @@ const props = defineProps({
     :breadcrumb="breadcrumbs.condicionesIvasList"
     title="Condiciones Ivas"
   >
+    <Actions
+      :filters="props.filters"
+    />
 
     <Grid :condicionesIvas="props.condicionesIvas.data" />
 

@@ -276,6 +276,21 @@ class PermissionsSeeder extends Seeder
                 'name' => 'condiciones.ivas.index',
                 'description' => 'Consulta de Condiciones Ivas',
                 'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'condiciones.ivas.create',
+                'description' => 'Nueva Condicion Iva',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'condiciones.ivas.edit',
+                'description' => 'Modificar Condicion Iva',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'condiciones.ivas.destroy',
+                'description' => 'Eliminar Condicion Iva',
+                'roles' => ['ADM'],
             ]
         ],
 
