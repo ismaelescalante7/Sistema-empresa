@@ -189,6 +189,34 @@ class PermissionsSeeder extends Seeder
             ]
         ],
 
+        'Remitos' => [
+            [
+                'name' => 'remitos.index',
+                'description' => 'Consulta de Remitos',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'remitos.create',
+                'description' => 'Nuevo Remito',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'remitos.show',
+                'description' => 'Ver Remito',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'remitos.edit',
+                'description' => 'Modificar Remitos',
+                'roles' => ['ADM'],
+            ],
+            [
+                'name' => 'remitos.destroy',
+                'description' => 'Eliminar Remito',
+                'roles' => ['ADM'],
+            ]
+        ],
+
         'Orden Compra' => [
             [
                 'name' => 'orden.compras.index',
