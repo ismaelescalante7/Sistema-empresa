@@ -7,11 +7,14 @@ import store from '../js/store/index'
 // Import modules...
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
+import { createPinia } from 'pinia'
 import { InertiaProgress } from '@inertiajs/progress';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { CIcon } from '@coreui/icons-vue'
 import { iconsSet as icons } from '@/assets/icons'
 import CoreuiVue from '@coreui/vue'
+import {Tabs, Tab} from 'vue3-tabs-component';
+
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
@@ -21,8 +24,11 @@ createInertiaApp({
     setup({ el, app, props, plugin }) {
         return createApp({ render: () => h(app, props) })
             .use(plugin)
+            .use(createPinia())
             .use(CoreuiVue)
             .use(store)
+            .component('tabs', Tabs)
+            .component('tab', Tab)
             .component('CIcon', CIcon)
             .provide('icons', icons)
             .mixin({ methods: { route } })

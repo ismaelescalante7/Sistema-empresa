@@ -37,22 +37,6 @@ class OrdenCompraStoreRequest extends FormRequest
             'descripcion' => [
                 'required',
             ],
-            'neto' => [
-                'required',
-                'integer',
-            ],
-            'iva' => [
-                'required',
-                'integer',
-            ],
-            'total' => [
-                'required',
-                'integer',
-            ],
-            'estado' => [
-                'required',
-                'in:0,1'
-            ],
         ];
     }
 }
