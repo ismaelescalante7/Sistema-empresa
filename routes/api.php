@@ -17,3 +17,20 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/**
+ * Add protected api end points here
+ */
+Route::name('api.')->middleware('auth:sanctum')->group(function () {
+    // @TODO create protected endpoints
+
+/*     Route::get(
+        '/orden-compra/process-head',
+        [\App\Http\Controllers\Api\OrdenCompraController::class, 'processHead']
+    )->name('orden.compra.process.head'); */
+});
+
+Route::post(
+    '/orden-compra/process-head',
+    [\App\Http\Controllers\Api\OrdenCompraController::class, 'processHead']
+)->name('orden.compra.process.head');

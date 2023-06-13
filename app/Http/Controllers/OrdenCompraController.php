@@ -31,7 +31,8 @@ class OrdenCompraController extends Controller
     {
         $proveedores = Proveedor::all();
         $condicionesPagos = CondicionesPago::all();
-        return Inertia::render('OrdenCompras/Head', compact('proveedores', 'condicionesPagos'));
+        $productos = Producto::all();
+        return Inertia::render('OrdenCompras/Main', compact('proveedores', 'condicionesPagos','productos'));
     }
 
     public function createDetalles(): Response
