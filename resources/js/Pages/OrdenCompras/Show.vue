@@ -54,8 +54,8 @@ const ordenCompra = useOrdenCompraStore();
                 <CTableDataCell>{{ producto.producto.codigo }}</CTableDataCell>
                 <CTableDataCell>{{ producto.producto.nombre }}</CTableDataCell>
                 <CTableDataCell>{{ producto.cantidad }}</CTableDataCell>
-                <CTableDataCell>{{ producto.precio_compra * producto.cantidad }}</CTableDataCell>
                 <CTableDataCell>{{ producto.precio_compra }}</CTableDataCell>
+                <CTableDataCell>{{ producto.precio_compra * producto.cantidad }}</CTableDataCell>
             </CTableRow>
             </CTableBody>
         </CTable>

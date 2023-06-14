@@ -14,7 +14,6 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
 
   actions: {
     addDetalle(item) {
-      console.log('add detalle')
       this.detalles.push(item)
     },
   },
