@@ -10,6 +10,10 @@ import FormInputAutocomplete from  '../../Components/Form/FormInputAutocomplete.
 import { computed, reactive, ref } from 'vue'
 import CircleButton from '../../Components/CircleButton.vue'
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
+import {useOrdenCompraDetalleStore} from '../../store/useDetalleOrdenCompra'
+import Errors from '../../Utils/formatError'
+
+const { getErrorMessage, getBooleanError } = Errors()
 
 const props = defineProps({
   proveedores: Array,
@@ -17,16 +21,27 @@ const props = defineProps({
   productos: Array
 })
 
+const detalleOrdenCompra = useOrdenCompraDetalleStore();
+
 const form = useForm({
-  descripcion: null,
-  proveedor_id: null,
-  condiciones_pagos_id: null,
   producto_id: null,
   cantidad: null,
-  monto: null
+  precio_compra: null
 })
 
 const ordenCompra = useOrdenCompraStore();
+
+const errorsAxios = ref(null)
+
+const emit = defineEmits(['next'])
+
+const errors = computed(() => {
+  if (errorsAxios.value) {
+    return errorsAxios.value
+  }
+  return props.errors
+})
+
 
 const submit = () => {
   form.post(route('orden.compras.store'))
@@ -40,15 +55,45 @@ const productoSelected = ref(null)
 const productoFiltered = ref(null)
 const listProductos = reactive([])
 const producto = ref(null)
+
 const selection = (productoFiltered) => {
   form.producto_id = productoFiltered.id
   productoSelected.value = props.productos.find(item => item.id === productoFiltered.id)
-  form.monto = productoSelected.value.precio_compra 
+  form.precio_compra = productoSelected.value.precio_compra 
 }
 
 const addProducto = () => {
-  listProductos.push(productoSelected.value)
-  productoSelected.value['cantidad'] = form.cantidad
+  createDetalle()
+}
+
+const addDetalleStore = () => {
+  detalleOrdenCompra.$state.producto_id = form.producto_id
+  detalleOrdenCompra.$state.precio_compra = form.precio_compra
+  detalleOrdenCompra.$state.cantidad = form.cantidad
+  detalleOrdenCompra.$state.producto = productoSelected.value
+}
+
+const createDetalle = () => {
+  axios.post(route('orden.compra.process.detalle'), form)
+    .then((res) => {
+      listProductos.push(productoSelected.value)
+      productoSelected.value['cantidad'] = form.cantidad
+      addDetalleStore()
+      ordenCompra.addDetalle(detalleOrdenCompra.getDetalle)
+      form.reset()
+    })
+    .catch((err) => {
+      const status = err.response.status
+      //loading.value = false
+      if (status === 422) {
+        errorsAxios.value = err.response.data.errors
+    }
+  })
+}
+
+
+const changeTabNext = () => {
+  emit('next', true)
 }
 
 </script>
@@ -64,18 +109,19 @@ const addProducto = () => {
                 :items="props.productos.map(({nombre, id}) => ({nombre, id}))"
                 :key="productoFiltered"
                 @onSelect="selection"
+                :error="getErrorMessage(errors?.producto_id)"
             />
         </CCol>
         <CCol>
           <FormLabel required>Cantidad</FormLabel>
           <CFormInput v-model="form.cantidad" type="number" placeholder="Cantidad"
-            :feedback="form.errors.cantidad" :invalid="form.errors.cantidad" 
+            :feedback="getErrorMessage(errors?.cantidad)" :invalid="getBooleanError(errors?.cantidad)" 
             />
         </CCol>
         <CCol>
           <FormLabel required>Monto</FormLabel>
-          <CFormInput v-model="form.monto" type="text" placeholder="Monto"
-            :feedback="form.errors.monto" :invalid="form.errors.monto" 
+          <CFormInput v-model="form.precio_compra" type="text" placeholder="Monto"
+            :feedback="getErrorMessage(errors?.precio_compra)" :invalid="getBooleanError(errors?.precio_compra)" 
             />
         </CCol>
         <CCol  class="d-flex align-items-end justify-content-end btn-margin">
@@ -115,7 +161,7 @@ const addProducto = () => {
                 <CTableDataCell>{{ producto.codigo }}</CTableDataCell>
                 <CTableDataCell>{{ producto.nombre }}</CTableDataCell>
                 <CTableDataCell>{{ producto.cantidad }}</CTableDataCell>
-                <CTableDataCell>{{ producto.precio_compra  }}</CTableDataCell>
+                <CTableDataCell>{{ producto.precio_compra * producto.cantidad }}</CTableDataCell>
                 <CTableDataCell>{{ producto.precio_compra + 2 }}</CTableDataCell>
             </CTableRow>
             </CTableBody>
@@ -127,13 +173,15 @@ const addProducto = () => {
       </CRow>
   </CRow>
   <CRow>
-    <CCol xs="4" >
-    <CButton type="submit" color="primary" class="px-4 me-4" shape="rounded-pill" title="Guardar">
-        Guardar
-    </CButton>
-    <CButton type="button" color="secondary" class="px-4" shape="rounded-pill" title="Cancelar" @click="back">
-        Cancelar
-    </CButton>
-    </CCol>
+    <div class="d-flex justify-content-end">
+        <CCol xs="4">
+          <CButton type="button" @click="changeTabNext()" color="primary" class="px-4 me-4" shape="rounded-pill" title="Guardar">
+            Siguiente
+          </CButton>
+          <CButton type="button" color="secondary" class="px-4" shape="rounded-pill" title="Cancelar" @click="back">
+            Cancelar
+          </CButton>
+        </CCol>
+     </div>
   </CRow>
 </template>
