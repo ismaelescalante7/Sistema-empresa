@@ -34,3 +34,8 @@ Route::post(
     '/orden-compra/process-head',
     [\App\Http\Controllers\Api\OrdenCompraController::class, 'processHead']
 )->name('orden.compra.process.head');
+
+Route::post(
+    '/orden-compra/process-detalle',
+    [\App\Http\Controllers\Api\OrdenCompraController::class, 'processDetalle']
+)->name('orden.compra.process.detalle');
