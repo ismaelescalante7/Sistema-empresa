@@ -68,9 +68,11 @@ const addProducto = () => {
 
 const addDetalleStore = () => {
   detalleOrdenCompra.$state.producto_id = form.producto_id
-  detalleOrdenCompra.$state.precio_compra = form.precio_compra
-  detalleOrdenCompra.$state.cantidad = form.cantidad
+  detalleOrdenCompra.$state.precio_compra = parseInt(form.precio_compra)
+  detalleOrdenCompra.$state.cantidad = parseInt(form.cantidad)
   detalleOrdenCompra.$state.producto = productoSelected.value
+  detalleOrdenCompra.cacularSubtotal()
+  detalleOrdenCompra.cacularSubtotalConImpuestos()
 }
 
 const createDetalle = () => {
@@ -120,7 +122,7 @@ const changeTabNext = () => {
         </CCol>
         <CCol>
           <FormLabel required>Monto</FormLabel>
-          <CFormInput v-model="form.precio_compra" type="text" placeholder="Monto"
+          <CFormInput v-model="form.precio_compra" type="number" placeholder="Monto"
             :feedback="getErrorMessage(errors?.precio_compra)" :invalid="getBooleanError(errors?.precio_compra)" 
             />
         </CCol>
@@ -140,7 +142,9 @@ const changeTabNext = () => {
                 <CTableHeaderCell scope="col" class="col-sm-2">Nombre</CTableHeaderCell>
                 <CTableHeaderCell scope="col" class="col-sm-2">Cantidad</CTableHeaderCell>
                 <CTableHeaderCell scope="col" class="col-sm-1">Costo</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="col-sm-1">Alicuota</CTableHeaderCell>
                 <CTableHeaderCell scope="col" class="col-sm-2">Subtotal</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="col-sm-2">Subtotal(Impuestos)</CTableHeaderCell>
             </CTableRow>
             </CTableHead>
             <CTableBody>
@@ -161,8 +165,10 @@ const changeTabNext = () => {
                 <CTableDataCell>{{ producto.codigo }}</CTableDataCell>
                 <CTableDataCell>{{ producto.nombre }}</CTableDataCell>
                 <CTableDataCell>{{ producto.cantidad }}</CTableDataCell>
+                <CTableDataCell>{{ producto.precio_compra }}</CTableDataCell>
+                <CTableDataCell>{{ producto.alicuota }}</CTableDataCell>
                 <CTableDataCell>{{ producto.precio_compra * producto.cantidad }}</CTableDataCell>
-                <CTableDataCell>{{ producto.precio_compra + 2 }}</CTableDataCell>
+                <CTableDataCell>{{ detalleOrdenCompra.getSubtotalConImpuestos }}</CTableDataCell>
             </CTableRow>
             </CTableBody>
         </CTable>
