@@ -26,7 +26,7 @@ export const useOrdenCompraDetalleStore = defineStore("ordenCompraDetalle", {
       return state.cantidad
     },
     getSubtotal(state) {
-        return this.subtotal
+        return state.subtotal
     },
     getSubtotalConImpuestos(state) {
       return this.subtotal_impuestos
