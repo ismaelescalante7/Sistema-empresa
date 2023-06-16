@@ -9,6 +9,7 @@ import Errors from '../../Utils/formatError'
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
 import Head from './Head.vue'
 import Detalle from './Detalle.vue'
+import Show from './Show.vue'
 
 const { getErrorMessage, getBooleanError } = Errors()
 
@@ -90,6 +91,15 @@ const changeTabNext = (flag) => {
         Detalles
       </CNavLink>
     </CNavItem>
+    <CNavItem>
+      <CNavLink
+        href="javascript:void(0);"
+        :active="tabPaneActiveKey === 3"
+        @click="() => {tabPaneActiveKey = 3}"
+      >
+        Resumen
+      </CNavLink>
+    </CNavItem>
 
   </CNav>
   <CTabContent>
@@ -97,7 +107,10 @@ const changeTabNext = (flag) => {
       <Head :proveedores="props.proveedores" :condicionesPagos="props.condicionesPagos" @next="changeTabNext"/>
     </CTabPane>
     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 2">
-      <Detalle :productos="props.productos"/>
+      <Detalle :productos="props.productos" @next="changeTabNext"/>
+    </CTabPane>
+    <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 3">
+      <Show />
     </CTabPane>
   </CTabContent>
   </AppLayout>

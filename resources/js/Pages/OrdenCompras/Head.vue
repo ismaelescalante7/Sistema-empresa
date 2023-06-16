@@ -39,6 +39,9 @@ const errors = computed(() => {
   return props.errors
 })
 
+const proveedor = ref(null)
+const condicionPago = ref(null)
+
 const back = () => {
   Inertia.get(route('orden.compras.index'))
 }
@@ -46,10 +49,12 @@ const back = () => {
 const createHead = () => {
   axios.post(route('orden.compra.process.head'), form)
     .then((res) => {
-      console.log('entre')
       ordenCompra.$state.condiciones_pagos_id = form.condiciones_pagos_id
       ordenCompra.$state.descripcion = form.descripcion
       ordenCompra.$state.proveedor_id = form.proveedor_id
+      ordenCompra.$state.proveedor = proveedor.value
+      ordenCompra.$state.condicion_pago = condicionPago.value
+      ordenCompra.$state.fecha = nowDate.value
       emit('next', true)
     })
     .catch((err) => {
@@ -59,6 +64,15 @@ const createHead = () => {
         errorsAxios.value = err.response.data.errors
     }
   })
+}
+
+function proveedorById(proveedorId) {
+  console.log(proveedorId)
+  proveedor.value = props.proveedores.find( proveedor => proveedor.id == proveedorId)
+}
+
+function condicionPagoById(condicionPagoId) {
+  condicionPago.value = props.condicionesPagos.find( condicionPago => condicionPago.id == condicionPagoId)
 }
 </script>
 
@@ -76,8 +90,12 @@ const createHead = () => {
         <CRow class="my-3">
           <CCol>
             <FormLabel required>Proveedor</FormLabel>
-            <CFormSelect v-model="form.proveedor_id" :feedback="getErrorMessage(errors?.proveedor_id)"
-              :invalid="getBooleanError(errors?.proveedor_id)">
+            <CFormSelect 
+              v-model="form.proveedor_id" 
+              :feedback="getErrorMessage(errors?.proveedor_id)"
+              :invalid="getBooleanError(errors?.proveedor_id)"
+              @update:modelValue = "proveedorById"
+              >
               <option :value="''">Seleccione una opción</option>
               <option v-for="proveedor in props.proveedores" :key="proveedor.id" :value="proveedor.id">
                 {{ proveedor.razon_social }}
@@ -88,8 +106,12 @@ const createHead = () => {
         <CRow class="my-3">
           <CCol>
             <FormLabel required>Condicion de pago</FormLabel>
-            <CFormSelect v-model="form.condiciones_pagos_id" :feedback="getErrorMessage(errors?.condiciones_pagos_id)"
-              :invalid="getBooleanError(errors?.condiciones_pagos_id)">
+            <CFormSelect 
+              v-model="form.condiciones_pagos_id" 
+              :feedback="getErrorMessage(errors?.condiciones_pagos_id)"
+              :invalid="getBooleanError(errors?.condiciones_pagos_id)"
+               @update:modelValue = "condicionPagoById"
+            >
               <option :value="''">Seleccione una opción</option>
               <option v-for="condicionPago in props.condicionesPagos" :key="condicionPago.id" :value="condicionPago.id">
                 {{ condicionPago.condicion }}
@@ -116,6 +138,5 @@ const createHead = () => {
           </CButton>
         </CCol>
       </div>
-      
     </CRow>
 </template>
