@@ -86,7 +86,6 @@ const createDetalle = () => {
     })
     .catch((err) => {
       const status = err.response.status
-      //loading.value = false
       if (status === 422) {
         errorsAxios.value = err.response.data.errors
     }
@@ -133,8 +132,7 @@ const changeTabNext = () => {
         </CCol>
       </CRow>
       <CRow class="my-3">
-        <CCol>
-            <CTable class="mt-3 ms-1">
+          <CTable class="mt-3 ms-1">
             <CTableHead>
             <CTableRow color="secondary">
                 <CTableHeaderCell scope="col" class="col-sm-1"></CTableHeaderCell>
@@ -149,7 +147,7 @@ const changeTabNext = () => {
             </CTableHead>
             <CTableBody>
             <CTableRow
-                v-for="producto in listProductos"
+                v-for="producto in ordenCompra.$state.detalles"
                 :key="producto.id"
                 class="cell-center"
             >
@@ -166,16 +164,35 @@ const changeTabNext = () => {
                 <CTableDataCell>{{ producto.nombre }}</CTableDataCell>
                 <CTableDataCell>{{ producto.cantidad }}</CTableDataCell>
                 <CTableDataCell>{{ producto.precio_compra }}</CTableDataCell>
-                <CTableDataCell>{{ producto.alicuota }}</CTableDataCell>
-                <CTableDataCell>{{ producto.precio_compra * producto.cantidad }}</CTableDataCell>
-                <CTableDataCell>{{ detalleOrdenCompra.getSubtotalConImpuestos }}</CTableDataCell>
+                <CTableDataCell>{{ producto.producto.alicuota }}</CTableDataCell>
+                <CTableDataCell>{{ producto.subtotal }}</CTableDataCell>
+                <CTableDataCell>{{ producto.subtotal_impuestos }}</CTableDataCell>
             </CTableRow>
             </CTableBody>
         </CTable>
-        <div style="text-align: center;">
+        <div style="text-align: center;" v-if="!detalleOrdenCompra.tieneDetalles">
             Agregar items.
         </div>
-        </CCol>
+        <div class="d-flex justify-content-end" style="text-align: center;" v-if="!detalleOrdenCompra.tieneDetalles">
+          <CRow class="d-flex justify-content-end">
+            <CTableBody class="table-borderless">
+            <CTableRow>
+              <CTableDataCell class="">Neto:</CTableDataCell>
+              <CTableDataCell class="fw-bold px-3">{{ ordenCompra.getNeto }}</CTableDataCell>
+            </CTableRow>
+
+            <CTableRow>
+              <CTableDataCell class="d-flex justify-content-end">Iva:</CTableDataCell>
+              <CTableDataCell class="fw-bold px-3">{{ ordenCompra.getIva }}</CTableDataCell>
+            </CTableRow>
+
+            <CTableRow>
+              <CTableDataCell class="d-flex justify-content-end">Total:</CTableDataCell>
+              <CTableDataCell class="fw-bold px-3">{{ ordenCompra.getTotal }}</CTableDataCell>
+            </CTableRow>
+            </CTableBody>
+          </CRow>
+        </div>
       </CRow>
   </CRow>
   <CRow>
