@@ -15,7 +15,7 @@ const props = defineProps({
 <template>
   <AppLayout
     :breadcrumb="breadcrumbs.remitosList"
-    title="Marcas"
+    title="Remitos"
   >
 
     <Actions

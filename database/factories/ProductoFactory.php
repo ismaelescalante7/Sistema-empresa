@@ -23,7 +23,7 @@ class ProductoFactory extends Factory
             'precio_compra' =>  $this->faker->numberBetween(1000, 2000),
             'precio_venta' => $this->faker->numberBetween(1000, 2000),
             'stock_minimo' => $this->faker->numberBetween(50, 200),
-            'alicuota' => $this->faker->randomFloat(2),
+            'alicuota' => $this->faker->numberBetween(1,100),
             'estado' => $this->faker->randomElement(['activo', 'pasivo']),
             'marca_id' => 1,
             'rubro_id' => 1,
