@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LocalidadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,3 +35,8 @@ Route::post(
     '/orden-compra/process-head',
     [\App\Http\Controllers\Api\OrdenCompraController::class, 'processHead']
 )->name('orden.compra.process.head');
+
+Route::post(
+    '/validateRemito',
+    [\App\Http\Controllers\Api\RemitoController::class, 'processHead']
+)->name('remito.process.head');

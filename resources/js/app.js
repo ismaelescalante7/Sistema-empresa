@@ -31,7 +31,7 @@ createInertiaApp({
             .component('tab', Tab)
             .component('CIcon', CIcon)
             .provide('icons', icons)
-            .mixin({ methods: { route } })
+            .mixin({ methods:  {route}  })
             .mount(el);
     },
 });

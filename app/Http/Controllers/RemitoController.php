@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RemitoStoreRequest;
+use App\Models\Localidad;
+use App\Models\OrdenCompra;
+use App\Models\Proveedor;
 use App\Models\Remito;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,16 +19,18 @@ class RemitoController extends Controller
         $filters = $request->only(['localidad_id']);
         $remitos = Remito::where('localidad_id', 'like', "%{$request->get('localidad_id')}%")
             ->orderBy('localidad_id')
-            ->with(['proveedor:id,razon_social','localidad:id,nombre'])
+            ->with(['proveedor:id,razon_social', 'localidad:id,nombre'])
             ->paginate(config('custom.pagination.per_page'));
 
         return Inertia::render('Remitos/List', compact('remitos', 'filters'));
     }
 
-
     public function create(): Response
     {
-        return Inertia::render('Remitos/Create');
+        $localidades = Localidad::all();
+        $proveedores = Proveedor::all();
+        $ordenCompras = OrdenCompra::all();
+        return Inertia::render('Remitos/Create', compact('localidades', 'proveedores','ordenCompras'));
     }
 
     public function store(RemitoStoreRequest $request): RedirectResponse

@@ -24,7 +24,21 @@ class RemitoStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'fecha_ingreso' => [
+                'required',
+                'date',
+                'after_or_equal:now'
+            ],
+            'proveedor_id' => [
+                'required',
+                'integer',
+                'exists:App\Models\Proveedor,id'
+            ],
+            'localidad_id' => [
+                'required',
+                'integer',
+                'exists:App\Models\Localidad,id'
+            ],
         ];
     }
 }
