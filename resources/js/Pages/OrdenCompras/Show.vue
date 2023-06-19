@@ -2,11 +2,20 @@
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { Inertia } from '@inertiajs/inertia'
 import breadcrumbs from '@/Data/Breadcrumbs'
+import FormInputAutocomplete from  '../../Components/Form/FormInputAutocomplete.vue'
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
 import {useOrdenCompraDetalleStore} from '../../store/useDetalleOrdenCompra'
 
 const detalleOrdenCompra = useOrdenCompraDetalleStore();
 const ordenCompra = useOrdenCompraStore();
+
+const saveOrdenCompra = () => {
+    Inertia.post(route('orden.compras.store', ordenCompra.getData))
+}
+
+const back = () => {
+  
+}
 
 </script>
 
@@ -52,8 +61,8 @@ const ordenCompra = useOrdenCompraStore();
                 :key="producto.id"
                 class="cell-center"
             >
-                <CTableDataCell>{{ producto.codigo }}</CTableDataCell>
-                <CTableDataCell>{{ producto.nombre }}</CTableDataCell>
+                <CTableDataCell>{{ producto.producto.codigo }}</CTableDataCell>
+                <CTableDataCell>{{ producto.producto.nombre }}</CTableDataCell>
                 <CTableDataCell>{{ producto.cantidad }}</CTableDataCell>
                 <CTableDataCell>{{ producto.precio_compra }}</CTableDataCell>
                 <CTableDataCell>{{ producto.subtotal }}</CTableDataCell>
@@ -61,7 +70,7 @@ const ordenCompra = useOrdenCompraStore();
             </CTableRow>
             </CTableBody>
         </CTable>
-         <div class="d-flex justify-content-end" style="text-align: center;" v-if="!detalleOrdenCompra.tieneDetalles">
+         <div class="d-flex justify-content-end" style="text-align: center;" v-if="ordenCompra.tieneDetalles">
           <CRow class="d-flex justify-content-end">
             <CTableBody class="table-borderless">
             <CTableRow>
@@ -82,20 +91,17 @@ const ordenCompra = useOrdenCompraStore();
           </CRow>
         </div>
   </CCardBody>
-</CCard>
-    
-
-    <CRow class="m-4">
+   <CRow>
+    <div class="d-flex justify-content-end">
         <CCol xs="4">
-        <CButton
-            type="button"
-            color="secondary"
-            class="px-4"
-            shape="rounded-pill"
-            title="Volver"
-        >
-            Volver
-        </CButton>
+          <CButton type="button" @click="saveOrdenCompra()" color="primary" class="px-4 me-4" shape="rounded-pill" title="Finalizar">
+            Finalizar
+          </CButton>
+          <CButton type="button" color="secondary" class="px-4" shape="rounded-pill" title="Cancelar" @click="back">
+            Cancelar
+          </CButton>
         </CCol>
-    </CRow>
+     </div>
+  </CRow>
+</CCard>
 </template>

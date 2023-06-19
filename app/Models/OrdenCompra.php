@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrdenCompra extends Model
 {
@@ -18,4 +19,9 @@ class OrdenCompra extends Model
         'total',
         'estado',
     ];
+
+    public function detalleOrdenCompra(): HasMany
+    {
+        return $this->hasMany(DetalleOrdenCompra::class);
+    }
 }

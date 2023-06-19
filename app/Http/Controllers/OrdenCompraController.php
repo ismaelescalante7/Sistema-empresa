@@ -9,6 +9,7 @@ use App\Models\Producto;
 use App\Models\Proveedor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -48,7 +49,9 @@ class OrdenCompraController extends Controller
     {
         try {
             $data = $request->validated();
-            OrdenCompra::create($data);
+            $ordenCompra = OrdenCompra::create(Arr::except($data, ['detalles']));
+
+            $ordenCompra->detalleOrdenCompra()->createMany($data['detalles']);
             flashAlert(__('messages.success', ['Action' => 'Creación', 'element' => 'Orden de Compra']));
         } catch (\Exception $exception) {
             logger($exception->getMessage());

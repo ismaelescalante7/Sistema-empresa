@@ -6,6 +6,7 @@ import { useForm } from '@inertiajs/inertia-vue3'
 import FormLabel from '@/Components/Form/FormLabel.vue'
 import Tab from '../../Components/Tab.vue'
 import tabs from '../../Data/OrdenCompra/Tabs.js'
+import FormInputAutocomplete from  '../../Components/Form/FormInputAutocomplete.vue'
 import { computed, ref } from 'vue'
 import Errors from '../../Utils/formatError'
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
@@ -41,6 +42,13 @@ const errors = computed(() => {
 
 const proveedor = ref(null)
 const condicionPago = ref(null)
+
+const proveedorFiltered = ref(null)
+
+
+const selection = (proveedorFiltered) => {
+  form.proveedor_id = proveedorFiltered.id
+}
 
 const back = () => {
   Inertia.get(route('orden.compras.index'))
@@ -89,18 +97,15 @@ function condicionPagoById(condicionPagoId) {
         </CRow>
         <CRow class="my-3">
           <CCol>
-            <FormLabel required>Proveedor</FormLabel>
-            <CFormSelect 
-              v-model="form.proveedor_id" 
-              :feedback="getErrorMessage(errors?.proveedor_id)"
-              :invalid="getBooleanError(errors?.proveedor_id)"
-              @update:modelValue = "proveedorById"
-              >
-              <option :value="''">Seleccione una opción</option>
-              <option v-for="proveedor in props.proveedores" :key="proveedor.id" :value="proveedor.id">
-                {{ proveedor.razon_social }}
-              </option>
-            </CFormSelect>
+            <CFormLabel required>Proveedor</CFormLabel>
+            <FormInputAutocomplete
+                label="razon_social"
+                value="id"
+                :items="props.proveedores.map(({razon_social, id}) => ({razon_social, id}))"
+                :key="proveedorFiltered"
+                @onSelect="selection"
+                :error="getErrorMessage(errors?.proveedor_id)"
+            />
           </CCol>
         </CRow>
         <CRow class="my-3">

@@ -23,7 +23,7 @@ class OrdenCompraFactory extends Factory
             'neto' => $this->faker->randomNumber(3),
             'iva' => rand(3, 30),
             'total' => $this->faker->randomNumber(5),
-            'estado' => $this->faker->randomElement([0, 1])
+            'estado' => 'pendiente'
         ];
     }
 }

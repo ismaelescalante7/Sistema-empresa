@@ -40,6 +40,8 @@ Route::post(
     '/validateRemito',
     [\App\Http\Controllers\Api\RemitoController::class, 'processHead']
 )->name('remito.process.head');
+
+Route::post(
     '/orden-compra/process-detalle',
     [\App\Http\Controllers\Api\OrdenCompraController::class, 'processDetalle']
 )->name('orden.compra.process.detalle');

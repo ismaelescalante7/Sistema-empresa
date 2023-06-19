@@ -27,12 +27,29 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
     },
     tieneDetalles() {
       return this.detalles.length > 0
+    },
+    getData() {
+      return ({
+        'descripcion': this.descripcion,
+        'proveedor_id': this.proveedor_id,
+        'condiciones_pagos_id': this.condiciones_pagos_id,
+        'total': this.total,
+        'neto': this.neto,
+        'iva': this.iva,
+        'detalles': this.detalles
+      })
     }
   },
 
   actions: {
     addDetalle(item) {
       this.detalles.push(item)
+      this.setTotal()
+      this.setNeto()
+      this.setIva()
+    },
+    deleteDetalle(idProducto) {
+      this.detalles = this.detalles.filter(detalle => detalle.producto_id !== idProducto)
       this.setTotal()
       this.setNeto()
       this.setIva()
@@ -47,6 +64,6 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
     },
     setIva() {
       this.iva = this.total - this.neto
-    }
+    },
   },
 });

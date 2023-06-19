@@ -12,6 +12,7 @@ import CircleButton from '../../Components/CircleButton.vue'
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
 import {useOrdenCompraDetalleStore} from '../../store/useDetalleOrdenCompra'
 import Errors from '../../Utils/formatError'
+import Modal from  '../../Components/Modal.vue'
 
 const { getErrorMessage, getBooleanError } = Errors()
 
@@ -92,6 +93,20 @@ const createDetalle = () => {
   })
 }
 
+const modal = reactive({
+  show: false,
+  item: null
+})
+const showModal = (show = false, producto = null) => {
+  modal.show = show
+  modal.item = producto
+}
+
+const destroy = () => {
+  ordenCompra.deleteDetalle(modal.item.producto_id)
+  showModal()
+}
+
 
 const changeTabNext = () => {
   emit('next', true)
@@ -153,15 +168,15 @@ const changeTabNext = () => {
             >
                 <CTableDataCell>
                 <CircleButton
-                    class="ms-1"
-                    title="Eliminar"
-                    @click="showModal(true, producto)"
+                  class="ms-1"
+                  title="Eliminar"
+                  @click="showModal(true, producto)"
                 >
-                    <span class="fa-solid fa-trash-can"></span>
+                  <span class="fa-solid fa-trash-can"></span>
                 </CircleButton>
                 </CTableDataCell>
-                <CTableDataCell>{{ producto.codigo }}</CTableDataCell>
-                <CTableDataCell>{{ producto.nombre }}</CTableDataCell>
+                <CTableDataCell>{{ producto.producto.codigo }}</CTableDataCell>
+                <CTableDataCell>{{ producto.producto.nombre }}</CTableDataCell>
                 <CTableDataCell>{{ producto.cantidad }}</CTableDataCell>
                 <CTableDataCell>{{ producto.precio_compra }}</CTableDataCell>
                 <CTableDataCell>{{ producto.producto.alicuota }}</CTableDataCell>
@@ -170,10 +185,10 @@ const changeTabNext = () => {
             </CTableRow>
             </CTableBody>
         </CTable>
-        <div style="text-align: center;" v-if="!detalleOrdenCompra.tieneDetalles">
+        <div style="text-align: center;" v-if="!ordenCompra.tieneDetalles">
             Agregar items.
         </div>
-        <div class="d-flex justify-content-end" style="text-align: center;" v-if="!detalleOrdenCompra.tieneDetalles">
+        <div class="d-flex justify-content-end" style="text-align: center;" v-if="ordenCompra.tieneDetalles">
           <CRow class="d-flex justify-content-end">
             <CTableBody class="table-borderless">
             <CTableRow>
@@ -207,4 +222,37 @@ const changeTabNext = () => {
         </CCol>
      </div>
   </CRow>
+  <Modal
+    :visible="modal.show"
+    @close="showModal()"
+    >
+      <template #header>
+        Eliminar Producto
+      </template>
+      <CAlert color="warning">
+        <span>
+          <i class="fa-solid fa-trash-can m-2"></i>¿Estás seguro de deseas eliminar el producto?
+        </span>
+      </CAlert>
+      <CRow class="d-flex flex-column text-center">
+        <CCol>Nombre: {{ modal.item.producto.nombre }}</CCol>
+      </CRow>
+      <template #footer>
+        <CButton
+          color="danger"
+          shape="rounded-pill"
+          class="text-white"
+          @click="destroy"
+        >
+          Eliminar
+        </CButton>
+        <CButton
+          color="secondary"
+          shape="rounded-pill"
+          @click="showModal()"
+        >
+          Cancelar
+        </CButton>
+      </template>
+  </Modal>
 </template>

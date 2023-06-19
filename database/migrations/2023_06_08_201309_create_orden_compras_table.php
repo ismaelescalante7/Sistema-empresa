@@ -21,7 +21,7 @@ return new class extends Migration
             $table->bigInteger('neto');
             $table->bigInteger('iva');
             $table->bigInteger('total');
-            $table->boolean('estado');
+            $table->enum('estado',['pendiente', 'parcial', 'completado']);
             $table->timestamps();
         });
     }
