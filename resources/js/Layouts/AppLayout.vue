@@ -32,6 +32,7 @@ onMounted(() => {
         </CAlert>
         <CCard>
           <CCardBody>
+            <notifications />
             <h4 class="mb-3">{{ props.title }}</h4>
             <slot></slot>
           </CCardBody>

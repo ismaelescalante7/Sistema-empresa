@@ -10,7 +10,6 @@ import FormInputAutocomplete from  '../../Components/Form/FormInputAutocomplete.
 import { computed, ref } from 'vue'
 import Errors from '../../Utils/formatError'
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
-
 const { getErrorMessage, getBooleanError } = Errors()
 
 const props = defineProps({

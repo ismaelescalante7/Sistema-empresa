@@ -54,6 +54,9 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
       this.setNeto()
       this.setIva()
     },
+    existeDetalle(idProducto) {
+      return this.detalles.findIndex(detalle => detalle.producto_id === idProducto) !== -1
+    },
     setNeto() {
       this.neto = this.detalles.reduce((total, item) => total + item.subtotal, 0)
       return this.neto

@@ -13,6 +13,7 @@ import {useOrdenCompraStore} from '../../store/useOrdenCompra'
 import {useOrdenCompraDetalleStore} from '../../store/useDetalleOrdenCompra'
 import Errors from '../../Utils/formatError'
 import Modal from  '../../Components/Modal.vue'
+import showNotification from '../../Utils/notification'
 
 const { getErrorMessage, getBooleanError } = Errors()
 
@@ -79,11 +80,24 @@ const addDetalleStore = () => {
 const createDetalle = () => {
   axios.post(route('orden.compra.process.detalle'), form)
     .then((res) => {
-      listProductos.push(productoSelected.value)
-      productoSelected.value['cantidad'] = form.cantidad
-      addDetalleStore()
-      ordenCompra.addDetalle(detalleOrdenCompra.getDetalle)
-      form.reset()
+      if (!ordenCompra.existeDetalle(form.producto_id))
+      {
+        productoSelected.value['cantidad'] = form.cantidad
+        addDetalleStore()
+        ordenCompra.addDetalle(detalleOrdenCompra.getDetalle)
+        form.reset()
+        showNotification(
+        'Detalle Orden de Compra',
+        'El producto fue agregado exitosamente.', 
+        'success'
+        )
+      } else {
+      showNotification(
+        'Detalle Orden de Compra',
+        'El producto ya se encuentra agregado.', 
+        'warn'
+        )
+      }
     })
     .catch((err) => {
       const status = err.response.status
@@ -105,6 +119,11 @@ const showModal = (show = false, producto = null) => {
 const destroy = () => {
   ordenCompra.deleteDetalle(modal.item.producto_id)
   showModal()
+  showNotification(
+    'Detalle Orden de Compra',
+    'El producto fue eliminado exitosamente.', 
+    'success'
+  )
 }
 
 

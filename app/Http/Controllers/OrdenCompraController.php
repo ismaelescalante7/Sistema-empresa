@@ -89,6 +89,7 @@ class OrdenCompraController extends Controller
     public function destroy(OrdenCompra $ordenCompra): RedirectResponse
     {
         try {
+            $ordenCompra->detalleOrdenCompra()->delete();
             $ordenCompra->delete();
             flashAlert(__('messages.success', ['Action' => 'Eliminación', 'element' => 'Orden de Compra']));
         } catch (\Exception $exception) {
@@ -98,6 +99,7 @@ class OrdenCompraController extends Controller
                 'danger'
             );
         }
+
         return redirect()->route('orden.compras.index');
     }
 }

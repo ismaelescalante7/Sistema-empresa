@@ -6,6 +6,7 @@ import store from '../js/store/index'
 
 // Import modules...
 import { createApp, h } from 'vue';
+import Notifications from '@kyvg/vue3-notification'
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { createPinia } from 'pinia'
 import { InertiaProgress } from '@inertiajs/progress';
@@ -27,6 +28,7 @@ createInertiaApp({
             .use(createPinia())
             .use(CoreuiVue)
             .use(store)
+            .use(Notifications)
             .component('tabs', Tabs)
             .component('tab', Tab)
             .component('CIcon', CIcon)
