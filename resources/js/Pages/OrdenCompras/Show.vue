@@ -14,7 +14,7 @@ const saveOrdenCompra = () => {
 }
 
 const back = () => {
-  
+
 }
 
 </script>
@@ -93,14 +93,12 @@ const back = () => {
   </CCardBody>
    <CRow>
     <div class="d-flex justify-content-end">
-        <CCol xs="4">
-          <CButton type="button" @click="saveOrdenCompra()" color="primary" class="px-4 me-4" shape="rounded-pill" title="Finalizar">
-            Finalizar
-          </CButton>
-          <CButton type="button" color="secondary" class="px-4" shape="rounded-pill" title="Cancelar" @click="back">
-            Cancelar
-          </CButton>
-        </CCol>
+      <CButton type="button" color="secondary" class="px-4 me-2" shape="rounded-pill" title="Cancelar" @click="back">
+        Cancelar
+      </CButton>
+      <CButton type="button" @click="saveOrdenCompra()" color="primary" class="px-4 me-2" shape="rounded-pill" title="Finalizar">
+        Finalizar
+      </CButton>
      </div>
   </CRow>
 </CCard>

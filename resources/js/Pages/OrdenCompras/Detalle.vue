@@ -134,111 +134,108 @@ const changeTabNext = () => {
 </script>
 
 <template>
-  <CRow>
-      <CRow class="my-3">
-        <CCol xs="5">
-            <CFormLabel>Producto</CFormLabel>
-            <FormInputAutocomplete
-                label="nombre"
-                value="id"
-                :items="props.productos.map(({nombre, id}) => ({nombre, id}))"
-                :key="productoFiltered"
-                @onSelect="selection"
-                :error="getErrorMessage(errors?.producto_id)"
-            />
-        </CCol>
-        <CCol>
-          <FormLabel required>Cantidad</FormLabel>
-          <CFormInput v-model="form.cantidad" type="number" placeholder="Cantidad"
-            :feedback="getErrorMessage(errors?.cantidad)" :invalid="getBooleanError(errors?.cantidad)" 
-            />
-        </CCol>
-        <CCol>
-          <FormLabel required>Monto</FormLabel>
-          <CFormInput v-model="form.precio_compra" type="number" placeholder="Monto"
-            :feedback="getErrorMessage(errors?.precio_compra)" :invalid="getBooleanError(errors?.precio_compra)" 
-            />
-        </CCol>
-        <CCol  class="d-flex align-items-end justify-content-end btn-margin">
-            <CButton type="button" @click="addProducto()" color="primary" class="px-4 me-4" shape="rounded-pill" title="Guardar">
-                Agregar
-            </CButton>
-        </CCol>
-      </CRow>
-      <CRow class="my-3">
-          <CTable class="mt-3 ms-1">
-            <CTableHead>
-            <CTableRow color="secondary">
-                <CTableHeaderCell scope="col" class="col-sm-1"></CTableHeaderCell>
-                <CTableHeaderCell scope="col" class="col-sm-2">Codigo</CTableHeaderCell>
-                <CTableHeaderCell scope="col" class="col-sm-2">Nombre</CTableHeaderCell>
-                <CTableHeaderCell scope="col" class="col-sm-2">Cantidad</CTableHeaderCell>
-                <CTableHeaderCell scope="col" class="col-sm-1">Costo</CTableHeaderCell>
-                <CTableHeaderCell scope="col" class="col-sm-1">Alicuota</CTableHeaderCell>
-                <CTableHeaderCell scope="col" class="col-sm-2">Subtotal</CTableHeaderCell>
-                <CTableHeaderCell scope="col" class="col-sm-2">Subtotal(Impuestos)</CTableHeaderCell>
-            </CTableRow>
-            </CTableHead>
-            <CTableBody>
-            <CTableRow
-                v-for="producto in ordenCompra.$state.detalles"
-                :key="producto.id"
-                class="cell-center"
-            >
-                <CTableDataCell>
-                <CircleButton
-                  class="ms-1"
-                  title="Eliminar"
-                  @click="showModal(true, producto)"
-                >
-                  <span class="fa-solid fa-trash-can"></span>
-                </CircleButton>
-                </CTableDataCell>
-                <CTableDataCell>{{ producto.producto.codigo }}</CTableDataCell>
-                <CTableDataCell>{{ producto.producto.nombre }}</CTableDataCell>
-                <CTableDataCell>{{ producto.cantidad }}</CTableDataCell>
-                <CTableDataCell>{{ producto.precio_compra }}</CTableDataCell>
-                <CTableDataCell>{{ producto.producto.alicuota }}</CTableDataCell>
-                <CTableDataCell>{{ producto.subtotal }}</CTableDataCell>
-                <CTableDataCell>{{ producto.subtotal_impuestos }}</CTableDataCell>
-            </CTableRow>
-            </CTableBody>
-        </CTable>
-        <div style="text-align: center;" v-if="!ordenCompra.tieneDetalles">
-            Agregar items.
-        </div>
-        <div class="d-flex justify-content-end" style="text-align: center;" v-if="ordenCompra.tieneDetalles">
-          <CRow class="d-flex justify-content-end">
-            <CTableBody class="table-borderless">
-            <CTableRow>
-              <CTableDataCell class="">Neto:</CTableDataCell>
-              <CTableDataCell class="fw-bold px-3">{{ ordenCompra.getNeto }}</CTableDataCell>
-            </CTableRow>
-
-            <CTableRow>
-              <CTableDataCell class="d-flex justify-content-end">Iva:</CTableDataCell>
-              <CTableDataCell class="fw-bold px-3">{{ ordenCompra.getIva }}</CTableDataCell>
-            </CTableRow>
-
-            <CTableRow>
-              <CTableDataCell class="d-flex justify-content-end">Total:</CTableDataCell>
-              <CTableDataCell class="fw-bold px-3">{{ ordenCompra.getTotal }}</CTableDataCell>
-            </CTableRow>
-            </CTableBody>
-          </CRow>
-        </div>
-      </CRow>
+  <CRow class="my-3">
+    <CCol xs="5">
+        <CFormLabel>Producto</CFormLabel>
+        <FormInputAutocomplete
+            label="nombre"
+            value="id"
+            :items="props.productos.map(({nombre, id}) => ({nombre, id}))"
+            :key="productoFiltered"
+            @onSelect="selection"
+            :error="getErrorMessage(errors?.producto_id)"
+        />
+    </CCol>
+    <CCol>
+      <FormLabel required>Cantidad</FormLabel>
+      <CFormInput v-model="form.cantidad" type="number" placeholder="Cantidad"
+        :feedback="getErrorMessage(errors?.cantidad)" :invalid="getBooleanError(errors?.cantidad)" 
+        />
+    </CCol>
+    <CCol>
+      <FormLabel required>Monto</FormLabel>
+      <CFormInput v-model="form.precio_compra" type="number" placeholder="Monto"
+        :feedback="getErrorMessage(errors?.precio_compra)" :invalid="getBooleanError(errors?.precio_compra)" 
+        />
+    </CCol>
+    <CCol  class="d-flex align-items-end justify-content-end btn-margin">
+        <CButton type="button" @click="addProducto()" color="primary" class="px-4 me-4" shape="rounded-pill" title="Guardar">
+            Agregar
+        </CButton>
+    </CCol>
   </CRow>
+  <CRow class="my-3">
+  <CTable class="mt-3 ms-1">
+    <CTableHead>
+      <CTableRow color="secondary">
+          <CTableHeaderCell scope="col" class="col-sm-1"></CTableHeaderCell>
+          <CTableHeaderCell scope="col" class="col-sm-2">Codigo</CTableHeaderCell>
+          <CTableHeaderCell scope="col" class="col-sm-2">Nombre</CTableHeaderCell>
+          <CTableHeaderCell scope="col" class="col-sm-2">Cantidad</CTableHeaderCell>
+          <CTableHeaderCell scope="col" class="col-sm-1">Costo</CTableHeaderCell>
+          <CTableHeaderCell scope="col" class="col-sm-1">Alicuota</CTableHeaderCell>
+          <CTableHeaderCell scope="col" class="col-sm-2">Subtotal</CTableHeaderCell>
+          <CTableHeaderCell scope="col" class="col-sm-2">Subtotal(Impuestos)</CTableHeaderCell>
+      </CTableRow>
+    </CTableHead>
+    <CTableBody>
+      <CTableRow
+          v-for="producto in ordenCompra.$state.detalles"
+          :key="producto.id"
+          class="cell-center"
+      >
+          <CTableDataCell>
+          <CircleButton
+            class="ms-1"
+            title="Eliminar"
+            @click="showModal(true, producto)"
+          >
+            <span class="fa-solid fa-trash-can"></span>
+          </CircleButton>
+          </CTableDataCell>
+          <CTableDataCell>{{ producto.producto.codigo }}</CTableDataCell>
+          <CTableDataCell>{{ producto.producto.nombre }}</CTableDataCell>
+          <CTableDataCell>{{ producto.cantidad }}</CTableDataCell>
+          <CTableDataCell>{{ producto.precio_compra }}</CTableDataCell>
+          <CTableDataCell>{{ producto.producto.alicuota }}</CTableDataCell>
+          <CTableDataCell>{{ producto.subtotal }}</CTableDataCell>
+          <CTableDataCell>{{ producto.subtotal_impuestos }}</CTableDataCell>
+      </CTableRow>
+    </CTableBody>
+  </CTable>
+    <div style="text-align: center;" v-if="!ordenCompra.tieneDetalles">
+        Agregar items.
+    </div>
+    <div class="d-flex justify-content-end" style="text-align: center;" v-if="ordenCompra.tieneDetalles">
+      <CRow class="d-flex justify-content-end">
+        <CTableBody class="table-borderless">
+        <CTableRow>
+          <CTableDataCell class="">Neto:</CTableDataCell>
+          <CTableDataCell class="fw-bold px-3">{{ ordenCompra.getNeto }}</CTableDataCell>
+        </CTableRow>
+
+        <CTableRow>
+          <CTableDataCell class="d-flex justify-content-end">Iva:</CTableDataCell>
+          <CTableDataCell class="fw-bold px-3">{{ ordenCompra.getIva }}</CTableDataCell>
+        </CTableRow>
+
+        <CTableRow>
+          <CTableDataCell class="d-flex justify-content-end">Total:</CTableDataCell>
+          <CTableDataCell class="fw-bold px-3">{{ ordenCompra.getTotal }}</CTableDataCell>
+        </CTableRow>
+        </CTableBody>
+      </CRow>
+    </div>
+  </CRow>
+
   <CRow>
     <div class="d-flex justify-content-end">
-        <CCol xs="4">
-          <CButton type="button" @click="changeTabNext()" color="primary" class="px-4 me-4" shape="rounded-pill" title="Guardar">
-            Siguiente
-          </CButton>
-          <CButton type="button" color="secondary" class="px-4" shape="rounded-pill" title="Cancelar" @click="back">
-            Cancelar
-          </CButton>
-        </CCol>
+      <CButton type="button" color="secondary" class="px-4 me-2" shape="rounded-pill" title="Cancelar" @click="back">
+        Cancelar
+      </CButton>
+      <CButton type="button" @click="changeTabNext()" color="primary" class="px-4" shape="rounded-pill" title="Guardar">
+        Siguiente
+      </CButton>
      </div>
   </CRow>
   <Modal
