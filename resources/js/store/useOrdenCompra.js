@@ -1,19 +1,21 @@
 import { defineStore } from "pinia";
 
+const defaultState = {
+  descripcion: null,
+  proveedor_id: null,
+  proveedor: null,
+  condiciones_pagos_id: null,
+  condicion_pago: null,
+  fecha: null,
+  estado: null,
+  total: null,
+  neto: null,
+  iva: null,
+  detalles: [],
+};
+
 export const useOrdenCompraStore = defineStore("ordenCompra", {
-  state: () => ({
-    descripcion: null,
-    proveedor_id: null,
-    proveedor: null,
-    condiciones_pagos_id: null,
-    condicion_pago: null,
-    fecha: null,
-    estado: null,
-    total: null,
-    neto: null,
-    iva: null,
-    detalles: [],
-  }),
+  state: () => ({ ...defaultState }),
 
   getters: {
     getNeto() {
@@ -42,31 +44,55 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
   },
 
   actions: {
-    addDetalle(item) {
-      this.detalles.push(item)
+    reset(keys) {
+      Object.assign(this, keys?.length
+        ? pick(defaultState, keys)
+        : defaultState // if no keys provided, reset all
+      );
+    },
+    fill(ordenCompra) {
+      this.proveedor_id = ordenCompra.proveedor_id
+      this.proveedor = ordenCompra.proveedor
+      this.descripcion = ordenCompra.descripcion
+      this.condiciones_pagos_id = ordenCompra.condiciones_pagos_id
+      this.condicion_pago = ordenCompra.condiciones_pago
+      this.neto = ordenCompra.neto
+      this.iva = ordenCompra.iva
+      this.total = ordenCompra.total
+      this.fecha = ordenCompra.created_at
+      this.fecha = ordenCompra.created_at
+      ordenCompra.detalle_orden_compra.map((detalle) => {
+        this.detalles.push(detalle)
+      })
+      this.makeCalculos()
+    },
+    makeCalculos() {
       this.setTotal()
       this.setNeto()
       this.setIva()
     },
+    addDetalle(item) {
+      this.detalles.push(item)
+      this.makeCalculos()
+    },
     deleteDetalle(idProducto) {
       this.detalles = this.detalles.filter(detalle => detalle.producto_id !== idProducto)
-      this.setTotal()
-      this.setNeto()
-      this.setIva()
+      this.makeCalculos()
     },
     existeDetalle(idProducto) {
       return this.detalles.findIndex(detalle => detalle.producto_id === idProducto) !== -1
     },
     setNeto() {
       this.neto = this.detalles.reduce((total, item) => total + item.subtotal, 0)
-      return this.neto
+      this.neto = parseFloat(this.neto.toFixed(2))
     },
     setTotal() {
       this.total = this.detalles.reduce((total, item) => total + item.subtotal_impuestos, 0)
-      return this.total
+      this.total = parseFloat(this.total.toFixed(2))
     },
     setIva() {
       this.iva = this.total - this.neto
+      this.iva = parseFloat(this.iva.toFixed(2))
     },
   },
 });

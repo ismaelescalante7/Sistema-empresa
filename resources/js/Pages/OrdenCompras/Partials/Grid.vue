@@ -27,6 +27,10 @@ const destroy = () => {
   showModal()
 }
 
+const show = (ordenCompraId) => {
+  Inertia.get(route('orden.compras.show', ordenCompraId))
+}
+
 </script>
 
 <template>
@@ -48,6 +52,14 @@ const destroy = () => {
         class="cell-center"
       >
         <CTableDataCell>
+          <CircleButton
+            class="ms-1"
+            title="Ver"
+            v-if="hasPermission($page, 'orden.compras.show')"
+            @click="show(ordenCompra.id)"
+          >
+            <span class="fa-solid fa-eye"></span>
+          </CircleButton>
           <CircleButton
             class="ms-1"
             title="Modificar"

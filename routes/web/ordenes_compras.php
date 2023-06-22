@@ -19,6 +19,10 @@ Route::post('/orden-compras/store', [OrdenCompraController::class, 'store'])
     ->name('orden.compras.store')
     ->middleware('permission:orden.compras.create');
 
+Route::get('/orden-compras/{ordenCompra}/show', [OrdenCompraController::class, 'show'])
+    ->name('orden.compras.show')
+    ->middleware('permission:orden.compras.show');
+
 Route::get('/orden-compras/{ordenCompra}/edit', [OrdenCompraController::class, 'edit'])
     ->name('orden.compras.edit')
     ->middleware('permission:orden.compras.edit');

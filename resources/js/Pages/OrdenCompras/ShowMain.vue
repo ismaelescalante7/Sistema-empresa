@@ -6,15 +6,19 @@ import FormInputAutocomplete from  '../../Components/Form/FormInputAutocomplete.
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
 import {useOrdenCompraDetalleStore} from '../../store/useDetalleOrdenCompra'
 
-const detalleOrdenCompra = useOrdenCompraDetalleStore();
+
+const props = defineProps({
+  ordenCompra: Object
+})
 const ordenCompra = useOrdenCompraStore();
+ordenCompra.fill(props.ordenCompra)
 
 const saveOrdenCompra = () => {
     Inertia.post(route('orden.compras.store', ordenCompra.getData))
 }
 
 const back = () => {
-  ordenCompra.reset()
+
 }
 
 </script>

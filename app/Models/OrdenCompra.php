@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrdenCompra extends Model
@@ -23,5 +24,15 @@ class OrdenCompra extends Model
     public function detalleOrdenCompra(): HasMany
     {
         return $this->hasMany(DetalleOrdenCompra::class);
+    }
+
+    public function proveedor() : BelongsTo
+    {
+        return $this->belongsTo(Proveedor::class);
+    }
+
+    public function condicionesPago(): BelongsTo
+    {
+        return $this->belongsTo(CondicionesPago::class, 'condiciones_pagos_id');
     }
 }

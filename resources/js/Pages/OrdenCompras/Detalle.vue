@@ -70,7 +70,7 @@ const addProducto = () => {
 
 const addDetalleStore = () => {
   detalleOrdenCompra.$state.producto_id = form.producto_id
-  detalleOrdenCompra.$state.precio_compra = parseInt(form.precio_compra)
+  detalleOrdenCompra.$state.precio_compra = parseFloat(form.precio_compra)
   detalleOrdenCompra.$state.cantidad = parseInt(form.cantidad)
   detalleOrdenCompra.$state.producto = productoSelected.value
   detalleOrdenCompra.cacularSubtotal()
@@ -154,7 +154,7 @@ const changeTabNext = () => {
     </CCol>
     <CCol>
       <FormLabel required>Monto</FormLabel>
-      <CFormInput v-model="form.precio_compra" type="number" placeholder="Monto"
+      <CFormInput v-model="form.precio_compra" type="number" step="any" placeholder="Monto"
         :feedback="getErrorMessage(errors?.precio_compra)" :invalid="getBooleanError(errors?.precio_compra)" 
         />
     </CCol>
