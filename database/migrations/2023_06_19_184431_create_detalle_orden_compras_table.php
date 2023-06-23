@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('producto_id')->constrained('productos');
             $table->decimal('precio_compra', 10, 2);
             $table->integer('cantidad');
+            $table->decimal('subtotal', 10, 2);
+            $table->decimal('subtotal_impuestos', 10, 2);
             $table->integer('cantidad_pendiente');
             $table->integer('cantidad_baja')->default(0);
             $table->timestamps();

@@ -16,7 +16,9 @@ class DetalleOrdenCompra extends Model
         'precio_compra',
         'cantidad',
         'cantidad_pendiente',
-        'cantidad_baja'
+        'cantidad_baja',
+        'subtotal',
+        'subtotal_impuestos'
     ];
 
     public function producto(): BelongsTo

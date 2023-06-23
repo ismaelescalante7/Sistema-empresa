@@ -18,12 +18,13 @@ const saveOrdenCompra = () => {
 }
 
 const back = () => {
-
+  Inertia.get(route('orden.compras.index'))
 }
 
 </script>
 
 <template>
+<AppLayout :breadcrumb="breadcrumbs.ordenComprasShow">
 <CCard>
   <CCardBody>
     <CCardTitle>Orden Compra</CCardTitle>
@@ -98,12 +99,10 @@ const back = () => {
    <CRow>
     <div class="d-flex justify-content-end">
       <CButton type="button" color="secondary" class="px-4 me-2" shape="rounded-pill" title="Cancelar" @click="back">
-        Cancelar
-      </CButton>
-      <CButton type="button" @click="saveOrdenCompra()" color="primary" class="px-4 me-2" shape="rounded-pill" title="Finalizar">
-        Finalizar
+        Volver
       </CButton>
      </div>
   </CRow>
 </CCard>
+</AppLayout>
 </template>

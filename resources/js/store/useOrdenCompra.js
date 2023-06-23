@@ -67,9 +67,9 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
       this.makeCalculos()
     },
     makeCalculos() {
-      this.setTotal()
       this.setNeto()
       this.setIva()
+      this.setTotal()
     },
     addDetalle(item) {
       this.detalles.push(item)
@@ -83,11 +83,11 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
       return this.detalles.findIndex(detalle => detalle.producto_id === idProducto) !== -1
     },
     setNeto() {
-      this.neto = this.detalles.reduce((total, item) => total + item.subtotal, 0)
+      this.neto = this.detalles.reduce((total, item) => total + parseFloat(item.subtotal), 0)
       this.neto = parseFloat(this.neto.toFixed(2))
     },
     setTotal() {
-      this.total = this.detalles.reduce((total, item) => total + item.subtotal_impuestos, 0)
+      this.total = this.detalles.reduce((total, item) => total + parseFloat(item.subtotal_impuestos), 0)
       this.total = parseFloat(this.total.toFixed(2))
     },
     setIva() {

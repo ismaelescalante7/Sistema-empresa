@@ -26,7 +26,7 @@ class OrdenCompraDetalleStoreRequest extends FormRequest
         return [
             'producto_id' => 'required|exists:productos,id',
             'cantidad' => 'required|numeric',
-            'precio_compra' => 'required|numeric',
+            'precio_compra' => 'required|numeric'
         ];
     }
 }

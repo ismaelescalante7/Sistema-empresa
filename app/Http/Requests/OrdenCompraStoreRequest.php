@@ -40,6 +40,8 @@ class OrdenCompraStoreRequest extends FormRequest
             'detalles.*.producto_id' => 'required|numeric',
             'detalles.*.cantidad' => 'required|numeric',
             'detalles.*.cantidad_pendiente' => 'required|numeric',
+            'detalles.*.subtotal' => 'required|numeric',
+            'detalles.*.subtotal_impuestos' => 'required|numeric',
             'detalles.*.precio_compra' => 'required|numeric'
         ];
     }

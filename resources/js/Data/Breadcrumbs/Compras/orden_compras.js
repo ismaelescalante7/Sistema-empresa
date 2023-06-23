@@ -1,10 +1,10 @@
-import inventario from "./inventario"
+import compra from "./compra"
 
 // Orden Comprass
 const ordenComprasList = [
-  ...inventario,
+  ...compra,
   {
-    title: 'Orden Comprass',
+    title: 'Orden Compras',
     link: '/orden-compras'
   }
 ]
