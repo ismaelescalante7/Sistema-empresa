@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrdenCompraDetalleStoreRequest;
-use App\Http\Requests\OrdenCompraStoreRequest;
+use App\Http\Requests\OrdenCompraHeadStoreRequest;
 
 class OrdenCompraController extends Controller
 {
-    public function processHead(OrdenCompraStoreRequest $request) {
+    public function processHead(OrdenCompraHeadStoreRequest $request) {
         $data = $request->validated();
         return response($data);
     }

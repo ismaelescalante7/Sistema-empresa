@@ -6,20 +6,25 @@ import FormInputAutocomplete from  '../../Components/Form/FormInputAutocomplete.
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
 import {useOrdenCompraDetalleStore} from '../../store/useDetalleOrdenCompra'
 
-const detalleOrdenCompra = useOrdenCompraDetalleStore();
+
+const props = defineProps({
+  ordenCompra: Object
+})
 const ordenCompra = useOrdenCompraStore();
+ordenCompra.fill(props.ordenCompra)
 
 const saveOrdenCompra = () => {
     Inertia.post(route('orden.compras.store', ordenCompra.getData))
 }
 
 const back = () => {
-  ordenCompra.reset()
+  Inertia.get(route('orden.compras.index'))
 }
 
 </script>
 
 <template>
+<AppLayout :breadcrumb="breadcrumbs.ordenComprasShow">
 <CCard>
   <CCardBody>
     <CCardTitle>Orden Compra</CCardTitle>
@@ -94,12 +99,10 @@ const back = () => {
    <CRow>
     <div class="d-flex justify-content-end">
       <CButton type="button" color="secondary" class="px-4 me-2" shape="rounded-pill" title="Cancelar" @click="back">
-        Cancelar
-      </CButton>
-      <CButton type="button" @click="saveOrdenCompra()" color="primary" class="px-4 me-2" shape="rounded-pill" title="Finalizar">
-        Finalizar
+        Volver
       </CButton>
      </div>
   </CRow>
 </CCard>
+</AppLayout>
 </template>

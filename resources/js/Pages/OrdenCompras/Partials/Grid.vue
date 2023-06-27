@@ -27,18 +27,22 @@ const destroy = () => {
   showModal()
 }
 
+const show = (ordenCompraId) => {
+  Inertia.get(route('orden.compras.show', ordenCompraId))
+}
+
 </script>
 
 <template>
   <CTable class="mt-3">
     <CTableHead>
       <CTableRow color="secondary">
-        <CTableHeaderCell scope="col" class="col-sm-1"></CTableHeaderCell>
+        <CTableHeaderCell scope="col" class="col-sm-2"></CTableHeaderCell>
         <CTableHeaderCell scope="col" class="col-sm-3">Descripcion</CTableHeaderCell>
-        <CTableHeaderCell scope="col" class="col-sm-3">Total</CTableHeaderCell>
-        <CTableHeaderCell scope="col" class="col-sm-3">Neto</CTableHeaderCell>
+        <CTableHeaderCell scope="col" class="col-sm-2">Total</CTableHeaderCell>
+        <CTableHeaderCell scope="col" class="col-sm-2">Neto</CTableHeaderCell>
         <CTableHeaderCell scope="col" class="col-sm-3">Iva</CTableHeaderCell>
-        <CTableHeaderCell scope="col" class="col-sm-3">Estado</CTableHeaderCell>
+        <CTableHeaderCell scope="col" class="col-sm-2">Estado</CTableHeaderCell>
       </CTableRow>
     </CTableHead>
     <CTableBody>
@@ -48,6 +52,14 @@ const destroy = () => {
         class="cell-center"
       >
         <CTableDataCell>
+          <CircleButton
+            class="ms-1"
+            title="Ver"
+            v-if="hasPermission($page, 'orden.compras.show')"
+            @click="show(ordenCompra.id)"
+          >
+            <span class="fa-solid fa-eye"></span>
+          </CircleButton>
           <CircleButton
             class="ms-1"
             title="Modificar"

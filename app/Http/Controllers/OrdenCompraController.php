@@ -9,6 +9,8 @@ use App\Models\Producto;
 use App\Models\Proveedor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -35,6 +37,12 @@ class OrdenCompraController extends Controller
         return Inertia::render('OrdenCompras/Main', compact('proveedores', 'condicionesPagos','productos'));
     }
 
+    public function show(OrdenCompra $ordenCompra): Response
+    {
+        $ordenCompra->load(['proveedor', 'condicionesPago', 'detalleOrdenCompra.producto']);
+        return Inertia::render('OrdenCompras/ShowMain', compact('ordenCompra'));
+    }
+
     public function createDetalles(): Response
     {
         $proveedores = Proveedor::all();
@@ -47,10 +55,15 @@ class OrdenCompraController extends Controller
     public function store(OrdenCompraStoreRequest $request): RedirectResponse
     {
         try {
+            DB::beginTransaction();
             $data = $request->validated();
-            OrdenCompra::create($data);
+            $ordenCompra = OrdenCompra::create(Arr::except($data, ['detalles']));
+
+            $ordenCompra->detalleOrdenCompra()->createMany($data['detalles']);
+            DB::commit();
             flashAlert(__('messages.success', ['Action' => 'Creación', 'element' => 'Orden de Compra']));
         } catch (\Exception $exception) {
+            DB::rollBack();
             logger($exception->getMessage());
             flashAlert(
                 __('messages.failure', ['action' => 'Creación', 'element' => 'Orden de Compra']),
@@ -86,6 +99,7 @@ class OrdenCompraController extends Controller
     public function destroy(OrdenCompra $ordenCompra): RedirectResponse
     {
         try {
+            $ordenCompra->detalleOrdenCompra()->delete();
             $ordenCompra->delete();
             flashAlert(__('messages.success', ['Action' => 'Eliminación', 'element' => 'Orden de Compra']));
         } catch (\Exception $exception) {
@@ -95,6 +109,7 @@ class OrdenCompraController extends Controller
                 'danger'
             );
         }
+
         return redirect()->route('orden.compras.index');
     }
 }

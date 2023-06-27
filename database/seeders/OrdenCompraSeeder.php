@@ -15,6 +15,6 @@ class OrdenCompraSeeder extends Seeder
      */
     public function run()
     {
-        OrdenCompra::factory(20)->create();
+        //OrdenCompra::factory(20)->create();
     }
 }

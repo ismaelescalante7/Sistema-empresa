@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('codigo');
             $table->string('nombre');
             $table->foreignId('categoria_id')->nullable()->constrained('categorias');
-            $table->string('precio_compra');
-            $table->string('precio_venta');
+            $table->decimal('precio_compra', 10, 2);
+            $table->decimal('precio_venta', 10, 2);
             $table->string('stock_minimo');
             $table->string('alicuota');
             $table->enum('estado',['activo','pasivo']);
