@@ -4,6 +4,11 @@ import Pagination from '@/Components/Pagination.vue'
 import Grid from './Partials/Grid.vue'
 import Actions from './Partials/Actions.vue'
 import breadcrumbs from '@/Data/Breadcrumbs'
+import {useOrdenCompraStore} from '../../store/useOrdenCompra'
+
+const ordenCompra = useOrdenCompraStore();
+ordenCompra.reset()
+ordenCompra.resetDetalles()
 
 const props = defineProps({
   ordenCompras: Object,

@@ -11,22 +11,35 @@ import { computed, ref } from 'vue'
 import Errors from '../../Utils/formatError'
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
 const { getErrorMessage, getBooleanError } = Errors()
+import { storeToRefs } from 'pinia'
 
 const props = defineProps({
   proveedores: Array,
   condicionesPagos: Array,
 })
 
-const form = useForm({
-  descripcion: null,
-  proveedor_id: null,
-  condiciones_pagos_id: null,
-  estado: null,
-})
-
 const ordenCompra = useOrdenCompraStore();
+const { 
+  proveedor_id,
+  proveedor, 
+  descripcion, 
+  condicion_pago,
+  condiciones_pagos_id,
+  fecha
+} = storeToRefs(ordenCompra)
 
-const nowDate = ref(new Date().toLocaleDateString());
+const validateHead  = () => {
+  axios.post(route('orden.compra.process.head'), ordenCompra.getHead)
+  .then((res) => {
+    emit('next', true)
+  })
+  .catch((err) => {
+    const status = err.response.status
+    if (status === 422) {
+      errorsAxios.value = err.response.data.errors
+    }
+  })
+}
 
 const errorsAxios = ref(null)
 
@@ -39,47 +52,22 @@ const errors = computed(() => {
   return props.errors
 })
 
-const proveedor = ref(null)
-const condicionPago = ref(null)
-
 const proveedorFiltered = ref(null)
 
-
 const selection = (proveedorFiltered) => {
-  form.proveedor_id = proveedorFiltered.id
+  proveedor_id.value = proveedorFiltered.id
 }
 
 const back = () => {
   Inertia.get(route('orden.compras.index'))
 }
 
-const createHead = () => {
-  axios.post(route('orden.compra.process.head'), form)
-    .then((res) => {
-      ordenCompra.$state.condiciones_pagos_id = form.condiciones_pagos_id
-      ordenCompra.$state.descripcion = form.descripcion
-      ordenCompra.$state.proveedor_id = form.proveedor_id
-      ordenCompra.$state.proveedor = proveedor.value
-      ordenCompra.$state.condicion_pago = condicionPago.value
-      ordenCompra.$state.fecha = nowDate.value
-      emit('next', true)
-    })
-    .catch((err) => {
-      const status = err.response.status
-      //loading.value = false
-      if (status === 422) {
-        errorsAxios.value = err.response.data.errors
-    }
-  })
-}
-
 function proveedorById(proveedorId) {
-  console.log(proveedorId)
   proveedor.value = props.proveedores.find( proveedor => proveedor.id == proveedorId)
 }
 
 function condicionPagoById(condicionPagoId) {
-  condicionPago.value = props.condicionesPagos.find( condicionPago => condicionPago.id == condicionPagoId)
+  condicion_pago.value = props.condicionesPagos.find( condicionPago => condicionPago.id == condicionPagoId)
 }
 </script>
 
@@ -89,7 +77,7 @@ function condicionPagoById(condicionPagoId) {
         <CRow class="my-3">
           <CCol>
             <FormLabel required>Descripción</FormLabel>
-            <CFormInput v-model="form.descripcion" type="text" placeholder="Descripción"
+            <CFormInput v-model="descripcion" type="text" placeholder="Descripción"
               :feedback="getErrorMessage(errors?.descripcion)" :invalid="getBooleanError(errors?.descripcion)" 
               />
           </CCol>
@@ -111,7 +99,7 @@ function condicionPagoById(condicionPagoId) {
           <CCol>
             <FormLabel required>Condicion de pago</FormLabel>
             <CFormSelect 
-              v-model="form.condiciones_pagos_id" 
+              v-model="condiciones_pagos_id" 
               :feedback="getErrorMessage(errors?.condiciones_pagos_id)"
               :invalid="getBooleanError(errors?.condiciones_pagos_id)"
                @update:modelValue = "condicionPagoById"
@@ -126,14 +114,14 @@ function condicionPagoById(condicionPagoId) {
         <CRow class="my-3">
           <CCol>
             <FormLabel >Fecha</FormLabel>
-            <CFormInput v-model="nowDate" type="text"/>
+            <CFormInput v-model="fecha" type="text"/>
           </CCol>
         </CRow>
       </CCol>
     </CRow>
     <CRow>
       <div class="d-flex justify-content-end">
-        <CButton type="button" @click="createHead()" color="primary" class="px-4 me-2" shape="rounded-pill" title="Guardar">
+        <CButton type="button" @click="validateHead()" color="primary" class="px-4 me-2" shape="rounded-pill" title="Guardar">
           Siguiente
         </CButton>
         <CButton type="button" color="secondary" class="px-4" shape="rounded-pill" title="Cancelar" @click="back">

@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { pick } from 'lodash-es';
 
 const defaultState = {
   descripcion: null,
@@ -6,7 +7,7 @@ const defaultState = {
   proveedor: null,
   condiciones_pagos_id: null,
   condicion_pago: null,
-  fecha: null,
+  fecha: new Date().toLocaleDateString(),
   estado: null,
   total: null,
   neto: null,
@@ -40,6 +41,13 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
         'iva': this.iva,
         'detalles': this.detalles
       })
+    },
+    getHead() {
+      return ({
+        'descripcion': this.descripcion,
+        'proveedor_id': this.proveedor_id,
+        'condiciones_pagos_id': this.condiciones_pagos_id
+      })
     }
   },
 
@@ -49,6 +57,9 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
         ? pick(defaultState, keys)
         : defaultState // if no keys provided, reset all
       );
+    },
+    resetDetalles(){
+      this.detalles.splice(0,this.detalles.length)
     },
     fill(ordenCompra) {
       this.proveedor_id = ordenCompra.proveedor_id
@@ -68,8 +79,8 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
     },
     makeCalculos() {
       this.setNeto()
-      this.setIva()
       this.setTotal()
+      this.setIva()
     },
     addDetalle(item) {
       this.detalles.push(item)

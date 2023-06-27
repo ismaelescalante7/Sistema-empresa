@@ -17,13 +17,13 @@ export const useOrdenCompraDetalleStore = defineStore("ordenCompraDetalle", {
   getters: {
     getDetalle(state) {
         return {
-            'producto_id' : state.producto_id,
-            'precio_compra' : state.precio_compra,
-            'cantidad': state.cantidad,
-            'cantidad_pendiente': state.cantidad,
-            'producto': state.producto,
-            'subtotal': state.subtotal,
-            'subtotal_impuestos': state.subtotal_impuestos,
+          'producto_id' : state.producto_id,
+          'precio_compra' : state.precio_compra,
+          'cantidad': state.cantidad,
+          'cantidad_pendiente': state.cantidad,
+          'producto': state.producto,
+          'subtotal': state.subtotal,
+          'subtotal_impuestos': state.subtotal_impuestos,
         }
     },
     getCantidad(state) {
