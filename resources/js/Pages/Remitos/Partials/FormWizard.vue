@@ -5,7 +5,7 @@ import FormLabel from "@/Components/Form/FormLabel.vue";
 import FormInputAutocomplete from "@/Components/Form/FormInputAutocomplete.vue";
 import "vue-select/dist/vue-select.css";
 import { useForm } from "@inertiajs/inertia-vue3";
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref, onMounted } from "vue";
 import Errors from "@/Utils/formatError";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
@@ -44,6 +44,10 @@ const ordenComprasFiltered = ref(null);
 const errorsAxios = ref(null);
 
 const formWizards = ref(null);
+
+onMounted(() => {
+    form.fecha_ingreso = new Date().toISOString().slice(0, 10);
+});
 
 ordenComprasFiltered.value = props.ordenCompras;
 
@@ -180,11 +184,11 @@ const onComplete = () => {
                 </CCol>
                 <CCol xs="3">
                     <CFormInput
-                        v-model="form.fecha_ingreso"
+                        v-model.lazy="form.fecha_ingreso"
                         type="date"
                         :feedback="getErrorMessage(errors?.fecha_ingreso)"
                         :invalid="getBooleanError(errors?.fecha_ingreso)"
-                    />
+                    ></CFormInput>
                 </CCol>
             </CRow>
             <CButton
@@ -276,9 +280,9 @@ const onComplete = () => {
                                     <CTableDataCell>{{
                                         ordenCompra.created_at
                                     }}</CTableDataCell>
-                                    <CTableDataCell>{{
-                                        ordenCompra.cantidad
-                                    }}</CTableDataCell>
+                                    <CTableDataCell>
+                                        {{ form.fecha_ingreso }}
+                                    </CTableDataCell>
                                 </CTableRow>
                             </CTableBody>
                         </CTable>
@@ -297,7 +301,118 @@ const onComplete = () => {
                 </CButton>
             </CRow>
         </tab-content>
-        <tab-content title="Detalle" icon="fa fa-gear"> Detalle </tab-content>
+        <tab-content title="Detalle" icon="fa fa-gear">
+            <CRow>
+                <CRow class="my-3">
+                    <CCol xs="5">
+                        <CFormLabel>Detalle de compras</CFormLabel>
+                        <CRow class="my-3">
+                            <CCol xs="5" style="text-align: right">
+                                <FormLabel required>Articulo</FormLabel>
+                            </CCol>
+                            <CCol xs="5">
+                                <CFormInput
+                                    v-model="form.nombre"
+                                    type="text"
+                                    placeholder="Numero remito"
+                                    :feedback="form.errors.nombre"
+                                    :invalid="form.errors.nombre"
+                                />
+                            </CCol>
+                        </CRow>
+                        <CRow class="my-3">
+                            <CCol xs="5" style="text-align: right">
+                                <FormLabel required>Cantidad</FormLabel>
+                            </CCol>
+                            <CCol xs="5">
+                                <CFormInput
+                                    v-model="form.nombre"
+                                    type="text"
+                                    placeholder="Numero remito"
+                                    :feedback="form.errors.nombre"
+                                    :invalid="form.errors.nombre"
+                                />
+                            </CCol>
+                        </CRow>
+                    </CCol>
+                    <CCol
+                        class="d-flex align-items-end justify-content-end btn-margin"
+                    >
+                        <CButton
+                            type="button"
+                            @click="addOrdenCompra()"
+                            color="primary"
+                            class="px-4 me-4"
+                            shape="rounded-pill"
+                            title="Agregar"
+                        >
+                            Agregar
+                        </CButton>
+                    </CCol>
+                </CRow>
+                <CRow class="my-3">
+                    <CCol>
+                        <CTable class="mt-3 ms-1">
+                            <CTableHead>
+                                <CTableRow color="secondary">
+                                    <CTableHeaderCell
+                                        scope="col"
+                                        class="col-sm-1"
+                                    ></CTableHeaderCell>
+                                    <CTableHeaderCell
+                                        scope="col"
+                                        class="col-sm-2"
+                                        >Articulo
+                                    </CTableHeaderCell>
+                                    <CTableHeaderCell
+                                        scope="col"
+                                        class="col-sm-2"
+                                        >Detalle
+                                    </CTableHeaderCell>
+                                    <CTableHeaderCell
+                                        scope="col"
+                                        class="col-sm-2"
+                                        >Cantidad
+                                    </CTableHeaderCell>
+                                </CTableRow>
+                            </CTableHead>
+                            <CTableBody>
+                                <CTableRow
+                                    v-for="ordenCompra in form.listOrdenCompras"
+                                    :key="ordenCompra.id"
+                                    class="cell-center"
+                                >
+                                    <CTableDataCell>
+                                        <CircleButton
+                                            class="ms-1"
+                                            title="Eliminar"
+                                            @click="
+                                                showModal(true, ordenCompra)
+                                            "
+                                        >
+                                            <span
+                                                class="fa-solid fa-trash-can"
+                                            ></span>
+                                        </CircleButton>
+                                    </CTableDataCell>
+                                    <CTableDataCell>{{
+                                        ordenCompra.descripcion
+                                    }}</CTableDataCell>
+                                    <CTableDataCell>{{
+                                        ordenCompra.created_at
+                                    }}</CTableDataCell>
+                                    <CTableDataCell>
+                                        {{ form.fecha_ingreso }}
+                                    </CTableDataCell>
+                                </CTableRow>
+                            </CTableBody>
+                        </CTable>
+                        <div style="text-align: center">Agregar items.</div>
+                    </CCol>
+                </CRow>
+                {{ ordenComprasFiltered }}
+            </CRow>
+        </tab-content>
         <tab-content title="Resumen" icon="fa fa-gear"> dafdsafd </tab-content>
     </form-wizard>
 </template>
