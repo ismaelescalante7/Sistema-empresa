@@ -10,6 +10,7 @@ import Errors from "@/Utils/formatError";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import CircleButton from "@/Components/CircleButton.vue";
+import Modal from "@/Components/Modal.vue";
 
 const { getErrorMessage, getBooleanError } = Errors();
 
@@ -17,6 +18,7 @@ const props = defineProps({
     localidades: Array,
     proveedores: Array,
     ordenCompras: Array,
+    productos: Array,
     form: Object,
 });
 
@@ -27,7 +29,37 @@ const form = useForm({
     fecha_ingreso: null,
     listOrdenCompras: [],
     selectedOrdenCompra: null,
+    lengthOrders: 0,
+    productsWithoutOrdenCompra: [],
+    productOrdenSelected: {
+        index: null,
+        nombre: null,
+        cantidad: null,
+        conOrden: false,
+    },
 });
+
+const modal = reactive({
+    show: false,
+    item: null,
+});
+const showModal = (show = false, productOrdenCompra = null, index = null) => {
+    modal.show = show;
+    modal.item = productOrdenCompra;
+    if (productOrdenCompra) {
+        form.productOrdenSelected.index = index;
+        form.productOrdenSelected.nombre = productOrdenCompra.nombre;
+        form.productOrdenSelected.cantidad = productOrdenCompra.cantidad;
+        form.productOrdenSelected.conOrden = productOrdenCompra.conOrden;
+    } else {
+        form.productOrdenSelected = {
+            index: null,
+            nombre: null,
+            cantidad: null,
+            conOrden: false,
+        };
+    }
+};
 
 const errors = computed(() => {
     if (errorsAxios.value) {
@@ -41,6 +73,8 @@ const localidadFiltered = ref(null);
 const proveedorSelected = ref(null);
 const proveedorFiltered = ref(null);
 const ordenComprasFiltered = ref(null);
+const mapProductsOrdenCompra = ref(null);
+
 const errorsAxios = ref(null);
 
 const formWizards = ref(null);
@@ -81,11 +115,54 @@ const addOrdenCompra = () => {
     }
 };
 
+const editarDetalle = (detalleCompra, index) => {
+    form.productOrdenSelected.index = index;
+    form.productOrdenSelected.nombre = detalleCompra.nombre;
+    form.productOrdenSelected.cantidad = detalleCompra.cantidad;
+    form.productOrdenSelected.conOrden = detalleCompra.conOrden;
+};
+
+const actualizarDetalle = () => {
+    if (
+        form.productOrdenSelected.conOrden ||
+        form.productOrdenSelected.index !== null
+    ) {
+        if (!form.productOrdenSelected.conOrden) {
+            form.productsWithoutOrdenCompra[
+                form.productOrdenSelected.index - form.lengthOrders
+            ].cantidad = form.productOrdenSelected.cantidad;
+            mapProductsOrdenCompra.value[
+                form.productOrdenSelected.index
+            ].cantidad = form.productOrdenSelected.cantidad;
+        } else {
+            mapProductsOrdenCompra.value[
+                form.productOrdenSelected.index
+            ].cantidad = form.productOrdenSelected.cantidad;
+        }
+    } else {
+        form.productsWithoutOrdenCompra.push({
+            nombre: form.productOrdenSelected.nombre,
+            cantidad: form.productOrdenSelected.cantidad,
+            conOrden: false,
+        });
+        mapProductsOrdenCompra.value.push({
+            nombre: form.productOrdenSelected.nombre,
+            cantidad: form.productOrdenSelected.cantidad,
+            conOrden: false,
+        });
+    }
+
+    form.productOrdenSelected = {
+        index: null,
+        nombre: null,
+        cantidad: null,
+        conOrden: false,
+    };
+};
 const goSecondTab = () => {
     axios
         .post(route("remito.process.head"), form)
-        .then((res) => {
-            console.log(res.data);
+        .then(() => {
             formWizards.value.nextTab();
         })
         .catch((err) => {
@@ -96,7 +173,38 @@ const goSecondTab = () => {
         });
 };
 
+const destroy = () => {
+    if (!form.productOrdenSelected.conOrden) {
+        form.productsWithoutOrdenCompra.splice(
+            form.productOrdenSelected.index - form.lengthOrders,
+            1
+        );
+        mapProductsOrdenCompra.value.splice(form.productOrdenSelected.index, 1);
+    } else {
+        mapProductsOrdenCompra.value.splice(form.productOrdenSelected.index, 1);
+    }
+    form.productOrdenSelected = {
+        index: null,
+        nombre: null,
+        cantidad: null,
+        conOrden: false,
+    };
+    showModal();
+};
+
 const goThirdTab = () => {
+    formWizards.value.nextTab();
+
+    mapProductsOrdenCompra.value = form.listOrdenCompras.flatMap((item) =>
+        item.detalle_orden_compra.map((detalle) => ({
+            nombre: detalle.producto.nombre,
+            cantidad: detalle.cantidad,
+            conOrden: true,
+        }))
+    );
+    form.lengthOrders = mapProductsOrdenCompra.value.length;
+};
+const goFourthTab = () => {
     formWizards.value.nextTab();
 };
 const onComplete = () => {
@@ -312,11 +420,9 @@ const onComplete = () => {
                             </CCol>
                             <CCol xs="5">
                                 <CFormInput
-                                    v-model="form.nombre"
+                                    v-model="form.productOrdenSelected.nombre"
                                     type="text"
-                                    placeholder="Numero remito"
-                                    :feedback="form.errors.nombre"
-                                    :invalid="form.errors.nombre"
+                                    placeholder="Nombre del producto"
                                 />
                             </CCol>
                         </CRow>
@@ -326,11 +432,9 @@ const onComplete = () => {
                             </CCol>
                             <CCol xs="5">
                                 <CFormInput
-                                    v-model="form.nombre"
+                                    v-model="form.productOrdenSelected.cantidad"
                                     type="text"
-                                    placeholder="Numero remito"
-                                    :feedback="form.errors.nombre"
-                                    :invalid="form.errors.nombre"
+                                    placeholder="Cantidad del producto"
                                 />
                             </CCol>
                         </CRow>
@@ -340,7 +444,7 @@ const onComplete = () => {
                     >
                         <CButton
                             type="button"
-                            @click="addOrdenCompra()"
+                            @click="actualizarDetalle()"
                             color="primary"
                             class="px-4 me-4"
                             shape="rounded-pill"
@@ -377,42 +481,108 @@ const onComplete = () => {
                                 </CTableRow>
                             </CTableHead>
                             <CTableBody>
+                                {{ form.productsWithoutOrdenCompra }}
                                 <CTableRow
-                                    v-for="ordenCompra in form.listOrdenCompras"
-                                    :key="ordenCompra.id"
                                     class="cell-center"
+                                    v-for="(
+                                        ordenCompraDetalle, index
+                                    ) in mapProductsOrdenCompra"
                                 >
                                     <CTableDataCell>
                                         <CircleButton
                                             class="ms-1"
                                             title="Eliminar"
                                             @click="
-                                                showModal(true, ordenCompra)
+                                                showModal(
+                                                    true,
+                                                    ordenCompraDetalle,
+                                                    index
+                                                )
                                             "
                                         >
                                             <span
                                                 class="fa-solid fa-trash-can"
                                             ></span>
                                         </CircleButton>
+                                        <CircleButton
+                                            class="ms-1"
+                                            title="Modificar"
+                                            @click="
+                                                editarDetalle(
+                                                    ordenCompraDetalle,
+                                                    index
+                                                )
+                                            "
+                                        >
+                                            <span
+                                                class="fa-solid fa-pen-to-square"
+                                            ></span>
+                                        </CircleButton>
                                     </CTableDataCell>
-                                    <CTableDataCell>{{
-                                        ordenCompra.descripcion
-                                    }}</CTableDataCell>
-                                    <CTableDataCell>{{
-                                        ordenCompra.created_at
-                                    }}</CTableDataCell>
                                     <CTableDataCell>
-                                        {{ form.fecha_ingreso }}
+                                        {{ ordenCompraDetalle.nombre }}
+                                    </CTableDataCell>
+                                    <CTableDataCell> </CTableDataCell>
+                                    <CTableDataCell>
+                                        {{ ordenCompraDetalle.cantidad }}
                                     </CTableDataCell>
                                 </CTableRow>
                             </CTableBody>
                         </CTable>
                         <div style="text-align: center">Agregar items.</div>
+
+                        <CButton
+                            type="button"
+                            @click="goFourthTab()"
+                            color="primary"
+                            class="px-4 me-4"
+                            shape="rounded-pill"
+                            title="Siguiente"
+                        >
+                            Siguiente
+                        </CButton>
                     </CCol>
                 </CRow>
-                {{ ordenComprasFiltered }}
             </CRow>
         </tab-content>
-        <tab-content title="Resumen" icon="fa fa-gear"> dafdsafd </tab-content>
+        <tab-content title="Resumen" icon="fa fa-gear">
+            Resumen
+            <div class="d-flex justify-content-between">
+                <h3>Cabecera</h3>
+                <h4>editar</h4>
+            </div>
+            <hr>
+
+        </tab-content>
     </form-wizard>
+    <Modal :visible="modal.show" @close="showModal()">
+        <template #header> Eliminar Producto de la orden de compra </template>
+        <CAlert color="warning">
+            <span>
+                <i class="fa-solid fa-trash-can m-2"></i>¿Estás seguro que deseas
+                eliminar el producto de la orden de compra?
+            </span>
+        </CAlert>
+        <CRow class="d-flex flex-column text-center">
+            <CCol>Nombre: {{ modal.item.nombre }}</CCol>
+            <CCol>Cantidad: {{ modal.item.cantidad }}</CCol>
+        </CRow>
+        <template #footer>
+            <CButton
+                color="danger"
+                shape="rounded-pill"
+                class="text-white"
+                @click="destroy"
+            >
+                Eliminar
+            </CButton>
+            <CButton
+                color="secondary"
+                shape="rounded-pill"
+                @click="showModal()"
+            >
+                Cancelar
+            </CButton>
+        </template>
+    </Modal>
 </template>

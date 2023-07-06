@@ -6,6 +6,7 @@ export const useOrdenCompraStore = defineStore("remito", {
         proveedor_id: null,
         localidad_id: null,
         fecha_ingreso: null,
+        
     }),
 
     getters: {},

@@ -13,6 +13,7 @@ const props = defineProps({
     localidades: Array,
     proveedores: Array,
     ordenCompras: Array,
+    productos: Array,
 });
 </script>
 
@@ -22,6 +23,7 @@ const props = defineProps({
             :localidades="props.localidades"
             :proveedores="props.proveedores"
             :ordenCompras="props.ordenCompras"
+            :productos="props.productos"
             :form="form"
         />
         <!-- <CForm @submit.prevent="submit">
