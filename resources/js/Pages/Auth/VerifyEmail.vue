@@ -48,7 +48,7 @@
 import { defineComponent } from "vue";
 import JetAuthenticationCard from "@/Jetstream/AuthenticationCard.vue"
 import JetAuthenticationCardLogo from "@/Jetstream/AuthenticationCardLogo.vue"
-import JetButton from "@/Jetstream/Button.vue"
+import JetButton from "../../Components/CircleButton.vue"
 import { Head, Link } from "@inertiajs/inertia-vue3"
 
 export default defineComponent({

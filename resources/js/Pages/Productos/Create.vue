@@ -118,7 +118,7 @@ const back = () => {
             :invalid="form.errors.retencion_ganancia_id">
             <option :value="''">Seleccione una opción</option>
             <option v-for="retencionGanancia in props.retencionGanancias" :key="retencionGanancia.id" :value="retencionGanancia.id">
-              {{ retencionGanancia.codigo }}
+              {{ retencionGanancia.tipo }}
             </option>
           </CFormSelect>
         </CCol>
