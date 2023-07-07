@@ -34,3 +34,7 @@ Route::patch('/orden-compras/{ordenCompra}', [OrdenCompraController::class, 'upd
 Route::delete('orden-compras/{ordenCompra}', [OrdenCompraController::class, 'destroy'])
     ->name('orden.compras.destroy')
     ->middleware('permission:orden.compras.destroy');
+
+Route::get('orden-compras/{ordenCompra}/download', [OrdenCompraController::class, 'downloadPdf'])
+    ->name('orden.compras.download.pdf');
+

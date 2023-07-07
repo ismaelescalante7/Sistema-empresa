@@ -16,8 +16,12 @@ const { getErrorMessage, getBooleanError } = Errors()
 const props = defineProps({
   proveedores: Array,
   condicionesPagos: Array,
-  productos: Array
+  productos: Array,
+  ordenCompra: Object
 })
+
+const ordenCompra = useOrdenCompraStore();
+ordenCompra.fill(props.ordenCompra)
 
 const tabPaneActiveKey = ref(1)
 
@@ -44,7 +48,7 @@ const changeTabNext = (flag) => {
 </script>
 
 <template>
-  <AppLayout :breadcrumb="breadcrumbs.ordenComprasCreate">
+  <AppLayout :breadcrumb="breadcrumbs.ordenComprasUpdate">
     <CNav variant="tabs" role="tablist">
     <CNavItem>
       <CNavLink

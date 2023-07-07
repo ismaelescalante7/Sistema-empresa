@@ -7,7 +7,7 @@ import FormLabel from '@/Components/Form/FormLabel.vue'
 import Tab from '../../Components/Tab.vue'
 import tabs from '../../Data/OrdenCompra/Tabs.js'
 import FormInputAutocomplete from  '../../Components/Form/FormInputAutocomplete.vue'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import Errors from '../../Utils/formatError'
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
 const { getErrorMessage, getBooleanError } = Errors()
@@ -52,7 +52,14 @@ const errors = computed(() => {
   return props.errors
 })
 
-const proveedorFiltered = ref(null)
+const proveedorFiltered = ref(proveedor.value)
+
+onMounted(() => {
+  if(proveedor_id.value){
+    selection(proveedorFiltered.value)
+  }
+})
+
 
 const selection = (proveedorFiltered) => {
   proveedor_id.value = proveedorFiltered.id
@@ -102,7 +109,7 @@ function condicionPagoById(condicionPagoId) {
               v-model="condiciones_pagos_id" 
               :feedback="getErrorMessage(errors?.condiciones_pagos_id)"
               :invalid="getBooleanError(errors?.condiciones_pagos_id)"
-               @update:modelValue = "condicionPagoById"
+              @update:modelValue = "condicionPagoById"
             >
               <option :value="''">Seleccione una opción</option>
               <option v-for="condicionPago in props.condicionesPagos" :key="condicionPago.id" :value="condicionPago.id">

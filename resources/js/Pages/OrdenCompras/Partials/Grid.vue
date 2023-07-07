@@ -27,6 +27,10 @@ const destroy = () => {
   showModal()
 }
 
+const dowloadPdf = (ordenCompraId) => {
+  Inertia.get(route('orden.compras.download.pdf', ordenCompraId))
+}
+
 const show = (ordenCompraId) => {
   Inertia.get(route('orden.compras.show', ordenCompraId))
 }
@@ -37,7 +41,8 @@ const show = (ordenCompraId) => {
   <CTable class="mt-3">
     <CTableHead>
       <CTableRow color="secondary">
-        <CTableHeaderCell scope="col" class="col-sm-2"></CTableHeaderCell>
+        <CTableHeaderCell scope="col" class="col-sm-3"></CTableHeaderCell>
+        <CTableHeaderCell scope="col" class="col-sm-3">Proveedor</CTableHeaderCell>
         <CTableHeaderCell scope="col" class="col-sm-3">Descripcion</CTableHeaderCell>
         <CTableHeaderCell scope="col" class="col-sm-2">Total</CTableHeaderCell>
         <CTableHeaderCell scope="col" class="col-sm-2">Neto</CTableHeaderCell>
@@ -76,7 +81,19 @@ const show = (ordenCompraId) => {
           >
             <span class="fa-solid fa-trash-can"></span>
           </CircleButton>
+          <a :href="route('orden.compras.download.pdf', ordenCompra.id)" 
+          target="__blank">
+          <i class="fa-solid fa-file-pdf"></i>
+          </a>
+          <CircleButton
+            class="ms-1"
+            title="Generar pdf"
+            @click="dowloadPdf(ordenCompra.id)"
+          >
+            <i class="fa-solid fa-file-pdf"></i>
+          </CircleButton>
         </CTableDataCell>
+        <CTableDataCell>{{ ordenCompra.proveedor.razon_social }}</CTableDataCell>
         <CTableDataCell>{{ ordenCompra.descripcion }}</CTableDataCell>
         <CTableDataCell>{{ ordenCompra.total }}</CTableDataCell>
         <CTableDataCell>{{ ordenCompra.neto }}</CTableDataCell>

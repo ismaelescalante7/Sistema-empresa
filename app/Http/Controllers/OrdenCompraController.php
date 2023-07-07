@@ -13,6 +13,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\App;
 
 class OrdenCompraController extends Controller
 {
@@ -20,6 +22,7 @@ class OrdenCompraController extends Controller
     {
         $filters = $request->only(['descripcion']);
         $ordenCompras = OrdenCompra::where('descripcion', 'like', "%{$request->get('descripcion')}%")
+            ->with('proveedor')
             ->orderBy('descripcion')
             ->paginate(config('custom.pagination.per_page'));
 
@@ -75,9 +78,12 @@ class OrdenCompraController extends Controller
 
     public function edit(OrdenCompra $ordenCompra): Response
     {
+        $ordenCompra->load(['proveedor', 'condicionesPago', 'detalleOrdenCompra.producto']);
         $proveedores = Proveedor::all();
         $condicionesPagos = CondicionesPago::all();
-        return Inertia::render('OrdenCompras/Update', compact('ordenCompra', 'proveedores', 'condicionesPagos'));
+        $productos = Producto::all();
+        return Inertia::render('OrdenCompras/UpdateMain', compact(['ordenCompra', 'proveedores',
+        'condicionesPagos','productos']));
     }
 
     public function update(OrdenCompra $ordenCompra, OrdenCompraStoreRequest $request): RedirectResponse
@@ -111,5 +117,12 @@ class OrdenCompraController extends Controller
         }
 
         return redirect()->route('orden.compras.index');
+    }
+
+    public function downloadPdf(OrdenCompra $ordenCompra ) 
+    {
+        $ordenCompra->load(['proveedor', 'condicionesPago', 'detalleOrdenCompra.producto']);
+        $pdf = Pdf::loadView('ejemplo', compact('ordenCompra'));
+        return $pdf->stream();
     }
 }
