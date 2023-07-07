@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RemitoStoreRequest;
 use App\Models\Localidad;
 use App\Models\OrdenCompra;
+use App\Models\Producto;
 use App\Models\Proveedor;
 use App\Models\Remito;
 use Illuminate\Http\RedirectResponse;
@@ -27,10 +28,12 @@ class RemitoController extends Controller
 
     public function create(): Response
     {
+        $user = auth()->user();
         $localidades = Localidad::all();
         $proveedores = Proveedor::all();
-        $ordenCompras = OrdenCompra::all();
-        return Inertia::render('Remitos/Create', compact('localidades', 'proveedores','ordenCompras'));
+        $productos = Producto::all();
+        $ordenCompras = OrdenCompra::with('detalleOrdenCompra.producto')->get();
+        return Inertia::render('Remitos/Create', compact('localidades', 'proveedores','ordenCompras','productos', 'user'));
     }
 
     public function store(RemitoStoreRequest $request): RedirectResponse

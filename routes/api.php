@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::name('api.')->middleware('auth:sanctum')->group(function () {
     // @TODO create protected endpoints
 
-/*     Route::get(
+    /*     Route::get(
         '/orden-compra/process-head',
         [\App\Http\Controllers\Api\OrdenCompraController::class, 'processHead']
     )->name('orden.compra.process.head'); */
@@ -35,6 +35,11 @@ Route::post(
     '/orden-compra/process-head',
     [\App\Http\Controllers\Api\OrdenCompraController::class, 'processHead']
 )->name('orden.compra.process.head');
+
+
+Route::post('/orden-compra/process-detalle', [\App\Http\Controllers\Api\OrdenCompraController::class, 'processDetalle'])->name('orden.compra.process.detalle');
+
+Route::post('/validateRemito', [\App\Http\Controllers\Api\RemitoController::class, 'processHead'])->name('remito.process.head');
 
 Route::post(
     '/validateRemito',

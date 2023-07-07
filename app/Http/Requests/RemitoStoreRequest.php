@@ -26,7 +26,8 @@ class RemitoStoreRequest extends FormRequest
         return [
             'fecha_ingreso' => [
                 'required',
-                'date'
+                'date',
+                'after_or_equal:today'
             ],
             'proveedor_id' => [
                 'required',

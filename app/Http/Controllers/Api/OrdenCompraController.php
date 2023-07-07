@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrdenCompraDetalleStoreRequest;
 use App\Http\Requests\OrdenCompraHeadStoreRequest;
+use App\Models\DetalleOrdenCompra;
 
 class OrdenCompraController extends Controller
 {
