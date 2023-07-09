@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('remitos', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('numero');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('proveedor_id')->constrained('proveedors');
             $table->foreignId('localidad_id')->constrained('localidades');

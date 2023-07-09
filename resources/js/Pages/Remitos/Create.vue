@@ -14,12 +14,14 @@ const props = defineProps({
     proveedores: Array,
     ordenCompras: Array,
     productos: Array,
+    user: Object,
 });
 </script>
 
 <template>
     <AppLayout :breadcrumb="breadcrumbs.remitosCreate" title="Nuevo Remito">
         <FormWizard
+            :user="props.user"
             :localidades="props.localidades"
             :proveedores="props.proveedores"
             :ordenCompras="props.ordenCompras"

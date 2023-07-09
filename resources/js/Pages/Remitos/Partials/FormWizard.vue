@@ -3,7 +3,6 @@ import { FormWizard, TabContent } from "vue3-form-wizard";
 import "vue3-form-wizard/dist/style.css";
 import FormLabel from "@/Components/Form/FormLabel.vue";
 import FormInputAutocomplete from "@/Components/Form/FormInputAutocomplete.vue";
-import "vue-select/dist/vue-select.css";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { computed, reactive, ref, onMounted } from "vue";
 import Errors from "@/Utils/formatError";
@@ -11,6 +10,7 @@ import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import CircleButton from "@/Components/CircleButton.vue";
 import Modal from "@/Components/Modal.vue";
+import { Inertia } from '@inertiajs/inertia'
 
 const { getErrorMessage, getBooleanError } = Errors();
 
@@ -20,45 +20,25 @@ const props = defineProps({
     ordenCompras: Array,
     productos: Array,
     form: Object,
+    user: Object,
 });
 
 const form = useForm({
-    nombre: null,
+    numero: null,
     localidad_id: null,
     proveedor_id: null,
     fecha_ingreso: null,
-    listOrdenCompras: [],
-    selectedOrdenCompra: null,
-    lengthOrders: 0,
-    productsWithoutOrdenCompra: [],
-    productOrdenSelected: {
-        index: null,
-        nombre: null,
-        cantidad: null,
-        conOrden: false,
-    },
+    user_id: props.user.id,
+    detalles: [],
 });
 
 const modal = reactive({
     show: false,
     item: null,
 });
-const showModal = (show = false, productOrdenCompra = null, index = null) => {
+const showModal = (show = false, productOrdenCompra = null) => {
     modal.show = show;
     modal.item = productOrdenCompra;
-    if (productOrdenCompra) {
-        form.productOrdenSelected.index = index;
-        form.productOrdenSelected.nombre = productOrdenCompra.nombre;
-        form.productOrdenSelected.cantidad = productOrdenCompra.cantidad;
-        form.productOrdenSelected.conOrden = productOrdenCompra.conOrden;
-    } else {
-        form.productOrdenSelected = {
-            index: null,
-            nombre: null,
-            cantidad: null,
-            conOrden: false,
-        };
-    }
 };
 
 const errors = computed(() => {
@@ -72,18 +52,43 @@ const localidadSelected = ref(null);
 const localidadFiltered = ref(null);
 const proveedorSelected = ref(null);
 const proveedorFiltered = ref(null);
-const ordenComprasFiltered = ref(null);
-const mapProductsOrdenCompra = ref(null);
+const productoSelected = ref(null);
+const productoFiltered = ref(null);
 
+const ordenComprasFiltered = ref(null);
+const ordenCompraSelected = ref(null);
+const detalle = ref({});
+
+detalle.value = {
+    producto_id: null,
+    orden_compra_id: null,
+    cantidad_pendiente: 0,
+    cantidad: 0,
+    nombre: null,
+};
+
+ordenComprasFiltered.value = props.ordenCompras;
+
+const mapProductsOrdenCompra = ref(null);
+const productOrdenSelected = {
+    index: null,
+    id: null,
+    nombre: null,
+    cantidad: null,
+    conOrden: false,
+};
+const listOrdenCompras = ref([]);
 const errorsAxios = ref(null);
 
 const formWizards = ref(null);
 
+const ordenesDeCompra = computed(() => {
+    return listOrdenCompras.value;
+});
+
 onMounted(() => {
     form.fecha_ingreso = new Date().toISOString().slice(0, 10);
 });
-
-ordenComprasFiltered.value = props.ordenCompras;
 
 const selectionLocalidad = (localidadFiltered) => {
     form.localidad_id = localidadFiltered.id;
@@ -99,66 +104,70 @@ const selectionProveedor = (proveedorFiltered) => {
     );
 };
 
-const addOrdenCompra = () => {
+const selectionProducto = (productoFiltered) => {
+    detalle.value.producto_id = productoFiltered.id;
+    detalle.value.nombre = productoFiltered.nombre;
+    productoSelected.value = props.productos.find(
+        (item) => item.id === productoFiltered.id
+    );
+};
+
+const agregarOrdenCompra = () => {
     const OrdenCompra = ordenComprasFiltered.value.find(
-        (item) => item.id == form.selectedOrdenCompra.id
+        (item) => item.id == ordenCompraSelected.value.id
     );
     if (OrdenCompra) {
-        form.listOrdenCompras.push(OrdenCompra);
+        listOrdenCompras.value.push(OrdenCompra);
         const index = ordenComprasFiltered.value.indexOf(OrdenCompra);
         if (index !== -1) {
             ordenComprasFiltered.value.splice(index, 1);
         }
-        form.selectedOrdenCompra = null;
+        ordenCompraSelected.value = null;
     } else {
         console.log("No encontrado");
     }
 };
 
-const editarDetalle = (detalleCompra, index) => {
-    form.productOrdenSelected.index = index;
-    form.productOrdenSelected.nombre = detalleCompra.nombre;
-    form.productOrdenSelected.cantidad = detalleCompra.cantidad;
-    form.productOrdenSelected.conOrden = detalleCompra.conOrden;
+const agregarProducto = () => {
+    axios
+        .post(route("remito.process.detalle"), detalle.value)
+        .then((res) => {
+            form.detalles.push(res.data);
+            productoSelected.value = null;
+
+            detalle.value.producto_id = null;
+            detalle.value.orden_compra_id = null;
+            detalle.value.cantidad_pendiente = 0;
+            detalle.value.cantidad = 0;
+            detalle.value.nombre = null;
+        })
+        .catch((err) => {
+            const status = err.response.status;
+            if (status === 422) {
+                errorsAxios.value = err.response.data.errors;
+            }
+        });
 };
 
-const actualizarDetalle = () => {
-    if (
-        form.productOrdenSelected.conOrden ||
-        form.productOrdenSelected.index !== null
-    ) {
-        if (!form.productOrdenSelected.conOrden) {
-            form.productsWithoutOrdenCompra[
-                form.productOrdenSelected.index - form.lengthOrders
-            ].cantidad = form.productOrdenSelected.cantidad;
-            mapProductsOrdenCompra.value[
-                form.productOrdenSelected.index
-            ].cantidad = form.productOrdenSelected.cantidad;
-        } else {
-            mapProductsOrdenCompra.value[
-                form.productOrdenSelected.index
-            ].cantidad = form.productOrdenSelected.cantidad;
-        }
+const EliminarDetalle = () => {
+    if (!productOrdenSelected.conOrden) {
+        form.productsWithoutOrdenCompra.splice(
+            productOrdenSelected.index - form.lengthOrders,
+            1
+        );
+        mapProductsOrdenCompra.value.splice(productOrdenSelected.index, 1);
     } else {
-        form.productsWithoutOrdenCompra.push({
-            nombre: form.productOrdenSelected.nombre,
-            cantidad: form.productOrdenSelected.cantidad,
-            conOrden: false,
-        });
-        mapProductsOrdenCompra.value.push({
-            nombre: form.productOrdenSelected.nombre,
-            cantidad: form.productOrdenSelected.cantidad,
-            conOrden: false,
-        });
+        mapProductsOrdenCompra.value.splice(productOrdenSelected.index, 1);
     }
-
-    form.productOrdenSelected = {
+    productOrdenSelected = {
         index: null,
         nombre: null,
         cantidad: null,
         conOrden: false,
     };
+    showModal();
 };
+
 const goSecondTab = () => {
     axios
         .post(route("remito.process.head"), form)
@@ -173,42 +182,24 @@ const goSecondTab = () => {
         });
 };
 
-const destroy = () => {
-    if (!form.productOrdenSelected.conOrden) {
-        form.productsWithoutOrdenCompra.splice(
-            form.productOrdenSelected.index - form.lengthOrders,
-            1
-        );
-        mapProductsOrdenCompra.value.splice(form.productOrdenSelected.index, 1);
-    } else {
-        mapProductsOrdenCompra.value.splice(form.productOrdenSelected.index, 1);
-    }
-    form.productOrdenSelected = {
-        index: null,
-        nombre: null,
-        cantidad: null,
-        conOrden: false,
-    };
-    showModal();
-};
-
 const goThirdTab = () => {
     formWizards.value.nextTab();
 
-    mapProductsOrdenCompra.value = form.listOrdenCompras.flatMap((item) =>
+    form.detalles = listOrdenCompras.value.flatMap((item) =>
         item.detalle_orden_compra.map((detalle) => ({
+            producto_id: detalle.producto.id,
             nombre: detalle.producto.nombre,
             cantidad: detalle.cantidad,
-            conOrden: true,
+            cantidad_restante: 0,
+            orden_compra_id: detalle.orden_compra_id,
         }))
     );
-    form.lengthOrders = mapProductsOrdenCompra.value.length;
 };
 const goFourthTab = () => {
     formWizards.value.nextTab();
 };
 const onComplete = () => {
-    alert("finalizado");
+    form.post(route('remitos.store'))
 };
 </script>
 
@@ -226,11 +217,11 @@ const onComplete = () => {
                 </CCol>
                 <CCol xs="3">
                     <CFormInput
-                        v-model="form.nombre"
+                        v-model="form.numero"
                         type="text"
                         placeholder="Numero remito"
-                        :feedback="form.errors.nombre"
-                        :invalid="form.errors.nombre"
+                        :feedback="getErrorMessage(errors?.numero)"
+                        :invalid="getBooleanError(errors?.numero)"
                     />
                 </CCol>
             </CRow>
@@ -240,7 +231,7 @@ const onComplete = () => {
                 </CCol>
                 <CCol xs="3">
                     <CFormInput
-                        v-model="props.form.user"
+                        v-model="props.user.name"
                         type="text"
                         placeholder="Usuario"
                         :feedback="props.form.errors.user"
@@ -294,8 +285,8 @@ const onComplete = () => {
                     <CFormInput
                         v-model.lazy="form.fecha_ingreso"
                         type="date"
-                        :feedback="getErrorMessage(errors?.fecha_ingreso)"
-                        :invalid="getBooleanError(errors?.fecha_ingreso)"
+                        :feedback="getErrorMessage(errors?.form.fecha_ingreso)"
+                        :invalid="getBooleanError(errors?.form.fecha_ingreso)"
                     ></CFormInput>
                 </CCol>
             </CRow>
@@ -315,19 +306,18 @@ const onComplete = () => {
                 <CRow class="my-3">
                     <CCol xs="5">
                         <CFormLabel>Orden de compra</CFormLabel>
-                        <vSelect
+                        <v-select
                             label="id"
                             :options="ordenComprasFiltered"
-                            v-model="form.selectedOrdenCompra"
-                            :value="form.selectedOrdenCompra"
-                        ></vSelect>
+                            v-model="ordenCompraSelected"
+                        ></v-select>
                     </CCol>
                     <CCol
                         class="d-flex align-items-end justify-content-end btn-margin"
                     >
                         <CButton
                             type="button"
-                            @click="addOrdenCompra()"
+                            @click="agregarOrdenCompra()"
                             color="primary"
                             class="px-4 me-4"
                             shape="rounded-pill"
@@ -365,7 +355,7 @@ const onComplete = () => {
                             </CTableHead>
                             <CTableBody>
                                 <CTableRow
-                                    v-for="ordenCompra in form.listOrdenCompras"
+                                    v-for="ordenCompra in ordenesDeCompra"
                                     :key="ordenCompra.id"
                                     class="cell-center"
                                 >
@@ -416,13 +406,22 @@ const onComplete = () => {
                         <CFormLabel>Detalle de compras</CFormLabel>
                         <CRow class="my-3">
                             <CCol xs="5" style="text-align: right">
-                                <FormLabel required>Articulo</FormLabel>
+                                <FormLabel required>Producto</FormLabel>
                             </CCol>
                             <CCol xs="5">
-                                <CFormInput
-                                    v-model="form.productOrdenSelected.nombre"
-                                    type="text"
-                                    placeholder="Nombre del producto"
+                                <FormInputAutocomplete
+                                    label="nombre"
+                                    value="id"
+                                    :items="
+                                        props.productos.map(
+                                            ({ nombre, id }) => ({
+                                                nombre,
+                                                id,
+                                            })
+                                        )
+                                    "
+                                    :key="productoFiltered"
+                                    @onSelect="selectionProducto"
                                 />
                             </CCol>
                         </CRow>
@@ -432,9 +431,19 @@ const onComplete = () => {
                             </CCol>
                             <CCol xs="5">
                                 <CFormInput
-                                    v-model="form.productOrdenSelected.cantidad"
+                                    v-model="detalle.cantidad"
                                     type="text"
                                     placeholder="Cantidad del producto"
+                                    :feedback="
+                                        getErrorMessage(
+                                            errors?.detalle.cantidad
+                                        )
+                                    "
+                                    :invalid="
+                                        getBooleanError(
+                                            errors?.detalle.cantidad
+                                        )
+                                    "
                                 />
                             </CCol>
                         </CRow>
@@ -444,7 +453,7 @@ const onComplete = () => {
                     >
                         <CButton
                             type="button"
-                            @click="actualizarDetalle()"
+                            @click="agregarProducto()"
                             color="primary"
                             class="px-4 me-4"
                             shape="rounded-pill"
@@ -481,12 +490,11 @@ const onComplete = () => {
                                 </CTableRow>
                             </CTableHead>
                             <CTableBody>
-                                {{ form.productsWithoutOrdenCompra }}
                                 <CTableRow
                                     class="cell-center"
                                     v-for="(
                                         ordenCompraDetalle, index
-                                    ) in mapProductsOrdenCompra"
+                                    ) in form.detalles"
                                 >
                                     <CTableDataCell>
                                         <CircleButton
@@ -507,12 +515,7 @@ const onComplete = () => {
                                         <CircleButton
                                             class="ms-1"
                                             title="Modificar"
-                                            @click="
-                                                editarDetalle(
-                                                    ordenCompraDetalle,
-                                                    index
-                                                )
-                                            "
+                                            @click="agregarProducto"
                                         >
                                             <span
                                                 class="fa-solid fa-pen-to-square"
@@ -551,16 +554,50 @@ const onComplete = () => {
                 <h3>Cabecera</h3>
                 <h4>editar</h4>
             </div>
-            <hr>
+            <hr />
+            <CRow>
+                <CCol>Numero remito</CCol>
+                <CCol> numero </CCol>
+            </CRow>
+            <CRow>
+                <CCol>Usuario</CCol>
+                <CCol>{{ props.user.name }}</CCol>
+            </CRow>
+            <CRow>
+                <CCol>Fecha</CCol>
+                <CCol> Fecha </CCol>
+            </CRow>
+            <CRow>
+                <CCol>Proveedor</CCol>
+                <CCol> {{ proveedorSelected?.razon_social }} </CCol>
+            </CRow>
+            <CRow>
+                <CCol>Sucursal</CCol>
+                <CCol> {{ localidadSelected?.nombre }} </CCol>
+            </CRow>
+            <CRow>
+                <CCol>Fecha ingreso</CCol>
+                <CCol> Fecha ingreso </CCol>
+            </CRow>
 
+            <CButton
+                type="button"
+                @click="onComplete()"
+                color="primary"
+                class="px-4 me-4"
+                shape="rounded-pill"
+                title="Terminar"
+            >
+                Terminar
+            </CButton>
         </tab-content>
     </form-wizard>
     <Modal :visible="modal.show" @close="showModal()">
         <template #header> Eliminar Producto de la orden de compra </template>
         <CAlert color="warning">
             <span>
-                <i class="fa-solid fa-trash-can m-2"></i>¿Estás seguro que deseas
-                eliminar el producto de la orden de compra?
+                <i class="fa-solid fa-trash-can m-2"></i>¿Estás seguro que
+                deseas eliminar el producto de la orden de compra?
             </span>
         </CAlert>
         <CRow class="d-flex flex-column text-center">
@@ -572,7 +609,7 @@ const onComplete = () => {
                 color="danger"
                 shape="rounded-pill"
                 class="text-white"
-                @click="destroy"
+                @click="EliminarDetalle"
             >
                 Eliminar
             </CButton>
