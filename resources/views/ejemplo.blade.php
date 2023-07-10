@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<title>Factura</title>
+	<title>Orden Compra</title>
 
 
 	<style>
@@ -146,6 +146,7 @@
 					<table>
 						<tr>
 							<td class="title">
+								<img src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('/icono.png'))) }}" style="height: 130px;" alt="Company logo" >
 							</td>
 
 							<td>
@@ -192,7 +193,7 @@
 				<th>Codigo</th>
 				<th>Nombre</th>
 				<th>Cantidad</th>
-				<th>Costo (hrs)</th>
+				<th>Costo</th>
 				<th>Alicuota</th>
 				<th>Subtotal</th>
 				<th>Subtotal(Impuestos)</th>
@@ -208,6 +209,13 @@
                     <td>{{ $detalle->subtotal_impuestos }}</td>
                 </tr>
 			@endforeach
+		</table>
+		<table>
+			<tr>
+				<th colspan="4"><b>Neto:</b> {{ $ordenCompra->neto }}</th>
+				<th colspan="4"><b>Iva:</b> {{ $ordenCompra->iva }}</th>
+				<th colspan="4"><b>Total:</b> {{ $ordenCompra->total }}</th>
+			</tr>
 		</table>
         @endif
 	</div>

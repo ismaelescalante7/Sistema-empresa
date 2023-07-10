@@ -28,7 +28,7 @@ const destroy = () => {
 }
 
 const dowloadPdf = (ordenCompraId) => {
-  Inertia.get(route('orden.compras.download.pdf', ordenCompraId))
+  window.open(route('orden.compras.download.pdf', ordenCompraId),"_blank")
 }
 
 const show = (ordenCompraId) => {
@@ -81,10 +81,6 @@ const show = (ordenCompraId) => {
           >
             <span class="fa-solid fa-trash-can"></span>
           </CircleButton>
-          <a :href="route('orden.compras.download.pdf', ordenCompra.id)" 
-          target="__blank">
-          <i class="fa-solid fa-file-pdf"></i>
-          </a>
           <CircleButton
             class="ms-1"
             title="Generar pdf"
