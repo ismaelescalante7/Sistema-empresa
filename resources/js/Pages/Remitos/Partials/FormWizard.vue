@@ -7,7 +7,6 @@ import { useForm } from "@inertiajs/inertia-vue3";
 import { computed, reactive, ref, onMounted } from "vue";
 import Errors from "@/Utils/formatError";
 import vSelect from "vue-select";
-import "vue-select/dist/vue-select.css";
 import CircleButton from "@/Components/CircleButton.vue";
 import Modal from "@/Components/Modal.vue";
 import { Inertia } from '@inertiajs/inertia'

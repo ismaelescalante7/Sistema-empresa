@@ -15,6 +15,13 @@ export const useOrdenCompraDetalleStore = defineStore("ordenCompraDetalle", {
   state: () => ({ ...defaultState }),
 
   getters: {
+    getData() {
+      return ({
+        'producto_id' : this.producto_id,
+        'precio_compra' : this.precio_compra,
+        'cantidad': this.cantidad,
+      })
+    },
     getDetalle(state) {
         return {
           'producto_id' : state.producto_id,
@@ -39,6 +46,12 @@ export const useOrdenCompraDetalleStore = defineStore("ordenCompraDetalle", {
   },
 
   actions: {
+    parseFloarPrecioCompra(){
+      this.precio_compra = parseFloat(this.precio_compra)
+    },
+    parseFloarPrecioImpuesto(){
+      this.precio_impuesto = parseFloat(this.precio_impuesto)
+    },
     reset(keys) {
       Object.assign(this, keys?.length
         ? pick(defaultState, keys)

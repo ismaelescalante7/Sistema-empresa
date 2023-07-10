@@ -16,7 +16,6 @@ import { iconsSet as icons } from '@/assets/icons'
 import CoreuiVue from '@coreui/vue'
 import {Tabs, Tab} from 'vue3-tabs-component';
 
-
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({

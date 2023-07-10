@@ -6,7 +6,6 @@ import { useForm } from '@inertiajs/inertia-vue3'
 import FormLabel from '@/Components/Form/FormLabel.vue'
 import Tab from '../../Components/Tab.vue'
 import tabs from '../../Data/OrdenCompra/Tabs.js'
-import FormInputAutocomplete from  '../../Components/Form/FormInputAutocomplete.vue'
 import { computed, reactive, ref } from 'vue'
 import CircleButton from '../../Components/CircleButton.vue'
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
@@ -14,6 +13,8 @@ import {useOrdenCompraDetalleStore} from '../../store/useDetalleOrdenCompra'
 import Errors from '../../Utils/formatError'
 import Modal from  '../../Components/Modal.vue'
 import showNotification from '../../Utils/notification'
+import { storeToRefs } from 'pinia'
+import vSelect from "vue-select";
 
 const { getErrorMessage, getBooleanError } = Errors()
 
@@ -24,12 +25,12 @@ const props = defineProps({
 })
 
 const detalleOrdenCompra = useOrdenCompraDetalleStore();
-
-const form = useForm({
-  producto_id: null,
-  cantidad: null,
-  precio_compra: null
-})
+const { 
+  producto_id,
+  cantidad,
+  precio_compra,
+  producto
+} = storeToRefs(detalleOrdenCompra)
 
 const ordenCompra = useOrdenCompraStore();
 
@@ -44,6 +45,10 @@ const errors = computed(() => {
   return props.errors
 })
 
+const resetErrors = () => {
+  errorsAxios.value = {}
+}
+
 
 const submit = () => {
   form.post(route('orden.compras.store'))
@@ -56,12 +61,11 @@ const back = () => {
 const productoSelected = ref(null)
 const productoFiltered = ref(null)
 const listProductos = reactive([])
-const producto = ref(null)
 
-const selection = (productoFiltered) => {
-  form.producto_id = productoFiltered.id
-  productoSelected.value = props.productos.find(item => item.id === productoFiltered.id)
-  form.precio_compra = productoSelected.value.precio_compra 
+const whileSelection = (productoFiltered) => {
+  producto_id.value = productoFiltered.id
+  producto.value = props.productos.find(item => item.id === productoFiltered.id)
+  precio_compra.value = producto.value.precio_compra 
 }
 
 const addProducto = () => {
@@ -69,23 +73,21 @@ const addProducto = () => {
 }
 
 const addDetalleStore = () => {
-  detalleOrdenCompra.$state.producto_id = form.producto_id
-  detalleOrdenCompra.$state.precio_compra = parseFloat(form.precio_compra)
-  detalleOrdenCompra.$state.cantidad = parseInt(form.cantidad)
-  detalleOrdenCompra.$state.producto = productoSelected.value
+  detalleOrdenCompra.parseFloarPrecioCompra()
+  detalleOrdenCompra.parseFloarPrecioImpuesto()
   detalleOrdenCompra.cacularSubtotal()
   detalleOrdenCompra.cacularSubtotalConImpuestos()
 }
 
 const createDetalle = () => {
-  axios.post(route('orden.compra.process.detalle'), form)
+  axios.post(route('orden.compra.process.detalle'), detalleOrdenCompra.getData)
     .then((res) => {
-      if (!ordenCompra.existeDetalle(form.producto_id))
+      if (!ordenCompra.existeDetalle(producto_id))
       {
-        productoSelected.value['cantidad'] = form.cantidad
         addDetalleStore()
         ordenCompra.addDetalle(detalleOrdenCompra.getDetalle)
-        form.reset()
+        detalleOrdenCompra.reset()
+        resetErrors()
         showNotification(
         'Detalle Orden de Compra',
         'El producto fue agregado exitosamente.', 
@@ -137,24 +139,27 @@ const changeTabNext = () => {
   <CRow class="my-3">
     <CCol xs="5">
         <CFormLabel>Producto</CFormLabel>
-        <FormInputAutocomplete
-            label="nombre"
-            value="id"
-            :items="props.productos.map(({nombre, id}) => ({nombre, id}))"
-            :key="productoFiltered"
-            @onSelect="selection"
-            :error="getErrorMessage(errors?.producto_id)"
-        />
+        <vSelect
+          v-model="producto"
+          :options="props.productos"
+          label="nombre"
+          :class="{ 'is-invalid': errors?.producto_id }"
+          @option:selected="whileSelection"
+        >
+          <template #no-options="{ search, searching, loading }">
+            Sin resultados
+          </template>
+        </vSelect>
     </CCol>
     <CCol>
       <FormLabel required>Cantidad</FormLabel>
-      <CFormInput v-model="form.cantidad" type="number" placeholder="Cantidad"
+      <CFormInput v-model="cantidad" type="number" placeholder="Cantidad"
         :feedback="getErrorMessage(errors?.cantidad)" :invalid="getBooleanError(errors?.cantidad)" 
         />
     </CCol>
     <CCol>
       <FormLabel required>Monto</FormLabel>
-      <CFormInput v-model="form.precio_compra" type="number" step="any" placeholder="Monto"
+      <CFormInput v-model="precio_compra" type="number" step="any" placeholder="Monto"
         :feedback="getErrorMessage(errors?.precio_compra)" :invalid="getBooleanError(errors?.precio_compra)" 
         />
     </CCol>
