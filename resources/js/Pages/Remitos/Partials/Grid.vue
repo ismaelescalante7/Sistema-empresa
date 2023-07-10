@@ -3,6 +3,7 @@ import { Inertia } from '@inertiajs/inertia'
 import CircleButton from '../../../Components/CircleButton.vue'
 import { hasPermission } from '../../../Helpers/permissions'
 import Modal from '../../../Components/Modal.vue'
+import {dateFormat} from '../../../Utils/format'
 import { reactive } from 'vue'
 
 const props = defineProps({
@@ -65,10 +66,10 @@ const destroy = () => {
             <span class="fa-solid fa-trash-can"></span>
           </CircleButton>
         </CTableDataCell>
-        <CTableDataCell>{{ remito.created_at }}</CTableDataCell>
+        <CTableDataCell>{{ dateFormat(remito.created_at) }}</CTableDataCell>
         <CTableDataCell>{{ remito.localidad.nombre }}</CTableDataCell>
         <CTableDataCell>{{ remito.proveedor.razon_social }}</CTableDataCell>
-        <CTableDataCell>{{ remito.fecha_ingreso }}</CTableDataCell>
+        <CTableDataCell>{{ dateFormat(remito.fecha_ingreso) }}</CTableDataCell>
         <CTableDataCell>{{ remito.cerrado }}</CTableDataCell>
       </CTableRow>
     </CTableBody>
