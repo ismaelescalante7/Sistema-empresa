@@ -19,6 +19,7 @@ class RemitoFactory extends Factory
         $fechaUnaSemanaAtras = Carbon::now()->subWeek();
         return [
             'user_id' => 1,
+            'numero' => $this->faker->randomNumber(3),
             'proveedor_id' => rand(1,6),
             'localidad_id' => rand(1,20),
             'fecha_ingreso' => $this->faker->dateTimeBetween($fechaUnaSemanaAtras, 'now'),

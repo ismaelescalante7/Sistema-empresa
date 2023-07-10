@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('detalle_remitos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('producto_id')->constrained();
+            $table->foreignId('orden_compra_id')->nullable()->constrained();
+            $table->foreignId('remito_id')->constrained();
+            $table->integer('cantidad_pendiente');
+            $table->integer('cantidad');
             $table->timestamps();
         });
     }

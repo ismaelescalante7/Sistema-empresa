@@ -10,6 +10,8 @@ use App\Models\Proveedor;
 use App\Models\Remito;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -33,16 +35,20 @@ class RemitoController extends Controller
         $proveedores = Proveedor::all();
         $productos = Producto::all();
         $ordenCompras = OrdenCompra::with('detalleOrdenCompra.producto')->get();
-        return Inertia::render('Remitos/Create', compact('localidades', 'proveedores','ordenCompras','productos', 'user'));
+        return Inertia::render('Remitos/Create', compact('localidades', 'proveedores', 'ordenCompras', 'productos', 'user'));
     }
 
     public function store(RemitoStoreRequest $request): RedirectResponse
     {
         try {
+            DB::beginTransaction();
             $data = $request->validated();
-            Remito::create($data);
+            $remito = Remito::create(Arr::except($data, ['detalles']));
+            $remito->detalleRemito()->createMany($data['detalles']);
+            DB::commit();
             flashAlert(__('messages.success', ['Action' => 'Creación', 'element' => 'Remito']));
         } catch (\Exception $exception) {
+            DB::rollBack();
             logger($exception->getMessage());
             flashAlert(
                 __('messages.failure', ['action' => 'Creación', 'element' => 'Remito']),
