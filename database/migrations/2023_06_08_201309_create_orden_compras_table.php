@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('proveedor_id')->constrained('proveedors');
             $table->foreignId('condiciones_pagos_id')->constrained('condiciones_pagos');
             $table->string('descripcion');
+            $table->timestamp('fecha');
             $table->decimal('neto', 10, 2);
             $table->decimal('iva', 10, 2);
             $table->decimal('total', 10, 2);

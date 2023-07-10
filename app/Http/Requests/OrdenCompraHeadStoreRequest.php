@@ -37,6 +37,11 @@ class OrdenCompraHeadStoreRequest extends FormRequest
             'descripcion' => [
                 'required',
             ],
+            'fecha' => [
+                'required',
+                'date',
+                'after_or_equal:today'
+            ],
         ];
     }
 }

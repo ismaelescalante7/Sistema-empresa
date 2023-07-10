@@ -17,8 +17,13 @@ class OrdenCompra extends Model
         'descripcion',
         'neto',
         'iva',
+        'fecha',
         'total',
         'estado',
+    ];
+
+    protected $casts = [
+        'fecha' => 'datetime'
     ];
 
     public function detalleOrdenCompra(): HasMany

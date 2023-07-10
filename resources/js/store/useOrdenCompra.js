@@ -7,7 +7,7 @@ const defaultState = {
   proveedor: null,
   condiciones_pagos_id: null,
   condicion_pago: null,
-  fecha: new Date().toLocaleDateString(),
+  fecha: null,
   estado: null,
   total: null,
   neto: null,
@@ -39,14 +39,16 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
         'total': this.total,
         'neto': this.neto,
         'iva': this.iva,
-        'detalles': this.detalles
+        'detalles': this.detalles,
+        'fecha': this.fecha
       })
     },
     getHead() {
       return ({
         'descripcion': this.descripcion,
         'proveedor_id': this.proveedor_id,
-        'condiciones_pagos_id': this.condiciones_pagos_id
+        'condiciones_pagos_id': this.condiciones_pagos_id,
+        'fecha': this.fecha
       })
     }
   },
@@ -70,8 +72,7 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
       this.neto = ordenCompra.neto
       this.iva = ordenCompra.iva
       this.total = ordenCompra.total
-      this.fecha = ordenCompra.created_at
-      this.fecha = ordenCompra.created_at
+      this.fecha = ordenCompra.fecha
       ordenCompra.detalle_orden_compra.map((detalle) => {
         this.detalles.push(detalle)
       })

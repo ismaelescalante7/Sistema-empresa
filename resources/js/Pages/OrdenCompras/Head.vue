@@ -6,12 +6,12 @@ import { useForm } from '@inertiajs/inertia-vue3'
 import FormLabel from '@/Components/Form/FormLabel.vue'
 import Tab from '../../Components/Tab.vue'
 import tabs from '../../Data/OrdenCompra/Tabs.js'
-import FormInputAutocomplete from  '../../Components/Form/FormInputAutocomplete.vue'
 import { computed, onMounted, ref } from 'vue'
 import Errors from '../../Utils/formatError'
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
 const { getErrorMessage, getBooleanError } = Errors()
 import { storeToRefs } from 'pinia'
+import vSelect from "vue-select";
 
 const props = defineProps({
   proveedores: Array,
@@ -52,19 +52,6 @@ const errors = computed(() => {
   return props.errors
 })
 
-const proveedorFiltered = ref(proveedor.value)
-
-onMounted(() => {
-  if(proveedor_id.value){
-    selection(proveedorFiltered.value)
-  }
-})
-
-
-const selection = (proveedorFiltered) => {
-  proveedor_id.value = proveedorFiltered.id
-}
-
 const back = () => {
   Inertia.get(route('orden.compras.index'))
 }
@@ -76,6 +63,11 @@ function proveedorById(proveedorId) {
 function condicionPagoById(condicionPagoId) {
   condicion_pago.value = props.condicionesPagos.find( condicionPago => condicionPago.id == condicionPagoId)
 }
+
+const whileSelection = () => {
+  proveedor_id.value = proveedor.value.id
+}
+
 </script>
 
 <template>
@@ -92,14 +84,17 @@ function condicionPagoById(condicionPagoId) {
         <CRow class="my-3">
           <CCol>
             <CFormLabel required>Proveedor</CFormLabel>
-            <FormInputAutocomplete
-                label="razon_social"
-                value="id"
-                :items="props.proveedores.map(({razon_social, id}) => ({razon_social, id}))"
-                :key="proveedorFiltered"
-                @onSelect="selection"
-                :error="getErrorMessage(errors?.proveedor_id)"
-            />
+            <vSelect
+              v-model="proveedor"
+              :options="props.proveedores"
+              label="razon_social"
+              :class="{ 'is-invalid': errors?.proveedor_id }"
+              @option:selected="whileSelection"
+            >
+              <template #no-options="{ search, searching, loading }">
+                Sin resultados
+              </template>
+            </vSelect>
           </CCol>
         </CRow>
         <CRow class="my-3">
@@ -121,7 +116,12 @@ function condicionPagoById(condicionPagoId) {
         <CRow class="my-3">
           <CCol>
             <FormLabel >Fecha</FormLabel>
-            <CFormInput v-model="fecha" type="text"/>
+            <CFormInput 
+              v-model="fecha" 
+              type="date"
+              :feedback="getErrorMessage(errors?.fecha)" 
+              :invalid="getBooleanError(errors?.fecha)" 
+            />
           </CCol>
         </CRow>
       </CCol>
