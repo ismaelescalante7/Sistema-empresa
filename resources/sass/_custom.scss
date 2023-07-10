@@ -60,7 +60,7 @@
 }
 
 .bg-indigo {
-  background-color: #6574cd !important;
+  background-color: #014E77 !important;
 }
 
 .h-5 {
@@ -108,3 +108,69 @@
 .small {
   font-size: .875rem !important;
 }
+
+.v-select .vs__search::placeholder,
+.v-select .vs__dropdown-toggle {
+    width: 100%;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.4rem;
+    color: #495057;
+    background-clip: padding-box;
+    appearance: none;
+    border-radius: 0.5rem;
+    padding: 0.1rem 1rem 0.5rem 0.75rem;
+}
+
+
+.v-select .vs__dropdown-toggle:focus-within {
+    box-shadow: 0 0 1px 2px #257DBC;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+    transition-property: box-shadow, border-color;
+    transition-duration: 0.15s, 0.15s;
+    transition-timing-function: ease, ease;
+    transition-delay: 0s, 0s;
+}
+
+
+.v-select .vs__dropdown-menu {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.4rem;
+
+}
+
+
+.v-select .vs__dropdown-option--highlight:hover {
+    background-color: #014E77;
+    color: #fff;
+}
+
+.v-select .vs__dropdown-option--highlight {
+    background-color: #014E77;
+    color: #fff;
+}
+
+
+.v-select .vs__clear,
+.v-select .vs__open-indicator {
+    margin: 0 auto;
+    transform: scale(.8);
+}
+
+//estilo personalizado para algunos v-select
+
+.style-chooser .vs__dropdown-menu {
+    border: none;
+    color: #000;
+  }
+
+  .style-chooser .vs__dropdown-option--highlight:hover {
+    background-color: #eee;
+    color: #495057;
+  }
+
+  .style-chooser .vs__dropdown-option--highlight {
+    background-color: #eee;
+    color: #495057;
+  }
