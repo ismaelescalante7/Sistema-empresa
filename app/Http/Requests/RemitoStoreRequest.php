@@ -55,7 +55,7 @@ class RemitoStoreRequest extends FormRequest
                 'exists:App\Models\Producto,id'
             ],
             'detalles.*.orden_compra_id' => [
-                'required',
+                'nullable',
                 'integer',
                 'exists:App\Models\OrdenCompra,id'
             ],

@@ -10,7 +10,8 @@ import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import CircleButton from "@/Components/CircleButton.vue";
 import Modal from "@/Components/Modal.vue";
-import { Inertia } from '@inertiajs/inertia'
+import { Inertia } from "@inertiajs/inertia";
+import axios from "axios";
 
 const { getErrorMessage, getBooleanError } = Errors();
 
@@ -35,10 +36,20 @@ const form = useForm({
 const modal = reactive({
     show: false,
     item: null,
+    type: null,
+    index: null,
 });
-const showModal = (show = false, productOrdenCompra = null) => {
+const showModal = (
+    show = false,
+    productOrdenCompra = null,
+    index = null,
+    type = null
+) => {
     modal.show = show;
+    productCopy.value = { ...productOrdenCompra };
     modal.item = productOrdenCompra;
+    modal.index = index;
+    modal.type = type;
 };
 
 const errors = computed(() => {
@@ -47,7 +58,7 @@ const errors = computed(() => {
     }
     return props.errors;
 });
-
+const productCopy = ref({});
 const localidadSelected = ref(null);
 const localidadFiltered = ref(null);
 const proveedorSelected = ref(null);
@@ -69,14 +80,6 @@ detalle.value = {
 
 ordenComprasFiltered.value = props.ordenCompras;
 
-const mapProductsOrdenCompra = ref(null);
-const productOrdenSelected = {
-    index: null,
-    id: null,
-    nombre: null,
-    cantidad: null,
-    conOrden: false,
-};
 const listOrdenCompras = ref([]);
 const errorsAxios = ref(null);
 
@@ -148,25 +151,15 @@ const agregarProducto = () => {
             }
         });
 };
-
-const EliminarDetalle = () => {
-    if (!productOrdenSelected.conOrden) {
-        form.productsWithoutOrdenCompra.splice(
-            productOrdenSelected.index - form.lengthOrders,
-            1
-        );
-        mapProductsOrdenCompra.value.splice(productOrdenSelected.index, 1);
-    } else {
-        mapProductsOrdenCompra.value.splice(productOrdenSelected.index, 1);
-    }
-    productOrdenSelected = {
-        index: null,
-        nombre: null,
-        cantidad: null,
-        conOrden: false,
-    };
-    showModal();
+const actualizarDetalle = () => {
+    productCopy.value.cantidad_pendiente =
+        modal.item.cantidad - productCopy.value.cantidad;
+    axios.post(route("remito.process.detalle"), productCopy.value).then(() => {
+        form.detalles[modal.index] = productCopy.value
+        showModal()
+    });
 };
+const eliminarDetalle = () => {};
 
 const goSecondTab = () => {
     axios
@@ -190,7 +183,7 @@ const goThirdTab = () => {
             producto_id: detalle.producto.id,
             nombre: detalle.producto.nombre,
             cantidad: detalle.cantidad,
-            cantidad_restante: 0,
+            cantidad_pendiente: 0,
             orden_compra_id: detalle.orden_compra_id,
         }))
     );
@@ -199,7 +192,12 @@ const goFourthTab = () => {
     formWizards.value.nextTab();
 };
 const onComplete = () => {
-    form.post(route('remitos.store'))
+    form.post(route("remitos.store"),{
+        onError: (errors) => {
+            console.log(errors);
+        },
+    })
+    
 };
 </script>
 
@@ -504,7 +502,8 @@ const onComplete = () => {
                                                 showModal(
                                                     true,
                                                     ordenCompraDetalle,
-                                                    index
+                                                    index,
+                                                    'Eliminar'
                                                 )
                                             "
                                         >
@@ -515,7 +514,14 @@ const onComplete = () => {
                                         <CircleButton
                                             class="ms-1"
                                             title="Modificar"
-                                            @click="agregarProducto"
+                                            @click="
+                                                showModal(
+                                                    true,
+                                                    ordenCompraDetalle,
+                                                    index,
+                                                    'Editar'
+                                                )
+                                            "
                                         >
                                             <span
                                                 class="fa-solid fa-pen-to-square"
@@ -592,7 +598,61 @@ const onComplete = () => {
             </CButton>
         </tab-content>
     </form-wizard>
-    <Modal :visible="modal.show" @close="showModal()">
+    <Modal
+        :visible="modal.show && modal.type === 'Editar'"
+        @close="showModal()"
+    >
+        <template #header> Editar el producto de la orden de compra </template>
+        <CAlert color="warning">
+            <span>
+                <i class="fa-solid fa-trash-can m-2"></i>¿Estás seguro que
+                deseas actualizar los valores del producto de la orden de
+                compra?
+            </span>
+        </CAlert>
+        {{ modal.item }}
+        <br />
+        {{ productCopy }}
+        <CRow class="d-flex flex-column text-center">
+            <CRow>
+                <CCol>Nombre: </CCol>
+                <CCol>
+                    <CFormInput
+                        v-model="modal.item.nombre"
+                        type="text"
+                        disabled="true"
+                    />
+                </CCol>
+            </CRow>
+            <CRow>
+                <CCol>Cantidad</CCol>
+                <CCol>
+                    <CFormInput v-model="productCopy.cantidad" type="text" />
+                </CCol>
+            </CRow>
+        </CRow>
+        <template #footer>
+            <CButton
+                color="primary"
+                shape="rounded-pill"
+                class="text-white"
+                @click="actualizarDetalle"
+            >
+                Actualizar
+            </CButton>
+            <CButton
+                color="secondary"
+                shape="rounded-pill"
+                @click="showModal()"
+            >
+                Cancelar
+            </CButton>
+        </template>
+    </Modal>
+    <Modal
+        :visible="modal.show && modal.type === 'Eliminar'"
+        @close="showModal()"
+    >
         <template #header> Eliminar Producto de la orden de compra </template>
         <CAlert color="warning">
             <span>
@@ -609,7 +669,7 @@ const onComplete = () => {
                 color="danger"
                 shape="rounded-pill"
                 class="text-white"
-                @click="EliminarDetalle"
+                @click="eliminarDetalle"
             >
                 Eliminar
             </CButton>
