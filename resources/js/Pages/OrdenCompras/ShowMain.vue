@@ -5,7 +5,7 @@ import breadcrumbs from '@/Data/Breadcrumbs'
 import FormInputAutocomplete from  '../../Components/Form/FormInputAutocomplete.vue'
 import {useOrdenCompraStore} from '../../store/useOrdenCompra'
 import {useOrdenCompraDetalleStore} from '../../store/useDetalleOrdenCompra'
-
+import { dateFormat } from '@/Utils/format'
 
 const props = defineProps({
   ordenCompra: Object
@@ -42,7 +42,7 @@ const back = () => {
 
         <CTableRow>
             <CTableDataCell class="d-flex justify-content-end ms-2">Fecha:</CTableDataCell>
-            <CTableDataCell class="fw-bold px-3">{{ ordenCompra.$state?.fecha }}</CTableDataCell>
+            <CTableDataCell class="fw-bold px-3">{{ dateFormat(ordenCompra.$state?.fecha) }}</CTableDataCell>
         </CTableRow>
         <CTableRow>
             <CTableDataCell class="d-flex justify-content-end ms-2">Condicion de Pago:</CTableDataCell>
