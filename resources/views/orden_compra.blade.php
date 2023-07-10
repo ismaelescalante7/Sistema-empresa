@@ -188,7 +188,7 @@
             <h4>{{$ordenCompra['detalle_orden_compra']}}</h4>
 		</div>
 		@if ($ordenCompra->detalleOrdenCompra)
-		<table class="table">
+		<table class="table table-striped">
 			<tr>
 				<th>Codigo</th>
 				<th>Nombre</th>
@@ -210,13 +210,15 @@
                 </tr>
 			@endforeach
 		</table>
-		<table>
-			<tr>
-				<th colspan="4"><b>Neto:</b> {{ $ordenCompra->neto }}</th>
-				<th colspan="4"><b>Iva:</b> {{ $ordenCompra->iva }}</th>
-				<th colspan="4"><b>Total:</b> {{ $ordenCompra->total }}</th>
-			</tr>
-		</table>
+		<div style="text-align: right">
+			<p><b>Neto:</b> {{ $ordenCompra->neto }} </p>
+		</div>
+		<div style="text-align: right">
+			<p><b>Iva:</b> {{ $ordenCompra->iva }}</p>
+		</div>
+		<div style="text-align: right">
+			<p> <b>Total:</b> {{ $ordenCompra->total }}<</p>
+		</div>
         @endif
 	</div>
 </body>

@@ -122,7 +122,7 @@ class OrdenCompraController extends Controller
     public function downloadPdf(OrdenCompra $ordenCompra ) 
     {
         $ordenCompra->load(['proveedor', 'condicionesPago', 'detalleOrdenCompra.producto']);
-        $pdf = Pdf::loadView('ejemplo', compact('ordenCompra'));
+        $pdf = Pdf::loadView('orden_compra', compact('ordenCompra'));
         return $pdf->stream();
     }
 }
