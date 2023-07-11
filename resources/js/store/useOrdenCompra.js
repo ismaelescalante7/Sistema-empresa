@@ -72,7 +72,7 @@ export const useOrdenCompraStore = defineStore("ordenCompra", {
       this.neto = ordenCompra.neto
       this.iva = ordenCompra.iva
       this.total = ordenCompra.total
-      this.fecha = ordenCompra.fecha
+      this.fecha = new Date(ordenCompra.fecha).toISOString().slice(0, 10)
       ordenCompra.detalle_orden_compra.map((detalle) => {
         this.detalles.push(detalle)
       })
