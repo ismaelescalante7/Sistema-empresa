@@ -155,11 +155,14 @@ const actualizarDetalle = () => {
     productCopy.value.cantidad_pendiente =
         modal.item.cantidad - productCopy.value.cantidad;
     axios.post(route("remito.process.detalle"), productCopy.value).then(() => {
-        form.detalles[modal.index] = productCopy.value
-        showModal()
+        form.detalles[modal.index] = productCopy.value;
+        showModal();
     });
 };
-const eliminarDetalle = () => {};
+const eliminarDetalle = () => {
+    form.detalles.splice(modal.index, 1);
+    showModal();
+};
 
 const goSecondTab = () => {
     axios
@@ -192,12 +195,11 @@ const goFourthTab = () => {
     formWizards.value.nextTab();
 };
 const onComplete = () => {
-    form.post(route("remitos.store"),{
+    form.post(route("remitos.store"), {
         onError: (errors) => {
             console.log(errors);
         },
-    })
-    
+    });
 };
 </script>
 
