@@ -1,15 +1,21 @@
 <script setup>
 import "vue-select/dist/vue-select.css";
 import vSelect from "vue-select";
-import { computed, reactive, ref, onMounted } from "vue";
+import { computed, ref } from "vue";
 import axios from "axios";
 import Errors from "@/Utils/formatError";
+import { useRemitoStore } from "@/store/useRemito";
+import { storeToRefs } from "pinia";
 
 const { getErrorMessage, getBooleanError } = Errors();
+
+const remito = useRemitoStore();
+const { fecha_ingreso, detalles } = storeToRefs(remito);
 
 const props = defineProps({
     ordenCompras: Array,
 });
+const emit = defineEmits(["siguiente"]);
 
 const errors = computed(() => {
     if (errorsAxios.value) {
@@ -26,6 +32,10 @@ const errorsAxios = ref(null);
 
 ordenComprasFiltered.value = props.ordenCompras;
 
+const ordenesDeCompra = computed(() => {
+    return listOrdenCompras.value;
+});
+
 const agregarOrdenCompra = () => {
     const OrdenCompra = ordenComprasFiltered.value.find(
         (item) => item.id == ordenCompraSelected.value.id
@@ -40,6 +50,19 @@ const agregarOrdenCompra = () => {
     } else {
         console.log("No encontrado");
     }
+};
+
+const goThirdTab = () => {
+    detalles.value = listOrdenCompras.value.flatMap((item) =>
+        item.detalle_orden_compra.map((detalle) => ({
+            producto_id: detalle.producto.id,
+            nombre: detalle.producto.nombre,
+            cantidad: detalle.cantidad,
+            cantidad_pendiente: 0,
+            orden_compra_id: detalle.orden_compra_id,
+        }))
+    );
+    emit('siguiente')
 };
 </script>
 
@@ -110,7 +133,7 @@ const agregarOrdenCompra = () => {
                                 ordenCompra.created_at
                             }}</CTableDataCell>
                             <CTableDataCell>
-                                {{ form.fecha_ingreso }}
+                                {{ fecha_ingreso }}
                             </CTableDataCell>
                         </CTableRow>
                     </CTableBody>
