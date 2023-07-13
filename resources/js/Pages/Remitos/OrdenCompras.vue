@@ -10,7 +10,7 @@ import { storeToRefs } from "pinia";
 const { getErrorMessage, getBooleanError } = Errors();
 
 const remito = useRemitoStore();
-const { fecha_ingreso, detalles } = storeToRefs(remito);
+const { fecha_ingreso, detalles, ordenCompras } = storeToRefs(remito);
 
 const props = defineProps({
     ordenCompras: Array,
@@ -24,36 +24,38 @@ const errors = computed(() => {
     return props.errors;
 });
 
-const listOrdenCompras = ref([]);
-
 const ordenComprasFiltered = ref(null);
 const ordenCompraSelected = ref(null);
 const errorsAxios = ref(null);
 
 ordenComprasFiltered.value = props.ordenCompras;
 
-const ordenesDeCompra = computed(() => {
-    return listOrdenCompras.value;
-});
-
 const agregarOrdenCompra = () => {
-    const OrdenCompra = ordenComprasFiltered.value.find(
-        (item) => item.id == ordenCompraSelected.value.id
-    );
-    if (OrdenCompra) {
-        listOrdenCompras.value.push(OrdenCompra);
-        const index = ordenComprasFiltered.value.indexOf(OrdenCompra);
-        if (index !== -1) {
-            ordenComprasFiltered.value.splice(index, 1);
-        }
-        ordenCompraSelected.value = null;
-    } else {
-        console.log("No encontrado");
-    }
+    axios
+        .post(route("remito.process.ordenCompra"), {
+            orden_compra_id: ordenCompraSelected.value?.id,
+        })
+        .then(() => {
+            ordenCompras.value.push(ordenCompraSelected.value);
+            const index = ordenComprasFiltered.value.indexOf(
+                ordenCompraSelected.value.id
+            );
+            if (index !== -1) {
+                ordenComprasFiltered.value.splice(index, 1);
+            }
+            ordenCompraSelected.value = null;
+        })
+        .catch((err) => {
+            const status = err.response.status;
+            if (status === 422) {
+                errorsAxios.value = err.response.data.errors;
+                console.log("No encontrado");
+            }
+        });
 };
 
 const goThirdTab = () => {
-    detalles.value = listOrdenCompras.value.flatMap((item) =>
+    detalles.value = ordenCompras.value.flatMap((item) =>
         item.detalle_orden_compra.map((detalle) => ({
             producto_id: detalle.producto.id,
             nombre: detalle.producto.nombre,
@@ -62,7 +64,10 @@ const goThirdTab = () => {
             orden_compra_id: detalle.orden_compra_id,
         }))
     );
-    emit('siguiente')
+    ordenCompras.value = ordenCompras.value.map((item) => ({
+        orden_compra_id: item.id,
+    }));
+    emit("siguiente");
 };
 </script>
 
@@ -113,7 +118,7 @@ const goThirdTab = () => {
                     </CTableHead>
                     <CTableBody>
                         <CTableRow
-                            v-for="ordenCompra in ordenesDeCompra"
+                            v-for="ordenCompra in ordenCompras"
                             :key="ordenCompra.id"
                             class="cell-center"
                         >

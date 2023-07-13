@@ -39,14 +39,26 @@ class DetalleRemitoStoreRequest extends FormRequest
                 'integer',
                 'min:0'
             ],
+            'cantidad_nueva' => [
+                'required',
+                'integer',
+            ],
             'cantidad' => [
                 'required',
                 'integer',
-                'min:1'
+                'min:0',
+                function ($attribute, $value, $fail) {
+                    $cantidadAnterior = $this->input('cantidad_nueva');
+
+                    if ($value <= $cantidadAnterior) {
+                        $fail('La cantidad debe ser menor que la cantidad anterior.');
+                    }
+                },
             ],
             'nombre' => [
                 'required',
                 'string',
+
             ],
         ];
     }

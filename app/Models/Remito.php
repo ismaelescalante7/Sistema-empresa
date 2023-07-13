@@ -22,6 +22,11 @@ class Remito extends Model
         return $this->belongsTo(Localidad::class);
     }
 
+    public function ordenCompras()
+    {
+        return $this->belongsToMany(OrdenCompra::class);
+    }
+
     public function detalleRemito(): HasMany
     {
         return $this->hasMany(DetalleRemito::class);

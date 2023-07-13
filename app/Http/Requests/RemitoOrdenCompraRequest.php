@@ -25,7 +25,7 @@ class RemitoOrdenCompraRequest extends FormRequest
     {
         return [
             'orden_compra_id' => [
-                'nullable',
+                'required',
                 'integer',
                 'exists:App\Models\OrdenCompra,id'
             ],

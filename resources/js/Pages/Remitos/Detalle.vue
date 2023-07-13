@@ -1,5 +1,4 @@
 <script setup>
-
 import FormLabel from "@/Components/Form/FormLabel.vue";
 import FormInputAutocomplete from "@/Components/Form/FormInputAutocomplete.vue";
 import { computed, reactive, ref } from "vue";
@@ -16,8 +15,7 @@ const props = defineProps({
     productos: Array,
 });
 const remito = useRemitoStore();
-const { detalles } =
-    storeToRefs(remito);
+const { detalles } = storeToRefs(remito);
 
 const modal = reactive({
     show: false,
@@ -32,7 +30,7 @@ const showModal = (
     type = null
 ) => {
     modal.show = show;
-    productCopy.value = { ...productOrdenCompra };
+    cantidad_nueva.value = productOrdenCompra.cantidad;
     modal.item = productOrdenCompra;
     modal.index = index;
     modal.type = type;
@@ -44,11 +42,12 @@ const errors = computed(() => {
     }
     return props.errors;
 });
-const productCopy = ref({});
+const cantidad_nueva = ref(null);
 
 const productoSelected = ref(null);
 const productoFiltered = ref(null);
 const errorsAxios = ref(null);
+const emit = defineEmits(["siguiente"]);
 
 const detalle = ref({});
 
@@ -89,12 +88,21 @@ const agregarProducto = () => {
         });
 };
 const actualizarDetalle = () => {
-    productCopy.value.cantidad_pendiente =
-        modal.item.cantidad - productCopy.value.cantidad;
-    axios.post(route("remito.process.detalle"), productCopy.value).then(() => {
-        detalles.value[modal.index] = productCopy.value;
-        showModal();
-    });
+    console.log("imer");
+    modal.item.cantidad_nueva = cantidad_nueva.value;
+    axios
+        .post(route("remito.process.detalle"), modal.item)
+        .then(() => {
+            detalles.value[modal.index].cantidad = cantidad_nueva.value;
+            detalles.value[modal.index] = modal.item;
+            showModal();
+        })
+        .catch((err) => {
+            const status = err.response.status;
+            if (status === 422) {
+                errorsAxios.value = err.response.data.errors;
+            }
+        });
 };
 const eliminarDetalle = () => {
     detalles.value.splice(modal.index, 1);
@@ -102,9 +110,8 @@ const eliminarDetalle = () => {
 };
 
 const goFourthTab = () => {
-    formWizards.value.nextTab();
+    emit("siguiente");
 };
-
 </script>
 
 <template>
@@ -255,9 +262,6 @@ const goFourthTab = () => {
                 compra?
             </span>
         </CAlert>
-        {{ modal.item }}
-        <br />
-        {{ productCopy }}
         <CRow class="d-flex flex-column text-center">
             <CRow>
                 <CCol>Nombre: </CCol>
@@ -272,7 +276,12 @@ const goFourthTab = () => {
             <CRow>
                 <CCol>Cantidad</CCol>
                 <CCol>
-                    <CFormInput v-model="productCopy.cantidad" type="text" />
+                    <CFormInput
+                        v-model="cantidad_nueva"
+                        type="text"
+                        :feedback="getErrorMessage(errors?.cantidad)"
+                        :invalid="getBooleanError(errors?.cantidad)"
+                    />
                 </CCol>
             </CRow>
         </CRow>

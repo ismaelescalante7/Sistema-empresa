@@ -18,8 +18,15 @@ onMounted(() => {
 });
 
 const remito = useRemitoStore();
-const { numero, proveedor_id, localidad_id, fecha_ingreso, user_id } =
-    storeToRefs(remito);
+const {
+    numero,
+    proveedor_id,
+    localidad_id,
+    fecha_ingreso,
+    user_id,
+    localidad,
+    proveedor,
+} = storeToRefs(remito);
 
 const proveedorFiltered = ref(null);
 const localidadFiltered = ref(null);
@@ -29,10 +36,12 @@ const emit = defineEmits(["siguiente"]);
 
 const selectionLocalidad = (localidadFiltered) => {
     localidad_id.value = localidadFiltered.id;
+    localidad.value = localidadFiltered;
 };
 
 const selectionProveedor = (proveedorFiltered) => {
     proveedor_id.value = proveedorFiltered.id;
+    proveedor.value = proveedorFiltered;
 };
 
 const errors = computed(() => {
@@ -47,7 +56,7 @@ const goSecondTab = () => {
         .post(route("remito.process.head"), remito.getHead)
         .then(() => {
             emit("siguiente");
-            errorsAxios.value = null
+            errorsAxios.value = null;
         })
         .catch((err) => {
             const status = err.response.status;

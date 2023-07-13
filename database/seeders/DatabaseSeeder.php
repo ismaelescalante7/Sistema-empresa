@@ -61,7 +61,6 @@ class DatabaseSeeder extends Seeder
         Rubro::truncate();
         Proveedor::truncate();
         OrdenCompra::truncate();
-        Remito::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $this->call([
@@ -89,7 +88,6 @@ class DatabaseSeeder extends Seeder
             ProveedorSeeder::class,
             ProductoSeeder::class,
             OrdenCompraSeeder::class,
-            RemitoSeeder::class,
         ]);
     }
 }

@@ -45,6 +45,7 @@ class RemitoController extends Controller
             $data = $request->validated();
             $remito = Remito::create(Arr::except($data, ['detalles']));
             $remito->detalleRemito()->createMany($data['detalles']);
+            $remito->ordenCompras()->attach($data['ordenCompras']);
             DB::commit();
             flashAlert(__('messages.success', ['Action' => 'Creación', 'element' => 'Remito']));
         } catch (\Exception $exception) {

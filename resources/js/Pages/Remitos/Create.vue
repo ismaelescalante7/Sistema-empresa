@@ -1,13 +1,16 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import breadcrumbs from "@/Data/Breadcrumbs";
-import { useForm } from "@inertiajs/inertia-vue3";
 import { FormWizard, TabContent } from "vue3-form-wizard";
 import "vue3-form-wizard/dist/style.css";
-import { ref } from "vue";
 import Head from "./Head.vue";
 import OrdenCompras from "./OrdenCompras.vue";
 import Detalle from "./Detalle.vue";
+import Resumen from "./Resumen.vue";
+import { useRemitoStore } from "@/store/useRemito";
+import { storeToRefs } from "pinia";
+import { computed, ref } from "vue";
+import { Inertia } from "@inertiajs/inertia";
 
 const formWizards = ref(null);
 
@@ -19,8 +22,29 @@ const props = defineProps({
     user: Object,
 });
 
+const errors = computed(() => {
+    if (errorsAxios.value) {
+        return errorsAxios.value;
+    }
+    return props.errors;
+});
+
+const remito = useRemitoStore();
+const {  } =
+    storeToRefs(remito);
+
+const emit = defineEmits(["siguiente"]);
+const errorsAxios = ref(null);
+
 const siguienteTab = () => {
     formWizards.value.nextTab();
+};
+const crearRemito = () => {
+    Inertia.post(route('remitos.store'), remito.getData, {
+        onError: errors => {
+            console.log(errors);
+        },
+    })
 };
 </script>
 
@@ -47,7 +71,9 @@ const siguienteTab = () => {
                     @siguiente="siguienteTab"
                 />
             </tab-content>
-            <tab-content title="Resumen" icon="fa fa-gear"> </tab-content>
+            <tab-content title="Resumen" icon="fa fa-gear">
+                <Resumen :user="props.user" @finalizar="crearRemito" />
+            </tab-content>
         </form-wizard>
     </AppLayout>
 </template>
